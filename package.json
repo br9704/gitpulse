@@ -1,0 +1,53 @@
+{
+  "name": "gitpulse",
+  "version": "1.0.0",
+  "description": "Generate beautiful developer profile report cards in the terminal from GitHub profiles",
+  "main": "dist/index.js",
+  "bin": {
+    "gitpulse": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "github",
+    "developer",
+    "profile",
+    "terminal",
+    "cli",
+    "report-card",
+    "ascii-art",
+    "stats"
+  ],
+  "author": "Bruno Jaamaa",
+  "license": "MIT",
+  "dependencies": {
+    "boxen": "^7.1.1",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "node-fetch": "^3.3.2",
+    "ora": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module"
+}
