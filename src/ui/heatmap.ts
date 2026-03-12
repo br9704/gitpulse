@@ -99,7 +99,8 @@ export function renderCommitPatterns(pattern: CommitPattern): string {
   // Peak hours
   const maxHour = pattern.byHour.indexOf(Math.max(...pattern.byHour));
   const maxDay = pattern.byDay.indexOf(Math.max(...pattern.byDay));
-  lines.push(`  ${chalk.dim('Peak:')} ${chalk.white(`${DAY_LABELS[maxDay]}s at ${maxHour.toString().padStart(2, '0')}:00 UTC`)}`);
+  const fullDayNames = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
+  lines.push(`  ${chalk.dim('Peak:')} ${chalk.white(`${fullDayNames[maxDay]} at ${maxHour.toString().padStart(2, '0')}:00 UTC`)}`);
 
   return lines.join('\n');
 }

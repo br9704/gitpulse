@@ -1,49 +1,35 @@
+<![CDATA[<div align="center">
+
 # ⚡ GitPulse
 
-> Generate beautiful developer profile report cards in the terminal from GitHub profiles.
+**Generate beautiful developer profile report cards from GitHub — right in your terminal.**
 
-![MIT License](https://img.shields.io/badge/license-MIT-green)
-![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)
+[![npm version](https://img.shields.io/npm/v/gitpulse.svg?style=flat-square&color=blue)](https://www.npmjs.com/package/gitpulse)
+[![license](https://img.shields.io/npm/l/gitpulse.svg?style=flat-square&color=green)](LICENSE)
+[![tests](https://img.shields.io/badge/tests-33%20passing-brightgreen?style=flat-square)](/)
+[![node](https://img.shields.io/badge/node-%3E%3D18-blue?style=flat-square)](/)
 
-## Quick Start
+[Features](#features) • [Install](#installation) • [Usage](#usage) • [Examples](#examples) • [Three.js Export](#threejs-export) • [Contributing](#contributing)
 
-```bash
-npx gitpulse <username>
-```
+</div>
 
-## Features
+---
 
-- 📊 **Full Stats** — repos, stars, forks, followers, gists
-- 💻 **Language Breakdown** — colored bar charts with GitHub language colors
-- 🔥 **Contribution Heatmap** — 90-day activity grid using block characters
-- ⏰ **Commit Patterns** — discover when they code most (day & hour analysis)
-- 🎯 **Hire-ability Score** — algorithmic scoring with letter grades (A+ to F)
-- ⭐ **Top Repos** — ranked by stars and impact
-- 🔥 **Streak Detection** — current and longest coding streaks
-- ⚖️ **Compare Mode** — side-by-side developer comparison
-- 📦 **JSON Output** — machine-readable data for pipelines
-- 🎨 **Three.js Export** — scene data for 3D visualizations
-- 💾 **Local Cache** — fast repeat lookups with 30-min TTL
+## What Is This?
 
-## Installation
+GitPulse scans any GitHub profile and generates a full developer report card with:
 
-```bash
-# Run directly (no install)
-npx gitpulse torvalds
+- 📊 **Stats overview** — repos, stars, forks, followers in a clean 2-column layout
+- 💻 **Language breakdown** — colored bars with percentages and a summary strip
+- ⭐ **Top repositories** — ranked by impact (stars × 3 + forks × 2 + watchers)
+- 🔥 **Contribution heatmap** — last 90 days of activity, GitHub-style
+- ⏰ **Commit patterns** — when you code, by day and hour (sparkline charts)
+- 🔥 **Coding streaks** — current and longest streaks
+- 🎯 **Hire-ability score** — a 0-100 score with letter grade and breakdown
+- ⚖️ **Compare mode** — side-by-side comparison of two developers
+- 🌐 **Three.js export** — export profile data as a 3D scene graph
 
-# Or install globally
-npm install -g gitpulse
-gitpulse torvalds
-```
-
-## Usage
-
-### Scan a Profile
-
-```bash
-gitpulse br9704
-```
+## Terminal Output
 
 ```
  ██████╗ ██╗████████╗██████╗ ██╗   ██╗██╗     ███████╗███████╗
@@ -56,142 +42,204 @@ gitpulse br9704
 
 👤 Profile
 ────────────────────────────────────────────────────────────────
-  John Doe (@johndoe)
-  Full-stack developer & open source enthusiast
-  📍 Melbourne, AU  │  🔗 johndoe.dev
+  Linus Torvalds (@torvalds)
+  📍 Portland, OR
+  Member for 14 years  │  https://github.com/torvalds
 
 📊 Statistics
 ────────────────────────────────────────────────────────────────
-  ■ Repositories: 42 (38 original)    ■ Stars Earned: 1.2K
-  ■ Forks Earned: 156                 ■ Followers: 890
+  ■ Repositories: 7 (7 original)      ■ Stars Earned: 200.4K
+  ■ Forks Earned: 56.1K               ■ Followers: 231.8K
+  ■ Following: 0                      ■ Public Gists: 0
 
 💻 Languages
 ────────────────────────────────────────────────────────────────
-  TypeScript       ██████████████████████████████  35.2% (15 repos)
-  Python           ████████████████░░░░░░░░░░░░░░  22.1% (9 repos)
-  Rust             ████████░░░░░░░░░░░░░░░░░░░░░░  12.4% (5 repos)
+  C                ██████████████████████████████  71.4% (5 repos)
+  C++              ██████████████░░░░░░░░░░░░░░░░  14.3% (1 repos)
+  Perl             ██████████████░░░░░░░░░░░░░░░░  14.3% (1 repos)
+
+  ██████████████████████████████████████████████████
+  ● C ● C++ ● Perl
 
 🎯 Hire-ability Score
 ────────────────────────────────────────────────────────────────
-  ╔═╗ ╔═╗
-  ║ ║ ╔═╝
-  ╚═╝ ╚══
+  ╔═╗ ╗ ╗
+  ╚═╣ ╚═╣
+  ╚═╝   ╩
+    Grade: A- (84/100)
 
-  Grade: B+
+  ──────────────────────────────────
 
-  Repo Quality         █████████████░░ 18/25
-  Consistency          ████████████░░░ 14/20
-  Language Diversity   ████████████░░░ 11/15
-  README Quality       ██████████░░░░░ 10/15
-  Recent Activity      ████████████████ 19/25
+  Repo Quality         █████████████░░ 21.3/25
+  Consistency          ████████░░░░░░░ 10.2/20
+  Language Diversity   ████░░░░░░░░░░░  4.8/15
+  README Quality       ██████████████░ 14.1/15
+  Recent Activity      █████████████░░ 20.5/25
+
+────────────────────────────────────────────────────────────────
+  Generated by gitpulse v1.0.0 • github.com/br9704/gitpulse-cli
 ```
 
-### Compare Two Developers
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| 🔍 **Profile Scan** | Fetches user data, repos (up to 200), and recent events |
+| 📊 **Rich Stats** | Stars, forks, followers, repo count in formatted layout |
+| 💻 **Language Bars** | Color-coded bars matching GitHub's linguist colors |
+| 🔥 **Heatmap** | 90-day contribution grid with 5 intensity levels |
+| ⏰ **Commit Patterns** | Sparkline charts showing when you code most |
+| 🎯 **Hire-ability Score** | Composite score (0-100) across 5 dimensions |
+| ⚖️ **Compare Mode** | Head-to-head developer comparison |
+| 📋 **Minimal Mode** | Compact one-liner output |
+| 🌐 **Three.js Export** | Export as 3D scene graph (nodes + connections) |
+| 💾 **Smart Caching** | 30-minute cache, auto-eviction at 50 profiles |
+| 🔑 **Token Support** | Use a GitHub PAT for higher rate limits |
+
+## Installation
 
 ```bash
-gitpulse user1 --compare user2
+# Install globally
+npm install -g gitpulse
+
+# Or run with npx
+npx gitpulse torvalds
 ```
 
-### Minimal Output
+## Usage
 
 ```bash
-gitpulse br9704 --minimal
-```
+# Basic scan
+gitpulse <username>
 
-```
-⚡ Bruno (@br9704)
-📦 42 repos │ ⭐ 1.2K stars │ ⑂ 156 forks │ 👥 890 followers
-💻 TypeScript, Python, Rust, Go, Swift
-🎯 Score: 72 (B+)  🔥 Streak: 14d (best: 45d)
-```
+# Compare two developers
+gitpulse <username> --compare <other-username>
 
-### JSON Output
+# Minimal compact output
+gitpulse <username> --minimal
 
-```bash
-gitpulse br9704 --json
-```
+# JSON output (clean, curated data)
+gitpulse <username> --json
 
-### Three.js Export
+# Three.js scene export
+gitpulse <username> --export
 
-```bash
-gitpulse br9704 --export > scene.json
-```
+# Use a GitHub token for higher rate limits
+gitpulse <username> --token ghp_xxxxxxxxxxxx
 
-Generates JSON with node positions, colors, and sizes based on repo stats — ready to feed into a Three.js scene.
-
-### With GitHub Token
-
-For higher API rate limits (60 → 5000 requests/hour):
-
-```bash
-gitpulse br9704 --token ghp_xxxxxxxxxxxx
-```
-
-### Cache Management
-
-```bash
 # Bypass cache
-gitpulse br9704 --no-cache
+gitpulse <username> --no-cache
 
-# Clear all cached data
+# Clear all cached profiles
 gitpulse --clear-cache
-
-# Clear specific user cache
-gitpulse username --clear-cache
 ```
+
+### All Flags
+
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--token <token>` | `-t` | GitHub personal access token |
+| `--json` | `-j` | Output raw JSON data |
+| `--minimal` | `-m` | Compact minimal output |
+| `--export` | `-e` | Export Three.js scene data |
+| `--compare <user>` | `-c` | Compare with another user |
+| `--no-cache` | | Bypass cache and fetch fresh |
+| `--clear-cache` | | Clear cached data |
+
+## Examples
+
+### Basic Scan
+
+```bash
+$ gitpulse br9704
+```
+
+Outputs a full report card with profile, stats, languages, top repos, heatmap, commit patterns, streak, and hire-ability score.
+
+### Compare Mode
+
+```bash
+$ gitpulse torvalds --compare gvanrossum
+```
+
+```
+⚖️ Comparison
+────────────────────────────────────────────────────────────────
+  torvalds  vs  gvanrossum
+────────────────────────────────────────────────────────────────
+                    torvalds  │  gvanrossum
+  ──────────────── ────────────┼────────────
+  Repositories          7     │  31
+  Stars            200.4K     │  3.2K
+  Followers        231.8K     │  47.1K
+  Score                84     │  72
+  ...
+
+  Score Breakdown:
+  Repo Quality     21  ██████████ │ ████████░░ 18
+  Consistency      10  ████████░░ │ ██████░░░░  8
+  ...
+
+  🏆 torvalds wins with grade A- vs B
+```
+
+### Minimal Mode
+
+```bash
+$ gitpulse torvalds --minimal
+```
+
+```
+⚡ Linus Torvalds (@torvalds)
+📦 7 repos │ ⭐ 200.4K stars │ ⑂ 56.1K forks │ 👥 231.8K followers
+──────────────────────────────────────────────────
+💻 C, C++, Perl
+🎯 Score: 84 (A-)  🔥 Streak: 0d (best: 12d)
+```
+
+## Three.js Export
+
+Export any profile as a 3D scene graph for visualization:
+
+```bash
+gitpulse torvalds --export > scene.json
+```
+
+The output contains:
+- **Nodes** — user (center), languages (inner ring), repos (outer sphere)
+- **Connections** — user↔language, user↔repo, language↔repo weighted edges
+- **Metadata** — stars, forks, descriptions, colors matching GitHub's scheme
+
+Use this with Three.js, react-three-fiber, or any 3D framework to build interactive profile visualizations.
 
 ## Hire-ability Score
 
-The hire-ability score (0-100) is calculated from five categories:
+The score (0-100) breaks down into 5 dimensions:
 
-| Category | Max Points | What It Measures |
-|----------|-----------|-----------------|
+| Dimension | Max | What It Measures |
+|-----------|-----|-----------------|
 | Repo Quality | 25 | Stars, forks, descriptions, topics, licenses |
-| Consistency | 20 | Coding streaks, commit regularity |
-| Language Diversity | 15 | Number of languages, balance of usage |
-| README Quality | 15 | Descriptions, documentation, project substance |
-| Recent Activity | 25 | Recent pushes, repo updates, event variety |
+| Consistency | 20 | Current/longest streak, event frequency |
+| Language Diversity | 15 | Number of languages + Shannon entropy balance |
+| README Quality | 15 | Descriptions, GitHub Pages, wikis, repo substance |
+| Recent Activity | 25 | Recent pushes, updated repos, event type variety |
 
-### Grade Scale
+**Grades:** A+ (95+), A (88+), A- (82+), B+ (76+), B (70+), B- (64+), C+ (56+), C (48+), C- (40+), D (30+), F (<30)
 
-| Grade | Score Range |
-|-------|-----------|
-| A+ | 95-100 |
-| A | 88-94 |
-| A- | 82-87 |
-| B+ | 76-81 |
-| B | 70-75 |
-| B- | 64-69 |
-| C+ | 56-63 |
-| C | 48-55 |
-| C- | 40-47 |
-| D | 30-39 |
-| F | 0-29 |
+## How It Works
 
-## API & Rate Limits
+1. Fetches user profile, repositories (up to 200), and public events via GitHub REST API
+2. Computes language breakdown, commit patterns, contribution heatmap, and coding streaks
+3. Calculates a composite hire-ability score across 5 dimensions
+4. Renders everything as a rich terminal UI with colors, charts, and ASCII art
 
-GitPulse uses the GitHub REST API for public data. Without authentication:
-- **60 requests/hour** per IP
-- Sufficient for ~10 profile scans per hour
-
-With a personal access token (`--token`):
-- **5,000 requests/hour**
-- No special scopes needed — public data only
-
-## Tech Stack
-
-- **TypeScript** — type-safe codebase
-- **chalk** — terminal colors
-- **boxen** — boxed output
-- **commander** — CLI argument parsing
-- **ora** — loading spinners
-- **vitest** — testing
+No scraping. No GraphQL. Just the public REST API — works without authentication (with rate limits) or with a token for heavy use.
 
 ## Development
 
 ```bash
-git clone https://github.com/br9704/gitpulse.git
-cd gitpulse
+git clone https://github.com/br9704/gitpulse-cli.git
+cd gitpulse-cli
 npm install
 npm run build
 npm test
@@ -200,6 +248,15 @@ npm test
 node dist/index.js <username>
 ```
 
+## Contributing
+
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request
+
 ## License
 
-MIT © Bruno Jaamaa
+[MIT](LICENSE) © Bruno Jaamaa
+]]>

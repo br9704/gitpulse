@@ -54,9 +54,11 @@ export function renderScore(score: HireabilityScore): string {
     lines.push(`  ${colorFn(row)}  ${' '.repeat(4)}`);
   }
 
-  // Grade letter
-  const gradeDisplay = colorFn(chalk.bold(`  Grade: ${score.grade}`));
+  // Grade letter + total
+  const gradeDisplay = colorFn(chalk.bold(`  Grade: ${score.grade}`)) + chalk.dim(` (${score.total}/100)`);
   lines.push(`  ${gradeDisplay}`);
+  lines.push('');
+  lines.push(chalk.dim('  ' + '─'.repeat(40)));
   lines.push('');
 
   // Score breakdown with bars

@@ -26,7 +26,7 @@ export function renderHeader(): string {
 
   const subtitle = chalk.dim('  ⚡ Developer Profile Report Card ⚡');
 
-  return `\n${colored}\n${subtitle}\n`;
+  return `\n${colored}\n${subtitle}\n\n`;
 }
 
 export function renderDivider(width: number = 64): string {

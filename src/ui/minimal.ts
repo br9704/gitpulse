@@ -19,6 +19,7 @@ export function renderMinimal(profile: UserProfile): string {
     `👥 ${formatNumber(user.followers)} followers`,
   ].join(chalk.dim(' │ '));
   lines.push(stats);
+  lines.push(chalk.dim('─'.repeat(50)));
 
   // Top 5 languages inline
   const topLangs = Object.entries(languages)
