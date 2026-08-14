@@ -1,0 +1,562 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`code activity > distinguishes an empty feed from an inactive account 1`] = `
+"
+CODE ACTIVITY ────────────────────────────────────────────────
+  No public events available for this account.
+  > the public Events API returned nothing — this is not the same as no activity"
+`;
+
+exports[`code activity > renders commit patterns with a computed peak 1`] = `
+"
+COMMIT PATTERNS ──────────────────────────────────────────────
+  by day
+  Sun ▃ (14)
+  Mon ▂ (12)
+  Tue ▅ (17)
+  Wed ▁ (9)
+  Thu ▇ (22)
+  Fri █ (25)
+  Sat ▂ (11)
+
+  by hour (UTC)
+  ▅▂▄▄▅▂▁▁▁▁▁▁▁▂▂▄▅▆▅▆█▅▃▇
+  00 03 06 09 12 15 18 21 
+  peak Fridays at 20:00 UTC"
+`;
+
+exports[`code activity > renders the heatmap 1`] = `
+"
+CODE ACTIVITY ────────────────────────────────────────────────
+  last 30 days of public code events  2026-07-16 → 2026-08-14
+
+        ▒ ▒ ▒ ▒ 
+  Mon   ░ ░ ▒ ▓ 
+        ░ ▒ ▓ ▒ 
+  Wed   ▒ ░ ▒ ░ 
+      ▒ ▒ ▒ ▓ ░ 
+  Fri ▒ ▓ ▒ ▓ ░ 
+      ░ ▒ ▒ ▒   
+
+  less · ░ ▒ ▓ █ more
+  119 code events across 30 active days
+  > source: public Events API — push, pull-request and branch-creation events only
+  > the feed reaches no further back than this window; earlier activity is invisible, not absent"
+`;
+
+exports[`compare > renders a head-to-head comparison 1`] = `
+"
+COMPARISON ───────────────────────────────────────────────────
+  torvalds  vs  testuser
+
+                     torvalds  │  testuser  
+  ──────────────── ────────────┼────────────
+  repositories             12  │  1.1K      
+  stars                255.7K  │  242.8K    
+  forks                 65.0K  │  63.9K     
+  followers            316.3K  │  316.3K    
+  following                 0  │  0         
+  languages                 2  │  1         
+  score                    78  │  30        
+  current streak           30  │  0         
+  longest streak           30  │  1         
+
+  score breakdown
+  repo quality     20.4 ████████░░ │ ██████░░░░ 16
+  consistency        20 ██████████ │ ░░░░░░░░░░ 0.4
+  lang diversity    5.9 ████░░░░░░ │ █░░░░░░░░░ 1.2
+  readme quality   11.8 ████████░░ │ ██████░░░░ 9
+  recent activity  20.2 ████████░░ │ █░░░░░░░░░ 3.1
+
+  > torvalds leads, grade B+ vs D
+  > streak windows differ: torvalds 30d, testuser 5d — not directly comparable"
+`;
+
+exports[`header > renders a section title as a label plus rule 1`] = `
+"
+PROFILE ──────────────────────────────────────────────────────"
+`;
+
+exports[`header > renders the wordmark 1`] = `
+"
+██████╗ ██╗████████╗██████╗ ██╗   ██╗██╗     ███████╗███████╗
+██╔════╝ ██║╚══██╔══╝██╔══██╗██║   ██║██║     ██╔════╝██╔════╝
+██║  ███╗██║   ██║   ██████╔╝██║   ██║██║     ███████╗█████╗
+██║   ██║██║   ██║   ██╔═══╝ ██║   ██║██║     ╚════██║██╔══╝
+╚██████╔╝██║   ██║   ██║     ╚██████╔╝███████╗███████║███████╗
+ ╚═════╝ ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚══════╝╚══════╝
+  > developer profile report card
+"
+`;
+
+exports[`languages > renders the language bars 1`] = `
+"
+LANGUAGES ────────────────────────────────────────────────────
+  > share of repositories by primary language, forks excluded
+
+  C                ██████████████████████████████  88.9% (8 repos)
+  OpenSCAD         ████░░░░░░░░░░░░░░░░░░░░░░░░░░  11.1% (1 repo)
+
+  ██████████████████████████████████████████████████
+  ▌ C  ▌ OpenSCAD  "
+`;
+
+exports[`languages > summarises the tail beyond the top ten 1`] = `
+"
+LANGUAGES ────────────────────────────────────────────────────
+  > share of repositories by primary language, forks excluded
+
+  Lang00           ██████████████████████████████  13.3% (14 repos)
+  Lang01           ████████████████████████████░░  12.4% (13 repos)
+  Lang02           ██████████████████████████░░░░  11.4% (12 repos)
+  Lang03           ████████████████████████░░░░░░  10.5% (11 repos)
+  Lang04           █████████████████████░░░░░░░░░   9.5% (10 repos)
+  Lang05           ███████████████████░░░░░░░░░░░   8.6% (9 repos)
+  Lang06           █████████████████░░░░░░░░░░░░░   7.6% (8 repos)
+  Lang07           ███████████████░░░░░░░░░░░░░░░   6.7% (7 repos)
+  Lang08           █████████████░░░░░░░░░░░░░░░░░   5.7% (6 repos)
+  Lang09           ███████████░░░░░░░░░░░░░░░░░░░   4.8% (5 repos)
+  ... and 4 more (9.5%)
+
+  █████████████████████████████████
+  ▌ Lang00  ▌ Lang01  ▌ Lang02  ▌ Lang03  ▌ Lang04  ▌ Lang05  "
+`;
+
+exports[`minimal > renders an empty account without crashing 1`] = `
+"▌ Test User @testuser
+0 repos  │  0 stars  │  0 forks  │  0 followers
+score 0 (F)  │  streak 0d best 0d
+> streak measured within a 0-day event window"
+`;
+
+exports[`minimal > renders the compact one-liner form 1`] = `
+"▌ Linus Torvalds @torvalds
+12 repos  │  255.7K stars  │  65.0K forks  │  316.3K followers
+languages C, OpenSCAD
+score 78 (B+)  │  streak 30d best 30d
+> streak measured within a 30-day event window"
+`;
+
+exports[`profile and stats > keeps both columns separated with six-digit values 1`] = `
+"
+STATISTICS ───────────────────────────────────────────────────
+  ▌ repositories 1.1K (1 original)    ▌ stars earned 242.8K
+  ▌ forks earned 63.9K                ▌ followers 316.3K
+  ▌ following 0                       ▌ public gists 1"
+`;
+
+exports[`profile and stats > renders a profile with no optional metadata 1`] = `
+"
+PROFILE ──────────────────────────────────────────────────────
+  Test User @testuser
+  member 6 years  │  https://github.com/testuser"
+`;
+
+exports[`profile and stats > renders the profile block 1`] = `
+"
+PROFILE ──────────────────────────────────────────────────────
+  Linus Torvalds @torvalds
+  loc Portland, OR  │  org Linux Foundation
+  member 14 years  │  https://github.com/torvalds"
+`;
+
+exports[`profile and stats > renders the stats grid 1`] = `
+"
+STATISTICS ───────────────────────────────────────────────────
+  ▌ repositories 12 (9 original)      ▌ stars earned 255.7K
+  ▌ forks earned 65.0K                ▌ followers 316.3K
+  ▌ following 0                       ▌ public gists 1"
+`;
+
+exports[`repositories > renders the ranked repo list 1`] = `
+"
+TOP REPOSITORIES ─────────────────────────────────────────────
+  ranked by stars×3 + forks×2 + watchers
+
+   1. linux
+      Linux kernel source tree
+      C  ★ 242.8K  ⑂ 63.9K  ↻ 9 hours ago
+
+   2. AudioNoise
+      Random digital audio effects
+      C  ★ 4.5K  ⑂ 216  ↻ 3 months ago
+
+   3. GuitarPedal
+      Linus learns analog circuits
+      C  ★ 2.2K  ⑂ 102  ↻ 8 hours ago
+
+   4. uemacs
+      Random version of microemacs with my private modificato…
+      C  ★ 2.1K  ⑂ 318  ↻ 7 days ago
+
+   5. test-tlb
+      Stupid memory latency and TLB tester
+      C  ★ 1.0K  ⑂ 220  ↻ 1 year ago
+
+   6. pesconvert
+      Brother PES file converter
+      C  ★ 566  ⑂ 75  ↻ 3 years ago"
+`;
+
+exports[`score and streak > renders the score block 1`] = `
+"
+HIRE-ABILITY SCORE ───────────────────────────────────────────
+  ══╗ ╔═╗ 
+    ║ ╠═╣ 
+    ╩ ╚═╝ 
+  grade B+ 78/100
+
+  ──────────────────────────────────────────────────────────────
+
+  repo quality         ████████████░░░ 20.4/25
+  consistency          ███████████████ 20/20
+  language diversity   ██████░░░░░░░░░ 5.9/15
+  readme quality       ████████████░░░ 11.8/15
+  recent activity      ████████████░░░ 20.2/25
+  > methodology and weights: SCORING.md"
+`;
+
+exports[`score and streak > renders the streak with its measuring window 1`] = `
+"
+CODING STREAK ────────────────────────────────────────────────
+  current      30 days
+  longest      30 days
+  last active  2026-08-14
+  > measured within the 30-day event window above, not all-time"
+`;
+
+exports[`three.js export — scene contract > pins the scene shape 1`] = `
+{
+  "metadata": {
+    "generatedAt": "2026-08-14T03:01:46.000Z",
+    "generator": "gitpulse",
+    "username": "torvalds",
+    "version": "1.0.0",
+  },
+  "scene": {
+    "connections": [
+      {
+        "source": "user-torvalds",
+        "target": "lang-C",
+        "weight": 1,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "lang-OpenSCAD",
+        "weight": 0.125,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-linux",
+        "weight": 1.788941483792526,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-linux",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-AudioNoise",
+        "weight": 1.2122827994807668,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-AudioNoise",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-uemacs",
+        "weight": 1.1036860446673047,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-uemacs",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-GuitarPedal",
+        "weight": 1.1127994320976393,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-GuitarPedal",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-test_tlb",
+        "weight": 1.0025139562278509,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-test_tlb",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-pesconvert",
+        "weight": 0.9147204924942228,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-pesconvert",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-1590A",
+        "weight": 0.9159871336778389,
+      },
+      {
+        "source": "lang-OpenSCAD",
+        "target": "repo-1590A",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-HunspellColorize",
+        "weight": 0.8499845887083206,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-HunspellColorize",
+        "weight": 0.3,
+      },
+      {
+        "source": "user-torvalds",
+        "target": "repo-ScrollWheel",
+        "weight": 0.8511752653767379,
+      },
+      {
+        "source": "lang-C",
+        "target": "repo-ScrollWheel",
+        "weight": 0.3,
+      },
+    ],
+    "nodes": [
+      {
+        "color": "#ffffff",
+        "id": "user-torvalds",
+        "label": "torvalds",
+        "metadata": {
+          "followers": 316343,
+          "grade": "B+",
+          "name": "Linus Torvalds",
+          "score": 78,
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+        },
+        "size": 9.135567353696494,
+        "type": "user",
+      },
+      {
+        "color": "#555555",
+        "id": "lang-C",
+        "label": "C",
+        "metadata": {
+          "repoCount": 8,
+        },
+        "position": {
+          "x": 5,
+          "y": 0,
+          "z": 0,
+        },
+        "size": 1.267970000576925,
+        "type": "language",
+      },
+      {
+        "color": "#cccccc",
+        "id": "lang-OpenSCAD",
+        "label": "OpenSCAD",
+        "metadata": {
+          "repoCount": 1,
+        },
+        "position": {
+          "x": -5,
+          "y": 6.123233995736766e-16,
+          "z": 0,
+        },
+        "size": 0.4,
+        "type": "language",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-linux",
+        "label": "linux",
+        "metadata": {
+          "description": "Linux kernel source tree",
+          "forks": 63922,
+          "language": "C",
+          "stars": 242800,
+          "url": "https://github.com/torvalds/linux",
+        },
+        "position": {
+          "x": -6.6474670791112e-16,
+          "y": -1.028528850826843e-15,
+          "z": -10,
+        },
+        "size": 5.366824451377577,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-AudioNoise",
+        "label": "AudioNoise",
+        "metadata": {
+          "description": "Random digital audio effects",
+          "forks": 216,
+          "language": "C",
+          "stars": 4459,
+          "url": "https://github.com/torvalds/AudioNoise",
+        },
+        "position": {
+          "x": 5.440344029420785,
+          "y": 3.1478293602182097,
+          "z": -7.777777777777779,
+        },
+        "size": 3.6368483984422997,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-uemacs",
+        "label": "uemacs",
+        "metadata": {
+          "description": "Random version of microemacs with my private modificatons",
+          "forks": 318,
+          "language": "C",
+          "stars": 2100,
+          "url": "https://github.com/torvalds/uemacs",
+        },
+        "position": {
+          "x": 3.905880263855563,
+          "y": -7.340293034583798,
+          "z": -5.555555555555554,
+        },
+        "size": 3.3110581340019136,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-GuitarPedal",
+        "label": "GuitarPedal",
+        "metadata": {
+          "description": "Linus learns analog circuits",
+          "forks": 102,
+          "language": "C",
+          "stars": 2237,
+          "url": "https://github.com/torvalds/GuitarPedal",
+        },
+        "position": {
+          "x": -6.995629360625486,
+          "y": -6.32060588374592,
+          "z": -3.333333333333334,
+        },
+        "size": 3.338398296292918,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-test_tlb",
+        "label": "test-tlb",
+        "metadata": {
+          "description": "Stupid memory latency and TLB tester",
+          "forks": 220,
+          "language": "C",
+          "stars": 1041,
+          "url": "https://github.com/torvalds/test-tlb",
+        },
+        "position": {
+          "x": -8.81389933149296,
+          "y": 4.591362616160192,
+          "z": -1.1111111111111125,
+        },
+        "size": 3.007541868683552,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-pesconvert",
+        "label": "pesconvert",
+        "metadata": {
+          "description": "Brother PES file converter",
+          "forks": 75,
+          "language": "C",
+          "stars": 566,
+          "url": "https://github.com/torvalds/pesconvert",
+        },
+        "position": {
+          "x": 0.9281546727862791,
+          "y": 9.894643045716728,
+          "z": 1.1111111111111116,
+        },
+        "size": 2.744161477482668,
+        "type": "repo",
+      },
+      {
+        "color": "#cccccc",
+        "id": "repo-1590A",
+        "label": "1590A",
+        "metadata": {
+          "description": "Random odd guitar pedal design in kicad",
+          "forks": 20,
+          "language": "OpenSCAD",
+          "stars": 571,
+          "url": "https://github.com/torvalds/1590A",
+        },
+        "position": {
+          "x": 9.105684268431247,
+          "y": 2.444463722891508,
+          "z": 3.3333333333333326,
+        },
+        "size": 2.7479614010335167,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-HunspellColorize",
+        "label": "HunspellColorize",
+        "metadata": {
+          "description": "Wrapper around 'less' to colorize spelling mistakes using Hunspell",
+          "forks": 17,
+          "language": "C",
+          "stars": 361,
+          "url": "https://github.com/torvalds/HunspellColorize",
+        },
+        "position": {
+          "x": 4.044661788320042,
+          "y": -7.264744557604177,
+          "z": 5.555555555555555,
+        },
+        "size": 2.5499537661249616,
+        "type": "repo",
+      },
+      {
+        "color": "#555555",
+        "id": "repo-ScrollWheel",
+        "label": "ScrollWheel",
+        "metadata": {
+          "description": "Minimalist RP2350 magnetic sensor scroll wheel toy project",
+          "forks": 12,
+          "language": "C",
+          "stars": 364,
+          "url": "https://github.com/torvalds/ScrollWheel",
+        },
+        "position": {
+          "x": -5.596784397507662,
+          "y": -2.8604505322275697,
+          "z": 7.777777777777777,
+        },
+        "size": 2.553525796130214,
+        "type": "repo",
+      },
+    ],
+  },
+}
+`;

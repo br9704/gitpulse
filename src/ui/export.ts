@@ -112,7 +112,10 @@ export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
       generator: 'gitpulse',
       version: '1.0.0',
       username: profile.user.login,
-      generatedAt: new Date().toISOString(),
+      // Taken from the profile's own fetch time rather than the wall clock, so
+      // the same profile always exports the same scene. An export that differs
+      // byte-for-byte on every run cannot be diffed, cached, or snapshot-tested.
+      generatedAt: profile.fetchedAt,
     },
     scene: { nodes, connections },
   };

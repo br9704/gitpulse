@@ -5,8 +5,8 @@ Precedence on conflict: masterplan (sequencing) > CLAUDE.md (rules) > ENGINEERPR
 
 Status keys: `[ ]` not started · `[~]` in progress · `[x]` complete · `[⏭]` deferred (always with a reason).
 
-> **Current sprint: Sprint 4 — Test the product surface**
-> _(Sprints 0–3 closed 2026-08-14, gates passed.)_
+> **Current sprint: Sprint 5 — Repo hygiene + CI**
+> _(Sprints 0–4 closed 2026-08-14, gates passed.)_
 
 Created 2026-08-14. Never delete or rewrite content here — expand it in place.
 
@@ -304,19 +304,51 @@ label carries identity, so hue does not have to.
 33 tests cover scoring, formatting, cache. `src/api/github.ts` and every `src/ui/*` renderer — the
 actual product — have zero coverage.
 
-- [ ] Fixture-based snapshot tests for every renderer, run under `NO_COLOR` for stable output
-- [ ] `src/api/github.ts` against a mocked fetch: 200, 404, 403 primary, 403 secondary, 401,
-      pagination boundary, Events-API-flaky path
-- [ ] `src/ui/export.ts` snapshot test pinning the Three.js scene shape. **This is the export
-      contract** that aethereum `declare_contract` would have carried
-- [ ] Edge fixtures: zero repos, zero events, one language, 6-digit star counts
+- [x] Fixture-based snapshot tests for every renderer, colour pinned off for stable output
+- [x] `src/api/github.ts` against a mocked fetch: 200, 404, 403 primary, 403 secondary, 401, 429,
+      500, pagination boundary, Events-API-flaky path, auth-header presence/absence
+- [x] `src/ui/export.ts` snapshot test pinning the Three.js scene shape
+- [x] Edge fixtures: zero repos, zero events, one language, 6-digit counts
 
-**Acceptance gate**
-- [ ] Every `src/ui/*` module and `src/api/github.ts` has at least one test
-- [ ] Full suite green; snapshots committed
+**Acceptance gate — PASSED 2026-08-14**
+- [x] Every one of the nine `src/ui/*` modules and `src/api/github.ts` has at least one test,
+      verified by grepping each module's import path across `src/__tests__/`
+- [x] Full suite green: **116 tests / 6 files**, up from 33 · 18 snapshots committed
+- [x] Test run leaves the developer's real `~/.gitpulse/cache` **empty** — asserted after the fact
+- [x] build exit 0 · lint unchanged at the 3 pre-existing errors
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+### CONTRACT — Three.js scene export v1
+Pinned by snapshot in `src/__tests__/renderers.test.ts` and asserted structurally: the user node sits
+at the origin, every language produces a node connected to the user, and **no connection may
+reference a node id that does not exist**. This is the interface `github-3d-visualizer` consumes.
+
+**As-shipped delta**
+- **The Three.js export was not reproducible.** `generateThreeJSExport` stamped
+  `metadata.generatedAt` from `new Date()`, so the same profile exported different bytes on every
+  run — undiffable, uncacheable, and impossible to snapshot. It now takes the timestamp from
+  `profile.fetchedAt`. Verified: two runs a second apart now hash identically.
+- **`src/__tests__/cache.test.ts` was testing nothing.** It declared a literal object, recomputed
+  `Date.now() - cachedAt > ttl` inline, and asserted that the comparison worked. It never imported
+  `src/api/cache.ts`. Those two tests counted toward the README's "33 passing" badge and verified no
+  product code whatsoever. Replaced with 11 tests against the real module covering round-trip,
+  case-insensitivity, corrupt-file recovery, the 30-minute TTL on both sides, `clearCache` for one
+  and for all, and the 50-profile eviction cap.
+- **`src/api/cache.ts` now honours `GITPULSE_CACHE_DIR`**, resolved per call instead of baked into a
+  module-level constant. This was forced by a real incident: the first attempt at cache tests stubbed
+  `HOME`, the stub did not take effect, and the run wrote 50 fixtures into the developer's actual
+  `~/.gitpulse/cache`. The artifacts were identified by pattern and removed, and the cache is
+  30-minute TTL so nothing was lost — but a cache that cannot be redirected cannot be safely tested,
+  and that is a product defect, not a test inconvenience. Documented in the README.
+- Colour is pinned off globally in `src/__tests__/setup.ts` rather than per-test, so snapshots are
+  readable plain text and cannot pass locally while failing in CI.
+
+**Deferred**
+- `src/ui/theme.ts` and `src/utils/colors.ts` have no *direct* tests. Both are exercised through
+  every renderer snapshot, and neither contains branching logic — theme is constants plus chalk
+  wrappers, colors is a lookup table. A direct test would assert that a constant equals itself.
+- No end-to-end test drives `src/index.ts` as a subprocess. The MOTION byte-identity check does
+  exactly this but lives in the session scratchpad rather than the suite, because it needs a forced
+  TTY. Worth promoting to a CI step later; noted, not done.
 
 ---
 

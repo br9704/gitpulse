@@ -3,18 +3,31 @@ import { join } from 'path';
 import { homedir } from 'os';
 import type { UserProfile, CacheEntry } from '../types/index.js';
 
-const CACHE_DIR = join(homedir(), '.gitpulse', 'cache');
 const DEFAULT_TTL = 30 * 60 * 1000; // 30 minutes
 const MAX_CACHE_SIZE = 50; // max cached profiles
 
+/**
+ * Where cached profiles live.
+ *
+ * Resolved per call rather than once at module load, and overridable via
+ * `GITPULSE_CACHE_DIR`. Baking `homedir()` into a module-level constant meant
+ * the cache could only ever be exercised against the developer's real home
+ * directory — which is how a test run once evicted a real cache.
+ */
+function cacheDir(): string {
+  const override = process.env.GITPULSE_CACHE_DIR?.trim();
+  return override ? override : join(homedir(), '.gitpulse', 'cache');
+}
+
 function ensureCacheDir(): void {
-  if (!existsSync(CACHE_DIR)) {
-    mkdirSync(CACHE_DIR, { recursive: true });
+  const dir = cacheDir();
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
   }
 }
 
 function getCachePath(username: string): string {
-  return join(CACHE_DIR, `${username.toLowerCase()}.json`);
+  return join(cacheDir(), `${username.toLowerCase()}.json`);
 }
 
 /**
@@ -75,9 +88,10 @@ export function clearCache(username?: string): number {
       return 0;
     }
 
-    const files = readdirSync(CACHE_DIR).filter(f => f.endsWith('.json'));
+    const dir = cacheDir();
+    const files = readdirSync(dir).filter(f => f.endsWith('.json'));
     for (const file of files) {
-      unlinkSync(join(CACHE_DIR, file));
+      unlinkSync(join(dir, file));
     }
     return files.length;
   } catch {
@@ -90,12 +104,13 @@ export function clearCache(username?: string): number {
  */
 function evictOldEntries(): void {
   try {
-    const files = readdirSync(CACHE_DIR)
+    const dir = cacheDir();
+    const files = readdirSync(dir)
       .filter(f => f.endsWith('.json'))
       .map(f => ({
         name: f,
-        path: join(CACHE_DIR, f),
-        mtime: statSync(join(CACHE_DIR, f)).mtimeMs,
+        path: join(dir, f),
+        mtime: statSync(join(dir, f)).mtimeMs,
       }))
       .sort((a, b) => a.mtime - b.mtime);
 

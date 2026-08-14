@@ -130,6 +130,15 @@ gitpulse torvalds --token ghp_xxxxxxxx
 Already have the [GitHub CLI](https://cli.github.com) set up? `export GITHUB_TOKEN=$(gh auth token)`
 works too.
 
+### Environment variables
+
+| Variable | Effect |
+|---|---|
+| `GITHUB_TOKEN` / `GH_TOKEN` | Token used for API requests, if `--token` is not passed |
+| `GITPULSE_CACHE_DIR` | Override the cache location (default `~/.gitpulse/cache`) |
+| `NO_COLOR` | Disable all colour and staging |
+| `CI` | Disable staging and spinners |
+
 ## Usage
 
 ```bash
