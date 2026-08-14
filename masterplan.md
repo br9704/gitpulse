@@ -476,7 +476,10 @@ re-checked on the registry at handover and still returns **404 — free**.
       profile shipping inside your package. To switch: recapture and run `npm run demo:record`
 - [x] `git push -u origin feat/publish-readiness` — **done 2026-08-14, on Bruno's authorisation.**
       Branch is on the remote; no PR opened, nothing merged, nothing published
-- [ ] Open a PR or merge to `main` — still yours
+- [x] Merged to the default branch — **done 2026-08-14, on Bruno's authorisation.** Note the
+      default branch is **`master`**, not `main`; this plan said "main" on an unverified assumption.
+      `master` was at `ad94b70`, a direct ancestor, so it was a clean `--ff-only` fast-forward with
+      no merge commit. **CI green on master** across Node 20/22/24 (run `31801282307`)
 - [x] **CI verified green on Node 20, 22 and 24** (run `31799957044`), covering lint, typecheck,
       build, tests, the demo render, the zero-network assertion, and the no-emoji/no-ANSI assertion
 

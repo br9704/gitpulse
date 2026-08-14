@@ -96,9 +96,9 @@ The masterplan is the **single source of truth for sequencing**. This file is th
 
 > Update at every sprint close.
 
-**Current state (2026-08-14):** Sprints 0–6 of `masterplan.md` complete, all gates passed. Branch
-`feat/publish-readiness` is **pushed** (10 commits) and **CI is green on Node 20/22/24**. Not
-merged, not published — the rest of Sprint 7 is owner-gated and waiting on Bruno.
+**Current state (2026-08-14):** Sprints 0–6 of `masterplan.md` complete, all gates passed. `feat/publish-readiness` is **merged into `master`** (fast-forward, no merge commit) and pushed;
+**CI is green on `master` across Node 20/22/24**. Not published — the remainder of Sprint 7 needs
+npm credentials this machine does not have, and is waiting on Bruno.
 
 Build exit 0 · **122 tests** (was 33) · lint **0 errors, 0 warnings** (was 3/14) · **3 runtime
 dependencies** (was 5; `boxen` and `node-fetch` were declared and never imported) · `gitpulse`
