@@ -1,0 +1,163 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 846 2114" width="846" height="2114" font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="14">
+<style>
+text{opacity:0;white-space:pre;animation-duration:3.90s;animation-timing-function:linear;animation-iteration-count:infinite}
+.s1{animation-name:ks1}
+@keyframes ks1{0%{opacity:0}1%{opacity:0}1.01%{opacity:1}100%{opacity:1}}
+.s4_5{animation-name:ks4_5}
+@keyframes ks4_5{0%{opacity:0}4.5%{opacity:0}4.51%{opacity:1}100%{opacity:1}}
+.s7_5{animation-name:ks7_5}
+@keyframes ks7_5{0%{opacity:0}7.5%{opacity:0}7.51%{opacity:1}100%{opacity:1}}
+.s11_5{animation-name:ks11_5}
+@keyframes ks11_5{0%{opacity:0}11.5%{opacity:0}11.51%{opacity:1}100%{opacity:1}}
+.s18{animation-name:ks18}
+@keyframes ks18{0%{opacity:0}18%{opacity:0}18.01%{opacity:1}100%{opacity:1}}
+.s19_5{animation-name:ks19_5}
+@keyframes ks19_5{0%{opacity:0}19.5%{opacity:0}19.51%{opacity:1}100%{opacity:1}}
+.s20{animation-name:ks20}
+@keyframes ks20{0%{opacity:0}20%{opacity:0}20.01%{opacity:1}100%{opacity:1}}
+.s20_5{animation-name:ks20_5}
+@keyframes ks20_5{0%{opacity:0}20.5%{opacity:0}20.51%{opacity:1}100%{opacity:1}}
+.s21{animation-name:ks21}
+@keyframes ks21{0%{opacity:0}21%{opacity:0}21.01%{opacity:1}100%{opacity:1}}
+.s21_5{animation-name:ks21_5}
+@keyframes ks21_5{0%{opacity:0}21.5%{opacity:0}21.51%{opacity:1}100%{opacity:1}}
+.s22{animation-name:ks22}
+@keyframes ks22{0%{opacity:0}22%{opacity:0}22.01%{opacity:1}100%{opacity:1}}
+.s22_5{animation-name:ks22_5}
+@keyframes ks22_5{0%{opacity:0}22.5%{opacity:0}22.51%{opacity:1}100%{opacity:1}}
+.s23{animation-name:ks23}
+@keyframes ks23{0%{opacity:0}23%{opacity:0}23.01%{opacity:1}100%{opacity:1}}
+.s23_5{animation-name:ks23_5}
+@keyframes ks23_5{0%{opacity:0}23.5%{opacity:0}23.51%{opacity:1}100%{opacity:1}}
+.s24{animation-name:ks24}
+@keyframes ks24{0%{opacity:0}24%{opacity:0}24.01%{opacity:1}100%{opacity:1}}
+.s24_5{animation-name:ks24_5}
+@keyframes ks24_5{0%{opacity:0}24.5%{opacity:0}24.51%{opacity:1}100%{opacity:1}}
+.s25{animation-name:ks25}
+@keyframes ks25{0%{opacity:0}25%{opacity:0}25.01%{opacity:1}100%{opacity:1}}
+.s25_5{animation-name:ks25_5}
+@keyframes ks25_5{0%{opacity:0}25.5%{opacity:0}25.51%{opacity:1}100%{opacity:1}}
+.s26{animation-name:ks26}
+@keyframes ks26{0%{opacity:0}26%{opacity:0}26.01%{opacity:1}100%{opacity:1}}
+.s27_5{animation-name:ks27_5}
+@keyframes ks27_5{0%{opacity:0}27.5%{opacity:0}27.51%{opacity:1}100%{opacity:1}}
+.s28{animation-name:ks28}
+@keyframes ks28{0%{opacity:0}28%{opacity:0}28.01%{opacity:1}100%{opacity:1}}
+.s28_5{animation-name:ks28_5}
+@keyframes ks28_5{0%{opacity:0}28.5%{opacity:0}28.51%{opacity:1}100%{opacity:1}}
+.s29{animation-name:ks29}
+@keyframes ks29{0%{opacity:0}29%{opacity:0}29.01%{opacity:1}100%{opacity:1}}
+.s29_5{animation-name:ks29_5}
+@keyframes ks29_5{0%{opacity:0}29.5%{opacity:0}29.51%{opacity:1}100%{opacity:1}}
+.s30{animation-name:ks30}
+@keyframes ks30{0%{opacity:0}30%{opacity:0}30.01%{opacity:1}100%{opacity:1}}
+.s30_5{animation-name:ks30_5}
+@keyframes ks30_5{0%{opacity:0}30.5%{opacity:0}30.51%{opacity:1}100%{opacity:1}}
+.s31{animation-name:ks31}
+@keyframes ks31{0%{opacity:0}31%{opacity:0}31.01%{opacity:1}100%{opacity:1}}
+.s31_5{animation-name:ks31_5}
+@keyframes ks31_5{0%{opacity:0}31.5%{opacity:0}31.51%{opacity:1}100%{opacity:1}}
+.s32{animation-name:ks32}
+@keyframes ks32{0%{opacity:0}32%{opacity:0}32.01%{opacity:1}100%{opacity:1}}
+.s32_5{animation-name:ks32_5}
+@keyframes ks32_5{0%{opacity:0}32.5%{opacity:0}32.51%{opacity:1}100%{opacity:1}}
+.s33{animation-name:ks33}
+@keyframes ks33{0%{opacity:0}33%{opacity:0}33.01%{opacity:1}100%{opacity:1}}
+.s35_5{animation-name:ks35_5}
+@keyframes ks35_5{0%{opacity:0}35.5%{opacity:0}35.51%{opacity:1}100%{opacity:1}}
+.s44{animation-name:ks44}
+@keyframes ks44{0%{opacity:0}44%{opacity:0}44.01%{opacity:1}100%{opacity:1}}
+.s48_5{animation-name:ks48_5}
+@keyframes ks48_5{0%{opacity:0}48.5%{opacity:0}48.51%{opacity:1}100%{opacity:1}}
+@media (prefers-reduced-motion: reduce){text{opacity:1;animation:none}}
+</style>
+<rect width="100%" height="100%" fill="#050505"/>
+<text class="s1" y="54"><tspan x="20.0" fill="#ffb000">██████╗ ██╗████████╗██████╗ ██╗   ██╗██╗     ███████╗███████╗</tspan></text>
+<text class="s1" y="71"><tspan x="20.0" fill="#ffb000">██╔════╝ ██║╚══██╔══╝██╔══██╗██║   ██║██║     ██╔════╝██╔════╝</tspan></text>
+<text class="s1" y="88"><tspan x="20.0" fill="#ffb000">██║  ███╗██║   ██║   ██████╔╝██║   ██║██║     ███████╗█████╗</tspan></text>
+<text class="s1" y="105"><tspan x="20.0" fill="#ffb000">██║   ██║██║   ██║   ██╔═══╝ ██║   ██║██║     ╚════██║██╔══╝</tspan></text>
+<text class="s1" y="122"><tspan x="20.0" fill="#ffb000">╚██████╔╝██║   ██║   ██║     ╚██████╔╝███████╗███████║███████╗</tspan></text>
+<text class="s1" y="139"><tspan x="20.0" fill="#ffb000"> ╚═════╝ ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚══════╝╚══════╝</tspan></text>
+<text class="s1" y="156"><tspan x="20.0" fill="#55504a">  &gt; developer profile report card</tspan></text>
+<text class="s4_5" y="207"><tspan x="20.0" fill="#ffb000" font-weight="bold">PROFILE</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#2c2925">──────────────────────────────────────────────────────</tspan></text>
+<text class="s4_5" y="224"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#f0ece4" font-weight="bold">Linus Torvalds</tspan><tspan x="154.4" fill="#98928a"> </tspan><tspan x="162.8" fill="#55504a">@torvalds</tspan></text>
+<text class="s4_5" y="241"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">loc</tspan><tspan x="62.0" fill="#98928a"> Portland, OR</tspan><tspan x="171.2" fill="#55504a">  │  </tspan><tspan x="213.2" fill="#55504a">org</tspan><tspan x="238.4" fill="#98928a"> Linux Foundation</tspan></text>
+<text class="s4_5" y="258"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">member 14 years</tspan><tspan x="162.8" fill="#98928a">  </tspan><tspan x="179.6" fill="#55504a">│</tspan><tspan x="188.0" fill="#98928a">  </tspan><tspan x="204.8" fill="#55504a">https://github.com/torvalds</tspan></text>
+<text class="s4_5" y="309"><tspan x="20.0" fill="#ffb000" font-weight="bold">STATISTICS</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#2c2925">───────────────────────────────────────────────────</tspan></text>
+<text class="s11_5" y="326"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">▌</tspan><tspan x="45.2" fill="#98928a"> </tspan><tspan x="53.6" fill="#98928a">repositories</tspan><tspan x="154.4" fill="#98928a"> </tspan><tspan x="162.8" fill="#ffb000" font-weight="bold">12</tspan><tspan x="179.6" fill="#98928a"> </tspan><tspan x="188.0" fill="#55504a">(9 original)</tspan><tspan x="288.8" fill="#98928a">      </tspan><tspan x="339.2" fill="#ffb000">▌</tspan><tspan x="347.6" fill="#98928a"> </tspan><tspan x="356.0" fill="#98928a">stars earned</tspan><tspan x="456.8" fill="#98928a"> </tspan><tspan x="465.2" fill="#ffb000" font-weight="bold">255.7K</tspan></text>
+<text class="s11_5" y="343"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">▌</tspan><tspan x="45.2" fill="#98928a"> </tspan><tspan x="53.6" fill="#98928a">forks earned</tspan><tspan x="154.4" fill="#98928a"> </tspan><tspan x="162.8" fill="#ffb000" font-weight="bold">65.0K</tspan><tspan x="204.8" fill="#98928a">                </tspan><tspan x="339.2" fill="#ffb000">▌</tspan><tspan x="347.6" fill="#98928a"> </tspan><tspan x="356.0" fill="#98928a">followers</tspan><tspan x="431.6" fill="#98928a"> </tspan><tspan x="440.0" fill="#ffb000" font-weight="bold">316.3K</tspan></text>
+<text class="s7_5" y="360"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">▌</tspan><tspan x="45.2" fill="#98928a"> </tspan><tspan x="53.6" fill="#98928a">following</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#ffb000" font-weight="bold">0</tspan><tspan x="146.0" fill="#98928a">                       </tspan><tspan x="339.2" fill="#ffb000">▌</tspan><tspan x="347.6" fill="#98928a"> </tspan><tspan x="356.0" fill="#98928a">public gists</tspan><tspan x="456.8" fill="#98928a"> </tspan><tspan x="465.2" fill="#ffb000" font-weight="bold">1</tspan></text>
+<text class="s11_5" y="411"><tspan x="20.0" fill="#ffb000" font-weight="bold">LANGUAGES</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#2c2925">────────────────────────────────────────────────────</tspan></text>
+<text class="s11_5" y="428"><tspan x="20.0" fill="#55504a">  &gt; share of repositories by primary language, forks excluded</tspan></text>
+<text class="s18" y="462"><tspan x="20.0" fill="#98928a">  C                </tspan><tspan x="179.6" fill="#ffb000">██████████████████████████████</tspan><tspan x="431.6" fill="#98928a"> </tspan><tspan x="440.0" fill="#55504a"> 88.9%</tspan><tspan x="490.4" fill="#98928a"> </tspan><tspan x="498.8" fill="#55504a">(8 repos)</tspan></text>
+<text class="s19_5" y="479"><tspan x="20.0" fill="#98928a">  OpenSCAD         </tspan><tspan x="179.6" fill="#ffb000">████</tspan><tspan x="213.2" fill="#55504a">░░░░░░░░░░░░░░░░░░░░░░░░░░</tspan><tspan x="431.6" fill="#98928a"> </tspan><tspan x="440.0" fill="#55504a"> 11.1%</tspan><tspan x="490.4" fill="#98928a"> </tspan><tspan x="498.8" fill="#55504a">(1 repo)</tspan></text>
+<text class="s11_5" y="513"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">████████████████████████████████████████████</tspan><tspan x="406.4" fill="#d99400">██████</tspan></text>
+<text class="s11_5" y="530"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">▌</tspan><tspan x="45.2" fill="#55504a"> C  </tspan><tspan x="78.8" fill="#d99400">▌</tspan><tspan x="87.2" fill="#55504a"> OpenSCAD  </tspan></text>
+<text class="s19_5" y="581"><tspan x="20.0" fill="#ffb000" font-weight="bold">TOP REPOSITORIES</tspan><tspan x="154.4" fill="#98928a"> </tspan><tspan x="162.8" fill="#2c2925">─────────────────────────────────────────────</tspan></text>
+<text class="s20" y="598"><tspan x="20.0" fill="#55504a">  ranked by stars×3 + forks×2 + watchers</tspan></text>
+<text class="s20_5" y="632"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a"> 1.</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#f0ece4" font-weight="bold">linux</tspan></text>
+<text class="s20_5" y="649"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">Linux kernel source tree</tspan></text>
+<text class="s21" y="666"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">C</tspan><tspan x="78.8" fill="#98928a">  </tspan><tspan x="95.6" fill="#ffb000">★</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">242.8K</tspan><tspan x="162.8" fill="#98928a">  </tspan><tspan x="179.6" fill="#ffb000">⑂</tspan><tspan x="188.0" fill="#98928a"> </tspan><tspan x="196.4" fill="#55504a">63.9K</tspan><tspan x="238.4" fill="#98928a">  </tspan><tspan x="255.2" fill="#55504a">↻ 49 minutes ago</tspan></text>
+<text class="s21_5" y="700"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a"> 2.</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#f0ece4" font-weight="bold">AudioNoise</tspan></text>
+<text class="s21_5" y="717"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">Random digital audio effects</tspan></text>
+<text class="s22" y="734"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">C</tspan><tspan x="78.8" fill="#98928a">  </tspan><tspan x="95.6" fill="#ffb000">★</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">4.5K</tspan><tspan x="146.0" fill="#98928a">  </tspan><tspan x="162.8" fill="#ffb000">⑂</tspan><tspan x="171.2" fill="#98928a"> </tspan><tspan x="179.6" fill="#55504a">216</tspan><tspan x="204.8" fill="#98928a">  </tspan><tspan x="221.6" fill="#55504a">↻ 3 months ago</tspan></text>
+<text class="s22_5" y="768"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a"> 3.</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#f0ece4" font-weight="bold">GuitarPedal</tspan></text>
+<text class="s22_5" y="785"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">Linus learns analog circuits</tspan></text>
+<text class="s23" y="802"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">C</tspan><tspan x="78.8" fill="#98928a">  </tspan><tspan x="95.6" fill="#ffb000">★</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">2.2K</tspan><tspan x="146.0" fill="#98928a">  </tspan><tspan x="162.8" fill="#ffb000">⑂</tspan><tspan x="171.2" fill="#98928a"> </tspan><tspan x="179.6" fill="#55504a">102</tspan><tspan x="204.8" fill="#98928a">  </tspan><tspan x="221.6" fill="#55504a">↻ just now</tspan></text>
+<text class="s23_5" y="836"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a"> 4.</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#f0ece4" font-weight="bold">uemacs</tspan></text>
+<text class="s23_5" y="853"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">Random version of microemacs with my private modificato…</tspan></text>
+<text class="s24" y="870"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">C</tspan><tspan x="78.8" fill="#98928a">  </tspan><tspan x="95.6" fill="#ffb000">★</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">2.1K</tspan><tspan x="146.0" fill="#98928a">  </tspan><tspan x="162.8" fill="#ffb000">⑂</tspan><tspan x="171.2" fill="#98928a"> </tspan><tspan x="179.6" fill="#55504a">318</tspan><tspan x="204.8" fill="#98928a">  </tspan><tspan x="221.6" fill="#55504a">↻ 7 days ago</tspan></text>
+<text class="s24_5" y="904"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a"> 5.</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#f0ece4" font-weight="bold">test-tlb</tspan></text>
+<text class="s24_5" y="921"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">Stupid memory latency and TLB tester</tspan></text>
+<text class="s25" y="938"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">C</tspan><tspan x="78.8" fill="#98928a">  </tspan><tspan x="95.6" fill="#ffb000">★</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">1.0K</tspan><tspan x="146.0" fill="#98928a">  </tspan><tspan x="162.8" fill="#ffb000">⑂</tspan><tspan x="171.2" fill="#98928a"> </tspan><tspan x="179.6" fill="#55504a">220</tspan><tspan x="204.8" fill="#98928a">  </tspan><tspan x="221.6" fill="#55504a">↻ 1 year ago</tspan></text>
+<text class="s25" y="972"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a"> 6.</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#f0ece4" font-weight="bold">pesconvert</tspan></text>
+<text class="s25_5" y="989"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">Brother PES file converter</tspan></text>
+<text class="s25_5" y="1006"><tspan x="20.0" fill="#98928a">      </tspan><tspan x="70.4" fill="#55504a">C</tspan><tspan x="78.8" fill="#98928a">  </tspan><tspan x="95.6" fill="#ffb000">★</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">566</tspan><tspan x="137.6" fill="#98928a">  </tspan><tspan x="154.4" fill="#ffb000">⑂</tspan><tspan x="162.8" fill="#98928a"> </tspan><tspan x="171.2" fill="#55504a">75</tspan><tspan x="188.0" fill="#98928a">  </tspan><tspan x="204.8" fill="#55504a">↻ 3 years ago</tspan></text>
+<text class="s26" y="1057"><tspan x="20.0" fill="#ffb000" font-weight="bold">CODE ACTIVITY</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#2c2925">────────────────────────────────────────────────</tspan></text>
+<text class="s26" y="1074"><tspan x="20.0" fill="#55504a">  last 30 days of public code events  2026-07-16 → 2026-08-14</tspan></text>
+<text class="s27_5" y="1108"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">   </tspan><tspan x="62.0" fill="#98928a">   </tspan><tspan x="87.2" fill="#997000">▒</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#997000">▒</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#997000">▒</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#997000">▒</tspan><tspan x="146.0" fill="#98928a"> </tspan></text>
+<text class="s27_5" y="1125"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Mon</tspan><tspan x="62.0" fill="#98928a">   </tspan><tspan x="87.2" fill="#6b4d00">░</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#6b4d00">░</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#997000">▒</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#cc9100">▓</tspan><tspan x="146.0" fill="#98928a"> </tspan></text>
+<text class="s27_5" y="1142"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">   </tspan><tspan x="62.0" fill="#98928a">   </tspan><tspan x="87.2" fill="#6b4d00">░</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#997000">▒</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#cc9100">▓</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#997000">▒</tspan><tspan x="146.0" fill="#98928a"> </tspan></text>
+<text class="s27_5" y="1159"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Wed</tspan><tspan x="62.0" fill="#98928a">   </tspan><tspan x="87.2" fill="#997000">▒</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#6b4d00">░</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#997000">▒</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#6b4d00">░</tspan><tspan x="146.0" fill="#98928a"> </tspan></text>
+<text class="s27_5" y="1176"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">   </tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#997000">▒</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#997000">▒</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#997000">▒</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#cc9100">▓</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#6b4d00">░</tspan><tspan x="146.0" fill="#98928a"> </tspan></text>
+<text class="s27_5" y="1193"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Fri</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#997000">▒</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#cc9100">▓</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#997000">▒</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#cc9100">▓</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#6b4d00">░</tspan><tspan x="146.0" fill="#98928a"> </tspan></text>
+<text class="s27_5" y="1210"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">   </tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#6b4d00">░</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#997000">▒</tspan><tspan x="95.6" fill="#98928a"> </tspan><tspan x="104.0" fill="#997000">▒</tspan><tspan x="112.4" fill="#98928a"> </tspan><tspan x="120.8" fill="#997000">▒</tspan><tspan x="129.2" fill="#98928a">   </tspan></text>
+<text class="s26" y="1244"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">less</tspan><tspan x="70.4" fill="#98928a"> </tspan><tspan x="78.8" fill="#3a3733">·</tspan><tspan x="87.2" fill="#98928a"> </tspan><tspan x="95.6" fill="#6b4d00">░</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#997000">▒</tspan><tspan x="120.8" fill="#98928a"> </tspan><tspan x="129.2" fill="#cc9100">▓</tspan><tspan x="137.6" fill="#98928a"> </tspan><tspan x="146.0" fill="#ffb000">█</tspan><tspan x="154.4" fill="#98928a"> </tspan><tspan x="162.8" fill="#55504a">more</tspan></text>
+<text class="s26" y="1261"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">119 code events across 30 active days</tspan></text>
+<text class="s26" y="1278"><tspan x="20.0" fill="#55504a">  &gt; source: public Events API — push, pull-request and branch-creation events only</tspan></text>
+<text class="s26" y="1295"><tspan x="20.0" fill="#55504a">  &gt; the feed reaches no further back than this window; earlier activity is invisible, not absent</tspan></text>
+<text class="s28" y="1346"><tspan x="20.0" fill="#ffb000" font-weight="bold">COMMIT PATTERNS</tspan><tspan x="146.0" fill="#98928a"> </tspan><tspan x="154.4" fill="#2c2925">──────────────────────────────────────────────</tspan></text>
+<text class="s28" y="1363"><tspan x="20.0" fill="#55504a">  by day</tspan></text>
+<text class="s28_5" y="1380"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Sun</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">▃</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(14)</tspan></text>
+<text class="s29" y="1397"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Mon</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">▂</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(12)</tspan></text>
+<text class="s29_5" y="1414"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Tue</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">▅</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(17)</tspan></text>
+<text class="s30" y="1431"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Wed</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">▁</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(9)</tspan></text>
+<text class="s30" y="1448"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Thu</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">▇</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(22)</tspan></text>
+<text class="s30_5" y="1465"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Fri</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">█</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(25)</tspan></text>
+<text class="s31" y="1482"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">Sat</tspan><tspan x="62.0" fill="#98928a"> </tspan><tspan x="70.4" fill="#ffb000">▂</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#55504a">(11)</tspan></text>
+<text class="s31_5" y="1516"><tspan x="20.0" fill="#55504a">  by hour (UTC)</tspan></text>
+<text class="s32" y="1533"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">▅▂▄▄▅▂▁▁▁▁▁▁▁▂▂▄▅▆▅▆█▅▃▇</tspan></text>
+<text class="s32_5" y="1550"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">00 03 06 09 12 15 18 21 </tspan></text>
+<text class="s33" y="1567"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">peak</tspan><tspan x="70.4" fill="#98928a"> </tspan><tspan x="78.8" fill="#f0ece4">Fridays at 20:00 UTC</tspan></text>
+<text class="s35_5" y="1618"><tspan x="20.0" fill="#ffb000" font-weight="bold">CODING STREAK</tspan><tspan x="129.2" fill="#98928a"> </tspan><tspan x="137.6" fill="#2c2925">────────────────────────────────────────────────</tspan></text>
+<text class="s35_5" y="1635"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#98928a">current     </tspan><tspan x="137.6" fill="#98928a"> </tspan><tspan x="146.0" fill="#ffb000" font-weight="bold">30</tspan><tspan x="162.8" fill="#98928a"> </tspan><tspan x="171.2" fill="#55504a">days</tspan></text>
+<text class="s35_5" y="1652"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#98928a">longest     </tspan><tspan x="137.6" fill="#98928a"> </tspan><tspan x="146.0" fill="#ffb000" font-weight="bold">30</tspan><tspan x="162.8" fill="#98928a"> </tspan><tspan x="171.2" fill="#55504a">days</tspan></text>
+<text class="s35_5" y="1669"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#98928a">last active </tspan><tspan x="137.6" fill="#98928a"> </tspan><tspan x="146.0" fill="#55504a">2026-08-14</tspan></text>
+<text class="s35_5" y="1686"><tspan x="20.0" fill="#55504a">  &gt; measured within the 30-day event window above, not all-time</tspan></text>
+<text class="s35_5" y="1737"><tspan x="20.0" fill="#ffb000" font-weight="bold">HIRE-ABILITY SCORE</tspan><tspan x="171.2" fill="#98928a"> </tspan><tspan x="179.6" fill="#2c2925">───────────────────────────────────────────</tspan></text>
+<text class="s44" y="1754"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">══╗ ╔═╗ </tspan></text>
+<text class="s48_5" y="1771"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">  ║ ╠═╣ </tspan></text>
+<text class="s44" y="1788"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#ffb000">  ╩ ╚═╝ </tspan></text>
+<text class="s48_5" y="1805"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#98928a">grade</tspan><tspan x="78.8" fill="#98928a"> </tspan><tspan x="87.2" fill="#ffb000" font-weight="bold">B+</tspan><tspan x="104.0" fill="#98928a"> </tspan><tspan x="112.4" fill="#55504a">78/100</tspan></text>
+<text class="s35_5" y="1839"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#2c2925">──────────────────────────────────────────────────────────────</tspan></text>
+<text class="s48_5" y="1873"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">repo quality        </tspan><tspan x="204.8" fill="#98928a"> </tspan><tspan x="213.2" fill="#ffb000">████████████</tspan><tspan x="314.0" fill="#55504a">░░░</tspan><tspan x="339.2" fill="#98928a"> </tspan><tspan x="347.6" fill="#55504a">20.4/25</tspan></text>
+<text class="s48_5" y="1890"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">consistency         </tspan><tspan x="204.8" fill="#98928a"> </tspan><tspan x="213.2" fill="#ffb000">███████████████</tspan><tspan x="339.2" fill="#98928a"> </tspan><tspan x="347.6" fill="#55504a">20/20</tspan></text>
+<text class="s48_5" y="1907"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">language diversity  </tspan><tspan x="204.8" fill="#98928a"> </tspan><tspan x="213.2" fill="#ffb000">██████</tspan><tspan x="263.6" fill="#55504a">░░░░░░░░░</tspan><tspan x="339.2" fill="#98928a"> </tspan><tspan x="347.6" fill="#55504a">5.9/15</tspan></text>
+<text class="s48_5" y="1924"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">readme quality      </tspan><tspan x="204.8" fill="#98928a"> </tspan><tspan x="213.2" fill="#ffb000">████████████</tspan><tspan x="314.0" fill="#55504a">░░░</tspan><tspan x="339.2" fill="#98928a"> </tspan><tspan x="347.6" fill="#55504a">11.8/15</tspan></text>
+<text class="s48_5" y="1941"><tspan x="20.0" fill="#98928a">  </tspan><tspan x="36.8" fill="#55504a">recent activity     </tspan><tspan x="204.8" fill="#98928a"> </tspan><tspan x="213.2" fill="#ffb000">████████████</tspan><tspan x="314.0" fill="#55504a">░░░</tspan><tspan x="339.2" fill="#98928a"> </tspan><tspan x="347.6" fill="#55504a">20.2/25</tspan></text>
+<text class="s35_5" y="1958"><tspan x="20.0" fill="#55504a">  &gt; methodology and weights: SCORING.md</tspan></text>
+<text class="s48_5" y="1992"><tspan x="20.0" fill="#2c2925">────────────────────────────────────────────────────────────────</tspan></text>
+<text class="s48_5" y="2009"><tspan x="20.0" fill="#55504a">  </tspan><tspan x="36.8" fill="#f0ece4">gitpulse</tspan><tspan x="104.0" fill="#55504a"> v1.0.0  │  github.com/br9704/gitpulse</tspan></text>
+<text class="s48_5" y="2043"><tspan x="20.0" fill="#55504a">  &gt; demo — bundled fixture captured 2026-08-14, rendered as of that date. Not live data.</tspan></text>
+<text class="s48_5" y="2060"><tspan x="20.0" fill="#55504a">  &gt; run </tspan><tspan x="87.2" fill="#f0ece4">gitpulse torvalds</tspan><tspan x="230.0" fill="#55504a"> for the live profile</tspan></text>
+</svg>

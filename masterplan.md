@@ -5,8 +5,8 @@ Precedence on conflict: masterplan (sequencing) > CLAUDE.md (rules) > ENGINEERPR
 
 Status keys: `[ ]` not started · `[~]` in progress · `[x]` complete · `[⏭]` deferred (always with a reason).
 
-> **Current sprint: Sprint 6 — Docs, scoring transparency, demo asset**
-> _(Sprints 0–5 closed 2026-08-14, gates passed.)_
+> **Current sprint: Sprint 7 — Owner-gated (Bruno executes)**
+> _(Sprints 0–6 closed 2026-08-14, gates passed. All agent-executable work is done.)_
 
 Created 2026-08-14. Never delete or rewrite content here — expand it in place.
 
@@ -403,21 +403,55 @@ reference a node id that does not exist**. This is the interface `github-3d-visu
 
 ## Sprint 6 — Docs, scoring transparency, demo asset
 
-- [ ] **`SCORING.md`** (required deliverable): every input, every weight, the grade boundaries, and
-      an honest "what this does and doesn't measure" section stating the Events-API window
-      limitation up front
-- [ ] `README.md` rewrite — recorded demo at the top, token step first, honest positioning against
-      the real alternatives (`github-stats`, `git-stats`, `ghcal`, `neofetch-profile`), and a note
-      that first-run `npx` prompts before installing so it isn't mistaken for a hang
-- [ ] Terminal recording generated from `--demo`, committed to the repo as an asset
+- [x] **`SCORING.md`** — every input, every weight, the grade boundaries, a worked example, and a
+      "what this does not measure" section placed **before** the formulas
+- [x] `README.md` rewrite — recorded demo at the top, token step first, honest positioning against
+      the real alternatives, and a note that first-run `npx` prompts before installing
+- [x] Terminal recording generated from `--demo`, committed as `assets/demo.svg`
+- [x] `tools/record-demo.mjs` + `npm run demo:record` so the asset is regenerable, not hand-made
 
-**Acceptance gate**
-- [ ] Every number in README/SCORING.md backed by a committed artifact — no figure from memory
-- [ ] Demo asset renders in GitHub's markdown
-- [ ] MOTION.md demo checklist item satisfied (≤8s, recorded from `--demo`, top of README)
+**Acceptance gate — PASSED 2026-08-14**
+- [x] Every number in README/SCORING.md traced back to a command, one by one: 121 tests, 3 runtime
+      dependencies, Node >=20.0.0, `torvalds` scoring 78 (B+) with the exact five-component
+      breakdown, `last 30 days of public code events`, the stars×3+forks×2+watchers ranking, the
+      30-minute cache, the 200-repo and 300-event ceilings. **No figure restated from memory**
+- [x] All five external links in the Alternatives table return HTTP 200
+- [x] Demo asset is well-formed SVG (parsed with an XML parser), 27.8 kB, uses only the SIGNAL
+      palette, and honours `prefers-reduced-motion`
+- [x] MOTION.md demo item: recorded from `--demo`, **3.90s** loop against the ≤8s cap, at the top
+      of the README
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+**As-shipped delta**
+- **Two unused runtime dependencies removed: `boxen` and `node-fetch`.** Both were declared in
+  `dependencies` and imported nowhere in `src/`. `node-fetch` was especially redundant — the code
+  uses Node's global `fetch`. Dropping them removed **24 packages** from the install tree, leaving
+  three: chalk, commander, ora. This is exactly the "zero runtime bloat" rule the project sets, and
+  it was being violated in the file that declares it.
+- **A third wall-clock determinism bug**, same family as the export's `generatedAt`: `renderTopRepos`
+  called `timeAgo(repo.pushed_at)` against `Date.now()`, so "8 hours ago" became "9 hours ago" and
+  the snapshot broke on its own an hour after being written. Relative times now resolve against
+  `profile.fetchedAt` — the time the data was gathered, which is what those phrases actually mean.
+- The demo asset is an **animated SVG generated from a real timed capture**, not a hand-authored
+  mock-up: `tools/record-demo.mjs` spawns the CLI with a forced TTY, timestamps every stdout chunk,
+  replays the stream through an ANSI interpreter, and records when each line reaches its final
+  content. Those measured timings drive the animation. It renders inline on GitHub, needs no player,
+  and costs no dependency.
+- Chose SVG over asciinema deliberately: a `.cast` file does not render in GitHub markdown, and
+  embedding a player means either an external service or a script tag GitHub will strip.
+- **The npm badges were removed rather than left broken.** They pointed at a package that does not
+  exist and would have rendered as broken images on the repo's front page. They go back when
+  Sprint 7 publishes — a badge for a nonexistent package is a claim the artifact cannot back.
+- SCORING.md's first draft claimed the star sub-item "caps at roughly 215 stars" and gave a scaling
+  example using 100 vs 1,000 stars. Both were wrong, and checking rather than asserting produced a
+  genuinely interesting correction: **the cap is 40 stars** (forks, 10). Above 40, that sub-item
+  stops discriminating entirely — a repo with 250,000 stars scores the same as one with 40. The
+  document now states this plainly, because it materially changes how the score should be read.
+
+**Deferred**
+- The forward reference from Sprint 2 (`> methodology and weights: SCORING.md`) is now **resolved** —
+  the file exists and the renderer test asserts the pointer.
+- `assets/demo.svg` must be regenerated whenever the output changes. `npm run demo:record` does it,
+  but nothing enforces it; a CI check that the committed SVG is current would be a good follow-up.
 
 ---
 

@@ -10,8 +10,7 @@ export function formatNumber(n: number): string {
 /**
  * Format a date string to relative time (e.g., "3 months ago")
  */
-export function timeAgo(dateStr: string): string {
-  const now = Date.now();
+export function timeAgo(dateStr: string, now: number = Date.now()): string {
   const date = new Date(dateStr).getTime();
   const diff = now - date;
   

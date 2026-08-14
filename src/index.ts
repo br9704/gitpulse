@@ -238,7 +238,7 @@ async function renderFullReport(profile: UserProfile, ctx: AnimationContext): Pr
   await paint(ctx, p => renderLanguages(profile.languages, p), 320);
   process.stdout.write('\n');
 
-  await reveal(ctx, renderTopRepos(profile.repos), 8);
+  await reveal(ctx, renderTopRepos(profile.repos, Date.parse(profile.fetchedAt)), 8);
   process.stdout.write('\n');
 
   // Paints column by column, oldest week to newest — it reads as a replay.

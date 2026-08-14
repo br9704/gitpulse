@@ -98,7 +98,7 @@ describe('languages', () => {
 
 describe('repositories', () => {
   it('renders the ranked repo list', () => {
-    expect(renderTopRepos(demoProfile.repos)).toMatchSnapshot();
+    expect(renderTopRepos(demoProfile.repos, Date.parse(demoProfile.fetchedAt))).toMatchSnapshot();
   });
 
   it('reports when there are no original repositories', () => {

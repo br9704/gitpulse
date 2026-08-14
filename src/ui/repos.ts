@@ -3,7 +3,14 @@ import { formatNumber, timeAgo, truncate } from '../utils/formatting.js';
 import { renderSectionTitle } from './header.js';
 import { amber, primary, dim, GLYPH } from './theme.js';
 
-export function renderTopRepos(repos: GitHubRepo[], limit: number = 6): string {
+/**
+ * @param now Clock for relative times. Defaults to the wall clock, but callers
+ *            pass the profile's fetch time so "3 months ago" is relative to when
+ *            the data was gathered rather than to when it happens to be
+ *            re-rendered. Without this the same profile renders differently
+ *            every hour.
+ */
+export function renderTopRepos(repos: GitHubRepo[], now: number = Date.now(), limit: number = 6): string {
   const lines: string[] = [];
 
   lines.push(renderSectionTitle('Top Repositories'));
@@ -39,7 +46,7 @@ export function renderTopRepos(repos: GitHubRepo[], limit: number = 6): string {
     lines.push(
       `      ${lang}  ${amber(GLYPH.star)} ${dim(formatNumber(repo.stargazers_count))}` +
       `  ${amber(GLYPH.fork)} ${dim(formatNumber(repo.forks_count))}` +
-      `  ${dim(`${GLYPH.updated} ${timeAgo(repo.pushed_at)}`)}`
+      `  ${dim(`${GLYPH.updated} ${timeAgo(repo.pushed_at, now)}`)}`
     );
 
     if (i < sorted.length - 1) lines.push('');

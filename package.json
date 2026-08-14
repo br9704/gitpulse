@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint src/",
+    "demo:record": "npm run build && node tools/record-demo.mjs",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -36,17 +37,15 @@
     "url": "https://github.com/br9704/gitpulse/issues"
   },
   "dependencies": {
-    "boxen": "^7.1.1",
     "chalk": "^5.3.0",
     "commander": "^12.1.0",
-    "node-fetch": "^3.3.2",
     "ora": "^8.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
-    "eslint": "^8.56.0",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
     "typescript": "^5.3.3",
     "vitest": "^1.2.0"
   },
