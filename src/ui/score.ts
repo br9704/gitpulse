@@ -32,19 +32,31 @@ function renderBigNumber(num: number): string[] {
   return rows;
 }
 
-export function renderScore(score: HireabilityScore): string {
+/**
+ * @param progress 0..1. The meter fills and the number counts in sync; the grade
+ *                 letter is the punchline and only appears at the very end.
+ *                 At 1 this returns exactly the static output.
+ */
+export function renderScore(score: HireabilityScore, progress: number = 1): string {
   const lines: string[] = [];
 
   lines.push(renderSectionTitle('Hire-ability Score'));
 
+  const shownTotal = progress >= 1 ? score.total : Math.round(score.total * progress);
+
   // The grade used to be colour-coded green through red, which made the report
   // card render a value judgement about a real person in traffic-light colours.
   // One accent states the number and lets the reader draw the conclusion.
-  for (const row of renderBigNumber(score.total)) {
+  for (const row of renderBigNumber(shownTotal)) {
     lines.push(`  ${amber(row)}`);
   }
 
-  lines.push(`  ${label('grade')} ${value(score.grade)} ${dim(`${score.total}/100`)}`);
+  // MOTION.md: the grade letter is the last thing to appear, after a beat.
+  lines.push(
+    progress >= 1
+      ? `  ${label('grade')} ${value(score.grade)} ${dim(`${score.total}/100`)}`
+      : `  ${label('grade')} ${dim('—')} ${dim(`${shownTotal}/100`)}`
+  );
   lines.push('');
   lines.push('  ' + hairline(GLYPH.rule.repeat(WIDTH - 2)));
   lines.push('');
@@ -58,7 +70,8 @@ export function renderScore(score: HireabilityScore): string {
   ];
 
   for (const item of breakdown) {
-    const filled = Math.round((item.value / item.max) * 15);
+    const full = Math.round((item.value / item.max) * 15);
+    const filled = progress >= 1 ? full : Math.round(full * progress);
     const bar = amber('█'.repeat(filled)) + dim('░'.repeat(15 - filled));
     lines.push(`  ${dim(item.label.padEnd(20))} ${bar} ${dim(`${item.value}/${item.max}`)}`);
   }

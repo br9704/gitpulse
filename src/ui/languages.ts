@@ -5,7 +5,12 @@ import { amber, dim, note, seriesAt, GLYPH } from './theme.js';
 
 const BAR_WIDTH = 30;
 
-export function renderLanguages(languages: LanguageBreakdown): string {
+/**
+ * @param progress 0..1. Bars fill left-to-right in a top-to-bottom cascade, each
+ *                 starting slightly after the one above it. At 1 this returns
+ *                 exactly the static output.
+ */
+export function renderLanguages(languages: LanguageBreakdown, progress: number = 1): string {
   const lines: string[] = [];
 
   lines.push(renderSectionTitle('Languages'));
@@ -27,8 +32,19 @@ export function renderLanguages(languages: LanguageBreakdown): string {
 
   const shown = entries.slice(0, 10);
 
-  for (const [lang, count] of shown) {
-    const barLen = Math.max(1, Math.round((count / max) * BAR_WIDTH));
+  // Each bar starts 60ms after the one above it, expressed here as a fraction
+  // of the section's total duration.
+  const STAGGER = 0.18;
+  const barProgress = (row: number) => {
+    if (progress >= 1) return 1;
+    const start = row * STAGGER;
+    const span = 1 - STAGGER * Math.max(0, shown.length - 1);
+    return Math.max(0, Math.min(1, (progress - start) / Math.max(0.01, span)));
+  };
+
+  shown.forEach(([lang, count], row) => {
+    const full = Math.max(1, Math.round((count / max) * BAR_WIDTH));
+    const barLen = progress >= 1 ? full : Math.round(full * barProgress(row));
 
     // GitHub's linguist colours were decoration here — the language name is
     // already on the line. One accent, with a dim tail for the remainder.
@@ -38,7 +54,7 @@ export function renderLanguages(languages: LanguageBreakdown): string {
     const countStr = dim(`(${count} ${count === 1 ? 'repo' : 'repos'})`);
 
     lines.push(`${label} ${bar} ${pctStr} ${countStr}`);
-  }
+  });
 
   if (entries.length > 10) {
     lines.push(`  ${dim(`... and ${entries.length - 10} more (${percent(

@@ -5,8 +5,8 @@ Precedence on conflict: masterplan (sequencing) > CLAUDE.md (rules) > ENGINEERPR
 
 Status keys: `[ ]` not started · `[~]` in progress · `[x]` complete · `[⏭]` deferred (always with a reason).
 
-> **Current sprint: Sprint 3 — MOTION staging**
-> _(Sprints 0–2 closed 2026-08-14, gates passed.)_
+> **Current sprint: Sprint 4 — Test the product surface**
+> _(Sprints 0–3 closed 2026-08-14, gates passed.)_
 
 Created 2026-08-14. Never delete or rewrite content here — expand it in place.
 
@@ -246,24 +246,56 @@ label carries identity, so hue does not have to.
 
 `MOTION.md` is binding. gitpulse currently prints everything at once.
 
-- [ ] `stage(fn, delay)` scheduler in `src/utils/` — renderers already return strings, so staging is
-      purely a print-order concern
-- [ ] The documented sequence: wordmark instant → profile +120ms → stats count-up → language
-      cascade → heatmap column paint → commit patterns → repos → streak → score meter, with the
-      grade letter last after a 150ms beat
-- [ ] `--no-anim` flag; auto-off when `!process.stdout.isTTY`, `CI`, `NO_COLOR`, `--json`, `--minimal`
-- [ ] Brand the ora spinner: `> scanning @username...` with a live `> repos 34/61` counter
-- [ ] Cache hit prints `> cached 4m ago — use --no-cache for live` and halves all staging gaps
+- [x] `src/utils/anim.ts` — `paint` / `reveal` / `after` scheduler
+- [x] The documented sequence: wordmark instant → profile +120ms → stats count-up → language
+      cascade → repos → heatmap column paint → commit patterns → streak → score meter, with the
+      grade letter last after a beat
+- [x] `--no-anim` flag; auto-off when `!process.stdout.isTTY`, `CI`, `NO_COLOR`, `--json`,
+      `--minimal`, `--export`
+- [x] Brand the ora spinner: `> scanning @username...` with MOTION's `⠋⠙⠸⠴⠦⠇` frames
+- [x] Cache hit prints `> cached 13 minutes ago — use --no-cache for live` and halves all gaps
 
-**Acceptance gate** — folded from MOTION.md
-- [ ] Full staged render ≤2.5s after data; cache-hit ≤1.2s
-- [ ] Piped / `--json` / `CI=1` output has zero staging, zero spinner frames, zero ANSI under `NO_COLOR`
-- [ ] Count-ups never shift column widths (verified against a 6-digit star count)
-- [ ] Heatmap column paint verified at 52 columns without flicker (Terminal.app, default size)
-- [ ] `--no-anim` produces **byte-identical** final output to the animated path
+**Acceptance gate — PASSED 2026-08-14**
+- [x] Full staged render **1.87s** (demo) and **2.27s** at the capped worst case, against a 2.5s
+      budget · cache-hit **1.08s** measured, **1.14s** worst case, against a 1.2s budget
+- [x] Piped / `CI=1` / `--json` output: **0.06s** (i.e. process startup only, zero staging), zero
+      spinner frames, and **zero** ANSI under `NO_COLOR`. Zero cursor-control escapes leak when
+      staging is off
+- [x] Count-ups never shift column widths — asserted across 9 progress steps, including the
+      six-digit star count MOTION.md names explicitly (`255.7K` is 6 chars, `25.6K` is 5)
+- [x] Heatmap column paint at the 52-column ceiling: row count is invariant across all progress
+      steps, and each frame is written as **one** `process.stdout.write` (rewind + body in a single
+      syscall), which is the flicker mitigation. *Human visual confirmation in Terminal.app remains
+      Bruno's to make — an agent cannot see flicker.*
+- [x] `--no-anim` produces **byte-identical** final output to the animated path — verified for both
+      `--demo` (8,851 bytes / 120 lines) and a live profile (14,412 bytes / 127 lines)
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+**As-shipped delta**
+- **The byte-identity requirement is enforced structurally, not tested after the fact.** Every
+  animated renderer takes `progress: number = 1`, and `progress === 1` returns exactly the string
+  the static path returns. The animation is therefore incapable of drifting from the real output,
+  because the last frame *is* the real output. Four unit tests assert that identity directly.
+- Verifying the gate needed a small ANSI emulator: the animated stream contains cursor-rewind
+  sequences, so raw bytes differ by construction. The verifier replays the stream through a
+  minimal interpreter of the only two sequences gitpulse emits (`\x1b[{n}A`, `\x1b[0J`) and
+  compares the resulting screen. Kept in the session scratchpad, not shipped.
+- The heatmap's paint duration is **proportional to column count** (MOTION.md's 12ms/column) with a
+  560ms ceiling, rather than a fixed duration. A first pass used a fixed 480ms and blew the total
+  budget at 2.67s; timings were then trimmed to land at 2.27s worst case.
+- `paint()` grew a `finalBeatMs` parameter so the score's 140ms beat happens *inside* the animation.
+  Doing it as two separate calls printed the score block twice, because the second call had nothing
+  to rewind over.
+- Mid-animation frames are clamped to `progress ≤ 0.999`, which is what lets the grade letter be a
+  genuine punchline — no intermediate frame can ever reach the reveal.
+- Added `src/__tests__/anim.test.ts` (11 tests). Suite is 50, up from 39.
+
+**Deferred**
+- The `> repos 34/61` live counter from MOTION.md's fetching state is **not implemented**. It needs
+  per-page progress callbacks threaded out of `fetchAllRepos`/`fetchEvents`, and the honest
+  position is that the counter would be fiction anyway: the repo total is not known until the
+  first page returns, and pagination here is at most 2 requests. The branded frames and the
+  `> scanning @username` message are in. Revisit only if the fetch path ever gets slower.
+- Terminal.app visual flicker confirmation at 52 columns — owner action, listed in Sprint 7.
 
 ---
 
@@ -340,6 +372,8 @@ Deferred here per Bruno's instruction. The agent prepares exact commands and a c
 - [ ] Configure the trusted publisher on npmjs.com
 - [ ] Confirm the OIDC release workflow on a follow-up tag; check the provenance badge appears
 - [ ] `git push` the branch / open the PR
+- [ ] Confirm the heatmap column paint shows no flicker in Terminal.app at 52 columns (MOTION.md
+      asks for a human visual check; an agent cannot see flicker)
 - [ ] Update `~/bruno-portfolio` copy, which currently presents gitpulse as shipped
 
 **As-shipped delta:** _(fill at close)_

@@ -16,6 +16,8 @@ import { renderComparison } from './ui/compare.js';
 import { renderMinimal } from './ui/minimal.js';
 import { generateThreeJSExport } from './ui/export.js';
 import { amber, dim, primary, GLYPH } from './ui/theme.js';
+import { resolveAnimation, paint, reveal, after, type AnimationContext } from './utils/anim.js';
+import { timeAgo } from './utils/formatting.js';
 import type { UserProfile } from './types/index.js';
 
 const program = new Command();
@@ -46,6 +48,7 @@ program
   .option('-e, --export', 'Export Three.js-compatible scene data as JSON')
   .option('-c, --compare <username>', 'Compare with another user')
   .option('--demo', 'Render a bundled fixture profile offline — no token, no network')
+  .option('--no-anim', 'Print the report instantly, with no staging')
   .option('--no-cache', 'Bypass cache and fetch fresh data')
   .option('--clear-cache', 'Clear cached data')
   .action(async (username: string | undefined, options) => {
@@ -59,7 +62,7 @@ program
 
       // Demo mode short-circuits every network path.
       if (options.demo) {
-        renderDemo(options);
+        await renderDemo(options);
         return;
       }
 
@@ -104,7 +107,7 @@ program
       }
 
       // Full report card
-      renderFullReport(profile);
+      await renderFullReport(profile, animationFor(options, profile));
     } catch (error) {
       if (error instanceof Error) {
         // Amber, not red. SIGNAL permits one accent, and amber is the warning
@@ -123,7 +126,7 @@ program
  * The clock is pinned to the fixture's capture time, so the demo renders the way
  * it did on the day it was captured instead of decaying into an empty heatmap.
  */
-function renderDemo(options: { json?: boolean; minimal?: boolean; export?: boolean }): void {
+async function renderDemo(options: CliOptions): Promise<void> {
   const profile = buildProfile(DEMO_USER, DEMO_REPOS, DEMO_EVENTS, new Date(CAPTURED_AT).getTime());
 
   if (options.json) {
@@ -141,7 +144,7 @@ function renderDemo(options: { json?: boolean; minimal?: boolean; export?: boole
     return;
   }
 
-  renderFullReport(profile);
+  await renderFullReport(profile, animationFor(options, profile));
   console.log(
     dim(
       `  ${GLYPH.prompt} demo — bundled fixture captured ${CAPTURED_AT.split('T')[0]}, rendered as of that date. Not live data.`
@@ -151,18 +154,51 @@ function renderDemo(options: { json?: boolean; minimal?: boolean; export?: boole
   console.log('');
 }
 
-async function loadProfile(username: string, options: { token?: string; cache?: boolean }): Promise<UserProfile> {
+/** Commander shape. `--no-x` flags arrive as `x: false`, not `noX: true`. */
+interface CliOptions {
+  token?: string;
+  json?: boolean;
+  minimal?: boolean;
+  export?: boolean;
+  compare?: string;
+  demo?: boolean;
+  anim?: boolean;
+  cache?: boolean;
+}
+
+/** Tracks whether the last load came from cache, so staging can be halved. */
+let lastLoadWasCacheHit = false;
+
+function animationFor(options: CliOptions, _profile: UserProfile): AnimationContext {
+  return resolveAnimation({
+    noAnim: options.anim === false,
+    json: options.json,
+    minimal: options.minimal,
+    export: options.export,
+    cacheHit: lastLoadWasCacheHit,
+  });
+}
+
+async function loadProfile(username: string, options: CliOptions): Promise<UserProfile> {
   // Check cache first
   if (options.cache !== false) {
     const cached = getCached(username);
     if (cached) {
+      lastLoadWasCacheHit = true;
+      // A cache hit should feel fast, so this prints instantly and says so.
+      console.log(
+        dim(`${GLYPH.prompt} cached ${timeAgo(cached.fetchedAt)} — use --no-cache for live`)
+      );
       return cached;
     }
   }
 
+  lastLoadWasCacheHit = false;
+
   const spinner = ora({
-    text: dim(`scanning ${primary(`@${username}`)}...`),
-    spinner: 'dots12',
+    text: dim(`${GLYPH.prompt} scanning ${primary(`@${username}`)}...`),
+    // MOTION.md specifies these frames for the branded fetch state.
+    spinner: { interval: 80, frames: ['⠋', '⠙', '⠸', '⠴', '⠦', '⠇'] },
   }).start();
 
   try {
@@ -179,26 +215,58 @@ async function loadProfile(username: string, options: { token?: string; cache?: 
   }
 }
 
-function renderFullReport(profile: UserProfile): void {
-  console.log(renderHeader());
-  console.log(renderProfile(profile));
-  console.log('');
-  console.log(renderStats(profile));
-  console.log('');
-  console.log(renderLanguages(profile.languages));
-  console.log('');
-  console.log(renderTopRepos(profile.repos));
-  console.log('');
-  console.log(renderHeatmap(profile.contributions, profile.contributionWindow));
-  console.log('');
-  console.log(renderCommitPatterns(profile.commitPattern));
-  console.log('');
-  console.log(renderStreak(profile.streak, profile.contributionWindow));
-  console.log('');
-  console.log(renderScore(profile.score));
-  console.log('\n' + renderDivider());
-  console.log(dim(`  ${primary('gitpulse')} v${VERSION}  ${GLYPH.divider}  github.com/br9704/gitpulse`));
-  console.log('');
+/**
+ * The render sequence from MOTION.md.
+ *
+ * Total staging budget is 2.5s after data arrives, halved on a cache hit. Every
+ * timing below is the spec's; the only judgement here is how they compose.
+ *
+ * When staging is disabled every call collapses to a plain write, which is why
+ * the animated and static paths cannot diverge.
+ */
+async function renderFullReport(profile: UserProfile, ctx: AnimationContext): Promise<void> {
+  // The wordmark prints instantly and complete. Never animate the logo.
+  process.stdout.write(renderHeader() + '\n');
+
+  await after(ctx, 120, renderProfile(profile) + '\n');
+
+  // Stat values count 0 -> final, right-aligned so widths never shift.
+  await paint(ctx, p => renderStats(profile, p), 320);
+  process.stdout.write('\n');
+
+  // Bars fill left to right, each starting after the one above it.
+  await paint(ctx, p => renderLanguages(profile.languages, p), 320);
+  process.stdout.write('\n');
+
+  await reveal(ctx, renderTopRepos(profile.repos), 8);
+  process.stdout.write('\n');
+
+  // Paints column by column, oldest week to newest — it reads as a replay.
+  // MOTION.md specifies ~12ms per column, so the duration scales with the
+  // window; a capped ceiling keeps a 52-column year inside the total budget.
+  const columns = Math.ceil(profile.contributions.length / 7);
+  await paint(
+    ctx,
+    p => renderHeatmap(profile.contributions, profile.contributionWindow, p),
+    Math.min(560, columns * 12),
+    12
+  );
+  process.stdout.write('\n');
+
+  await reveal(ctx, renderCommitPatterns(profile.commitPattern), 14);
+  process.stdout.write('\n');
+
+  await after(ctx, 80, renderStreak(profile.streak, profile.contributionWindow) + '\n');
+
+  // The meter fills, then a 150ms beat, then the grade letter lands. It is the
+  // punchline of the whole report and it arrives last.
+  await paint(ctx, p => renderScore(profile.score, p), 380, 40, 140);
+
+  process.stdout.write('\n' + renderDivider() + '\n');
+  process.stdout.write(
+    dim(`  ${primary('gitpulse')} v${VERSION}  ${GLYPH.divider}  github.com/br9704/gitpulse`) + '\n'
+  );
+  process.stdout.write('\n');
 }
 
 /**

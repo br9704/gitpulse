@@ -1,5 +1,6 @@
 import type { UserProfile } from '../types/index.js';
 import { formatNumber, accountAge } from '../utils/formatting.js';
+import { countUp } from '../utils/anim.js';
 import { renderSectionTitle } from './header.js';
 import { amber, primary, dim, note, value, label, GLYPH } from './theme.js';
 
@@ -37,7 +38,12 @@ export function renderProfile(profile: UserProfile): string {
   return lines.join('\n');
 }
 
-export function renderStats(profile: UserProfile): string {
+/**
+ * @param progress 0..1 for the count-up animation. At 1 this returns exactly the
+ *                 static output — that identity is what makes `--no-anim`
+ *                 byte-identical to the animated path.
+ */
+export function renderStats(profile: UserProfile, progress: number = 1): string {
   const { user, totalStars, totalForks, repos } = profile;
   const lines: string[] = [];
 
@@ -45,15 +51,19 @@ export function renderStats(profile: UserProfile): string {
 
   const nonForks = repos.filter(r => !r.fork).length;
 
+  // Values are padded to their final width before counting up, so no column
+  // can shift as the numbers climb.
+  const n = (v: number) => countUp(v, progress, formatNumber);
+
   // Six chalk colours used to distinguish these six numbers, which encoded
   // nothing — the labels already do that. One accent now.
   const stats = [
-    { label: 'repositories', value: formatNumber(user.public_repos), detail: `${nonForks} original` },
-    { label: 'stars earned', value: formatNumber(totalStars), detail: '' },
-    { label: 'forks earned', value: formatNumber(totalForks), detail: '' },
-    { label: 'followers', value: formatNumber(user.followers), detail: '' },
-    { label: 'following', value: formatNumber(user.following), detail: '' },
-    { label: 'public gists', value: formatNumber(user.public_gists), detail: '' },
+    { label: 'repositories', value: n(user.public_repos), detail: `${nonForks} original` },
+    { label: 'stars earned', value: n(totalStars), detail: '' },
+    { label: 'forks earned', value: n(totalForks), detail: '' },
+    { label: 'followers', value: n(user.followers), detail: '' },
+    { label: 'following', value: n(user.following), detail: '' },
+    { label: 'public gists', value: n(user.public_gists), detail: '' },
   ];
 
   const render = (s: (typeof stats)[number]) => {

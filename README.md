@@ -171,6 +171,7 @@ gitpulse --clear-cache
 | `--export` | `-e` | Export Three.js scene data |
 | `--compare <user>` | `-c` | Compare with another user |
 | `--demo` | | Render a bundled fixture offline — no token, no network |
+| `--no-anim` | | Print instantly, with no staged reveal |
 | `--no-cache` | | Bypass cache and fetch fresh |
 | `--clear-cache` | | Clear cached data |
 

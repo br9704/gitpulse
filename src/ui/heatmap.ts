@@ -9,7 +9,16 @@ const HEAT_CHARS = [GLYPH.bullet, '░', '▒', '▓', '█'];
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export function renderHeatmap(contributions: ContributionDay[], window: ContributionWindow): string {
+/**
+ * @param progress 0..1. The grid paints column by column, oldest week to newest
+ *                 — it reads as replaying the period. At 1 this returns exactly
+ *                 the static output.
+ */
+export function renderHeatmap(
+  contributions: ContributionDay[],
+  window: ContributionWindow,
+  progress: number = 1,
+): string {
   const lines: string[] = [];
 
   lines.push(renderSectionTitle('Code Activity'));
@@ -39,11 +48,15 @@ export function renderHeatmap(contributions: ContributionDay[], window: Contribu
   }
   if (currentWeek.length > 0) weeks.push(currentWeek);
 
+  // Columns paint oldest to newest. Trailing columns are simply not emitted yet,
+  // so no row ever changes width mid-paint.
+  const visibleWeeks = progress >= 1 ? weeks.length : Math.round(weeks.length * progress);
+
   for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
     const label = dayOfWeek % 2 === 1 ? DAY_LABELS[dayOfWeek] : '   ';
     let row = `  ${dim(label)} `;
 
-    for (const week of weeks) {
+    for (const week of weeks.slice(0, visibleWeeks)) {
       const day = week.find(d => new Date(d.date).getUTCDay() === dayOfWeek);
       row += day ? rampAt(day.level)(HEAT_CHARS[day.level]) + ' ' : '  ';
     }
