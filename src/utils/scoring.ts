@@ -8,12 +8,13 @@ export function calculateScore(
   events: GitHubEvent[],
   languages: LanguageBreakdown,
   streak: CodingStreak,
+  now: number = Date.now(),
 ): HireabilityScore {
   const repoQuality = calcRepoQuality(repos);
-  const consistency = calcConsistency(events, streak);
+  const consistency = calcConsistency(events, streak, now);
   const languageDiversity = calcLanguageDiversity(languages);
   const readmeQuality = calcReadmeQuality(repos);
-  const recentActivity = calcRecentActivity(repos, events);
+  const recentActivity = calcRecentActivity(repos, events, now);
 
   const total = Math.round(repoQuality + consistency + languageDiversity + readmeQuality + recentActivity);
   const grade = scoreToGrade(total);
@@ -68,7 +69,7 @@ function calcRepoQuality(repos: GitHubRepo[]): number {
 /**
  * Consistency (0-20): coding streak, regular commits
  */
-function calcConsistency(events: GitHubEvent[], streak: CodingStreak): number {
+function calcConsistency(events: GitHubEvent[], streak: CodingStreak, now: number): number {
   let score = 0;
 
   // Current streak (0-8)
@@ -78,7 +79,6 @@ function calcConsistency(events: GitHubEvent[], streak: CodingStreak): number {
   score += Math.min(6, streak.longest * 0.3);
 
   // Event frequency - events in last 90 days (0-6)
-  const now = Date.now();
   const ninetyDaysAgo = now - 90 * 24 * 60 * 60 * 1000;
   const recentEvents = events.filter(e => new Date(e.created_at).getTime() > ninetyDaysAgo).length;
   score += Math.min(6, recentEvents * 0.1);
@@ -146,11 +146,10 @@ function calcReadmeQuality(repos: GitHubRepo[]): number {
 /**
  * Recent Activity (0-25): pushes, commits, updates in last 90 days
  */
-function calcRecentActivity(repos: GitHubRepo[], events: GitHubEvent[]): number {
+function calcRecentActivity(repos: GitHubRepo[], events: GitHubEvent[], now: number): number {
   let score = 0;
 
   // Recent pushes (0-10)
-  const now = Date.now();
   const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000;
   const ninetyDaysAgo = now - 90 * 24 * 60 * 60 * 1000;
 
@@ -222,9 +221,9 @@ export function analyzeCommitPattern(events: GitHubEvent[]): CommitPattern {
 /**
  * Generate contribution data from events (simplified - no GraphQL)
  */
-export function generateContributions(events: GitHubEvent[]): ContributionDay[] {
+export function generateContributions(events: GitHubEvent[], now: number = Date.now()): ContributionDay[] {
   const dayMap = new Map<string, number>();
-  
+
   for (const event of events) {
     const date = new Date(event.created_at).toISOString().split('T')[0];
     dayMap.set(date, (dayMap.get(date) || 0) + 1);
@@ -232,10 +231,9 @@ export function generateContributions(events: GitHubEvent[]): ContributionDay[] 
 
   // Fill in last 90 days
   const contributions: ContributionDay[] = [];
-  const now = new Date();
   for (let i = 89; i >= 0; i--) {
     const d = new Date(now);
-    d.setDate(d.getDate() - i);
+    d.setUTCDate(d.getUTCDate() - i);
     const dateStr = d.toISOString().split('T')[0];
     const count = dayMap.get(dateStr) || 0;
     const level = count === 0 ? 0 : count <= 2 ? 1 : count <= 5 ? 2 : count <= 10 ? 3 : 4;

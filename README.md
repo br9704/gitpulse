@@ -101,9 +101,41 @@ npm install -g gitpulse
 npx gitpulse torvalds
 ```
 
+### See it immediately, with no setup
+
+```bash
+gitpulse --demo
+```
+
+Renders a bundled snapshot of a real profile offline — no token, no network, no rate limit.
+
+### Then set a token — you will want one
+
+GitHub allows **60 unauthenticated requests per hour, per IP**, and that budget is usually
+already spent by something else on your machine. A token raises it to 5,000/hour.
+
+**No scopes are required** for public profile data — create the token with every box unchecked.
+
+```bash
+# 1. Create a token (no scopes needed):
+#    https://github.com/settings/tokens/new?description=gitpulse&scopes=
+
+# 2. Persist it — gitpulse reads GITHUB_TOKEN and GH_TOKEN automatically
+echo 'export GITHUB_TOKEN=ghp_xxxxxxxx' >> ~/.zshrc && source ~/.zshrc
+
+# 3. Or pass it per-run
+gitpulse torvalds --token ghp_xxxxxxxx
+```
+
+Already have the [GitHub CLI](https://cli.github.com) set up? `export GITHUB_TOKEN=$(gh auth token)`
+works too.
+
 ## Usage
 
 ```bash
+# See the output with zero setup (offline fixture)
+gitpulse --demo
+
 # Basic scan
 gitpulse <username>
 
@@ -138,6 +170,7 @@ gitpulse --clear-cache
 | `--minimal` | `-m` | Compact minimal output |
 | `--export` | `-e` | Export Three.js scene data |
 | `--compare <user>` | `-c` | Compare with another user |
+| `--demo` | | Render a bundled fixture offline — no token, no network |
 | `--no-cache` | | Bypass cache and fetch fresh |
 | `--clear-cache` | | Clear cached data |
 

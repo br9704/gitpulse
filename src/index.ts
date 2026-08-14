@@ -3,8 +3,9 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import ora from 'ora';
-import { fetchUserProfile } from './api/github.js';
+import { fetchUserProfile, buildProfile } from './api/github.js';
 import { getCached, setCache, clearCache } from './api/cache.js';
+import { CAPTURED_AT, DEMO_USER, DEMO_REPOS, DEMO_EVENTS } from './__fixtures__/demo-profile.js';
 import { renderHeader, renderDivider } from './ui/header.js';
 import { renderProfile, renderStats } from './ui/stats.js';
 import { renderLanguages } from './ui/languages.js';
@@ -28,6 +29,7 @@ program
   .option('-m, --minimal', 'Compact minimal output')
   .option('-e, --export', 'Export Three.js-compatible scene data as JSON')
   .option('-c, --compare <username>', 'Compare with another user')
+  .option('--demo', 'Render a bundled fixture profile offline — no token, no network')
   .option('--no-cache', 'Bypass cache and fetch fresh data')
   .option('--clear-cache', 'Clear cached data')
   .action(async (username: string | undefined, options) => {
@@ -36,6 +38,12 @@ program
       if (options.clearCache) {
         const count = clearCache(username);
         console.log(chalk.green(`✓ Cleared ${count} cached ${count === 1 ? 'profile' : 'profiles'}`));
+        return;
+      }
+
+      // Demo mode short-circuits every network path.
+      if (options.demo) {
+        renderDemo(options);
         return;
       }
 
@@ -90,6 +98,40 @@ program
       process.exit(1);
     }
   });
+
+/**
+ * Render the bundled fixture with zero network calls.
+ *
+ * The clock is pinned to the fixture's capture time, so the demo renders the way
+ * it did on the day it was captured instead of decaying into an empty heatmap.
+ */
+function renderDemo(options: { json?: boolean; minimal?: boolean; export?: boolean }): void {
+  const profile = buildProfile(DEMO_USER, DEMO_REPOS, DEMO_EVENTS, new Date(CAPTURED_AT).getTime());
+
+  if (options.json) {
+    console.log(JSON.stringify(cleanJsonOutput(profile), null, 2));
+    return;
+  }
+
+  if (options.export) {
+    console.log(JSON.stringify(generateThreeJSExport(profile), null, 2));
+    return;
+  }
+
+  if (options.minimal) {
+    console.log(renderMinimal(profile));
+    return;
+  }
+
+  renderFullReport(profile);
+  console.log(
+    chalk.dim(
+      `  demo — bundled fixture captured ${CAPTURED_AT.split('T')[0]}, rendered as of that date. Not live data.`
+    )
+  );
+  console.log(chalk.dim(`  Run ${chalk.white(`gitpulse ${DEMO_USER.login}`)} for the live profile.`));
+  console.log('');
+}
 
 async function loadProfile(username: string, options: { token?: string; cache?: boolean }): Promise<UserProfile> {
   // Check cache first
