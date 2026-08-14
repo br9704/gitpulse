@@ -67,6 +67,30 @@ export interface ContributionDay {
   level: number; // 0-4
 }
 
+/**
+ * What the activity data actually covers.
+ *
+ * gitpulse derives activity from the public Events API, which retains roughly 90
+ * days and caps at 300 events. For a busy account those 300 events can span far
+ * less than 90 days. Renderers label themselves from this descriptor rather than
+ * from a hardcoded "90", so the header can never claim a window the data does
+ * not cover.
+ */
+export interface ContributionWindow {
+  /** ISO date (YYYY-MM-DD) of the first day represented. */
+  from: string;
+  /** ISO date (YYYY-MM-DD) of the last day represented. */
+  to: string;
+  /** Inclusive number of days between `from` and `to`. */
+  spanDays: number;
+  /** Code events counted inside the window. */
+  eventCount: number;
+  /** Days inside the window with at least one code event. */
+  activeDays: number;
+  /** True when the Events API returned its maximum, so earlier activity is invisible. */
+  eventsTruncated: boolean;
+}
+
 export interface CodingStreak {
   current: number;
   longest: number;
@@ -92,6 +116,7 @@ export interface UserProfile {
   languages: LanguageBreakdown;
   commitPattern: CommitPattern;
   contributions: ContributionDay[];
+  contributionWindow: ContributionWindow;
   streak: CodingStreak;
   score: HireabilityScore;
   totalStars: number;

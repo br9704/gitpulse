@@ -1,4 +1,4 @@
-import type { GitHubRepo, GitHubEvent, LanguageBreakdown, HireabilityScore, CodingStreak, ContributionDay, CommitPattern } from '../types/index.js';
+import type { GitHubRepo, GitHubEvent, LanguageBreakdown, HireabilityScore, CodingStreak, ContributionDay, ContributionWindow, CommitPattern } from '../types/index.js';
 
 /**
  * Calculate the hire-ability score for a developer
@@ -219,28 +219,100 @@ export function analyzeCommitPattern(events: GitHubEvent[]): CommitPattern {
 }
 
 /**
- * Generate contribution data from events (simplified - no GraphQL)
+ * The GitHub public Events API returns at most 300 events. Hitting that ceiling
+ * means earlier activity exists but is invisible to us, which changes how the
+ * window may honestly be labelled.
  */
-export function generateContributions(events: GitHubEvent[], now: number = Date.now()): ContributionDay[] {
-  const dayMap = new Map<string, number>();
+const EVENTS_API_CAP = 300;
 
-  for (const event of events) {
-    const date = new Date(event.created_at).toISOString().split('T')[0];
+/** The longest span the public Events API retains, in days. */
+const EVENTS_API_RETENTION_DAYS = 90;
+
+/**
+ * Event types that represent someone actually writing code.
+ *
+ * Starring, watching, forking and commenting are all public events, but calling
+ * them "contributions" inflates the number into something the label cannot
+ * defend. Only authoring events count here.
+ */
+function isCodeEvent(event: GitHubEvent): boolean {
+  switch (event.type) {
+    case 'PushEvent':
+    case 'PullRequestEvent':
+      return true;
+    case 'CreateEvent':
+      // Branch creation is authoring; repo and tag creation are not.
+      return event.payload?.ref_type === 'branch';
+    default:
+      return false;
+  }
+}
+
+function toISODate(value: string | number): string {
+  return new Date(value).toISOString().split('T')[0];
+}
+
+/** Whole days between two ISO dates, inclusive of both ends. */
+function inclusiveDaySpan(fromISO: string, toISO: string): number {
+  const ms = new Date(`${toISO}T00:00:00Z`).getTime() - new Date(`${fromISO}T00:00:00Z`).getTime();
+  return Math.max(1, Math.round(ms / 86_400_000) + 1);
+}
+
+/**
+ * Build the daily activity series from public events, along with an honest
+ * description of what that series actually covers.
+ *
+ * The old implementation always emitted exactly 90 days and counted every event
+ * type, so a profile whose events only spanned a month still rendered under a
+ * "Last 90 days" header. The window is now derived from the data.
+ */
+export function generateContributions(
+  events: GitHubEvent[],
+  now: number = Date.now(),
+): { days: ContributionDay[]; window: ContributionWindow } {
+  const codeEvents = events.filter(isCodeEvent);
+  const today = toISODate(now);
+
+  const dayMap = new Map<string, number>();
+  for (const event of codeEvents) {
+    const date = toISODate(event.created_at);
     dayMap.set(date, (dayMap.get(date) || 0) + 1);
   }
 
-  // Fill in last 90 days
-  const contributions: ContributionDay[] = [];
-  for (let i = 89; i >= 0; i--) {
-    const d = new Date(now);
-    d.setUTCDate(d.getUTCDate() - i);
-    const dateStr = d.toISOString().split('T')[0];
+  // Our visibility ends at the oldest event the feed handed us — of ANY type,
+  // since that is what bounds the feed, not what bounds authoring.
+  //
+  // It is tempting to always render 90 days because that is GitHub's nominal
+  // retention. Doing so paints every day the feed does not reach as a day with
+  // no activity, which is a claim the data cannot support: torvalds' feed stops
+  // after 34 days, and the 56 blank days before it were pure fabrication.
+  const oldestEvent = events.length
+    ? events.map(e => toISODate(e.created_at)).sort()[0]
+    : null;
+
+  const eventsTruncated = events.length >= EVENTS_API_CAP;
+  const from = oldestEvent ?? toISODate(now - (EVENTS_API_RETENTION_DAYS - 1) * 86_400_000);
+  const spanDays = oldestEvent ? inclusiveDaySpan(from, today) : 0;
+
+  const days: ContributionDay[] = [];
+  for (let i = spanDays - 1; i >= 0; i--) {
+    const dateStr = toISODate(now - i * 86_400_000);
     const count = dayMap.get(dateStr) || 0;
     const level = count === 0 ? 0 : count <= 2 ? 1 : count <= 5 ? 2 : count <= 10 ? 3 : 4;
-    contributions.push({ date: dateStr, count, level });
+    days.push({ date: dateStr, count, level });
   }
 
-  return contributions;
+  return {
+    days,
+    window: {
+      from,
+      to: today,
+      spanDays,
+      eventCount: codeEvents.length,
+      activeDays: days.filter(d => d.count > 0).length,
+      eventsTruncated,
+    },
+  };
 }
 
 /**

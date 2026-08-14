@@ -5,8 +5,8 @@ Precedence on conflict: masterplan (sequencing) > CLAUDE.md (rules) > ENGINEERPR
 
 Status keys: `[ ]` not started · `[~]` in progress · `[x]` complete · `[⏭]` deferred (always with a reason).
 
-> **Current sprint: Sprint 1 — Truth in the data layer**
-> _(Sprint 0 closed 2026-08-14, gate passed.)_
+> **Current sprint: Sprint 2 — SIGNAL visual pass**
+> _(Sprints 0–1 closed 2026-08-14, gates passed.)_
 
 Created 2026-08-14. Never delete or rewrite content here — expand it in place.
 
@@ -112,26 +112,64 @@ unauthenticated cap and errors. Only `--token` is honoured.
 
 Every label agrees with the data under it, or it does not ship.
 
-- [ ] `src/utils/scoring.ts` — `generateContributions` counts only code events (`PushEvent`,
+- [x] `src/utils/scoring.ts` — `generateContributions` counts only code events (`PushEvent`,
       `PullRequestEvent`, `CreateEvent` for branches). Other event types stop being "contributions"
-- [ ] Derive the window from actual event coverage instead of the hardcoded 90-day loop; return the
+- [x] Derive the window from actual event coverage instead of the hardcoded 90-day loop; return the
       covered span alongside the days so renderers can label truthfully
-- [ ] `src/ui/heatmap.ts` — header derives from that span; **level-0 days render a visible dim
-      glyph** so the grid keeps its shape; add `> source: public Events API (last 300 events)`
-- [ ] `src/ui/score.ts` — streak section carries `> streak measured within the event window above`
-- [ ] `src/ui/languages.ts` — label the column **% of repos**; fix `(1 repos)` → `(1 repo)`
-- [ ] `src/index.ts` — footer URL `gitpulse-cli` → `gitpulse`; read version from package.json
-- [ ] `src/types/index.ts` — contribution window descriptor. **This is the `UserProfile` contract**
-      that aethereum `declare_contract` would have carried; recorded here instead
+- [x] `src/ui/heatmap.ts` — header derives from that span; **level-0 days render a visible dim
+      glyph** so the grid keeps its shape; add the Events API source caveat
+- [x] `src/ui/score.ts` — streak section carries `> measured within the N-day event window above`
+- [x] `src/ui/languages.ts` — label the column **% of repos**; fix `(1 repos)` → `(1 repo)`
+- [x] `src/index.ts` — footer URL `gitpulse-cli` → `gitpulse`; read version from package.json
+- [x] `src/types/index.ts` — `ContributionWindow` descriptor added to `UserProfile`
 
-**Acceptance gate**
-- [ ] Rendered against 3 real profiles (high-activity, low-activity, brand-new account) with no
-      on-screen label contradicting its own number
-- [ ] `--json` reflects the same corrected fields
-- [ ] build green · tests green
+**Acceptance gate — PASSED 2026-08-14**
+- [x] Rendered against 4 real profiles with no on-screen label contradicting its own number:
+      `torvalds` (30d window / 119 events / 30 active / 30d streak), `sindresorhus`
+      (200d / 119 / 15 / 9d), `br9704` (10d / 18 / 5 / 1d), and an account with an empty
+      event feed (explicit empty state)
+- [x] `--json` reflects the same corrected fields — `contributions.total` equals
+      `window.eventCount`, `days[].length` equals `window.spanDays`
+- [x] build exit 0 · 39/39 tests green (was 33; +6 for the new window contract)
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+### CONTRACT — `UserProfile.contributionWindow` v1
+The shape other code consumes, recorded here because aethereum `declare_contract` was skipped:
+```ts
+interface ContributionWindow {
+  from: string;            // ISO date of first day represented
+  to: string;              // ISO date of last day represented
+  spanDays: number;        // inclusive day count; 0 when the feed is empty
+  eventCount: number;      // code events counted inside the window
+  activeDays: number;      // days with >= 1 code event
+  eventsTruncated: boolean;// feed hit the 300-event cap
+}
+```
+Invariants renderers may rely on: `eventCount === sum(days[].count)`,
+`activeDays === days.filter(d => d.count > 0).length`, `days.length === spanDays`.
+
+**As-shipped delta**
+- **The gate caught a bug the plan itself contained.** My first implementation widened the window to
+  GitHub's nominal 90-day retention whenever the 300-event cap was not hit. Rendered against
+  `torvalds` that produced a 90-day grid with 60 empty days — but his feed only reaches back 30 days,
+  so those 60 days were fabricated inactivity. Exactly the class of lie this sprint exists to remove.
+  The window is now bounded by the oldest event actually returned, of any type (a star 60 days ago
+  still proves the feed reaches 60 days back, even though a star is not a contribution).
+- Two further bugs surfaced only by rendering real profiles, both fixed:
+  - `sindresorhus` collided the stats columns — `1.1K (200 original)■ Stars Earned:` — because the
+    36-char pad went negative on wide values. Minimum 2-space gutter now enforced.
+  - `Current Streak: 1 days`. Pluralised.
+- Fixed a latent timezone bug in `src/ui/heatmap.ts`: dates are UTC midnight but the week-grouping
+  read `getDay()`, which shifts the entire grid one column west of Greenwich. Now `getUTCDay()`.
+- Section renamed "Contribution Heatmap" → **"Code Activity"**. "Contributions" is GitHub's term for
+  a specific, different number (the green calendar), and reusing it for an event-feed count invited
+  exactly the comparison the data cannot survive.
+- Empty-feed accounts get an explicit empty state that distinguishes *no data* from *no activity*.
+
+**Deferred**
+- The emoji still in `renderStreak` (🔥🏆📅❄️) and the `▸`/emoji section icons are untouched here —
+  they are Sprint 2's scope.
+- `--minimal` and `--compare` still print the old streak framing without the window caveat. Sprint 2
+  touches both surfaces; the caveat lands there rather than being half-applied now.
 
 ---
 

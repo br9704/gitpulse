@@ -113,16 +113,90 @@ describe('analyzeCommitPattern', () => {
 });
 
 describe('generateContributions', () => {
-  it('generates 90 days of contribution data', () => {
-    const events = [makeEvent()];
-    const contributions = generateContributions(events);
-    expect(contributions).toHaveLength(90);
+  const NOW = new Date('2026-08-14T12:00:00Z').getTime();
+  const daysAgo = (n: number) => new Date(NOW - n * 86_400_000).toISOString();
+
+  // The window is bounded by how far the event feed actually reaches. Rendering
+  // a fixed 90 days would paint every unreachable day as a day with no activity.
+  it('bounds the window at the oldest event the feed returned', () => {
+    const events = [
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(40) }),
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(3) }),
+    ];
+    const { days, window } = generateContributions(events, NOW);
+    expect(window.spanDays).toBe(41);
+    expect(days).toHaveLength(41);
+    expect(window.from).toBe('2026-07-05');
+    expect(window.to).toBe('2026-08-14');
+  });
+
+  it('bounds the window by any event type, not just code events', () => {
+    // A star 60 days ago proves the feed reaches back 60 days, even though a
+    // star is not itself a contribution.
+    const events = [
+      makeEvent({ type: 'WatchEvent', created_at: daysAgo(60) }),
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(2) }),
+    ];
+    const { window } = generateContributions(events, NOW);
+    expect(window.spanDays).toBe(61);
+    expect(window.eventCount).toBe(1);
+  });
+
+  it('reports an empty window rather than inventing 90 blank days', () => {
+    const { days, window } = generateContributions([], NOW);
+    expect(days).toHaveLength(0);
+    expect(window.spanDays).toBe(0);
+    expect(window.eventCount).toBe(0);
   });
 
   it('assigns correct levels', () => {
-    const contributions = generateContributions([]);
-    // All zeros = level 0
-    expect(contributions.every(c => c.level === 0)).toBe(true);
+    const { days } = generateContributions([makeEvent({ created_at: daysAgo(10) })], NOW);
+    expect(days.every(c => c.level === 0 || c.level === 1)).toBe(true);
+  });
+
+  // The bug this sprint exists to kill: the header used to claim 90 days
+  // regardless of what the event feed actually covered.
+  it('narrows the window to real coverage when the event cap is hit', () => {
+    const events = Array.from({ length: 300 }, (_, i) =>
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(i % 30) })
+    );
+    const { window, days } = generateContributions(events, NOW);
+    expect(window.eventsTruncated).toBe(true);
+    expect(window.spanDays).toBe(30);
+    expect(days).toHaveLength(30);
+  });
+
+  it('counts only code-authoring events, not stars and forks', () => {
+    const events = [
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(1) }),
+      makeEvent({ type: 'PullRequestEvent', created_at: daysAgo(1) }),
+      makeEvent({ type: 'WatchEvent', created_at: daysAgo(1) }),
+      makeEvent({ type: 'ForkEvent', created_at: daysAgo(1) }),
+      makeEvent({ type: 'IssueCommentEvent', created_at: daysAgo(1) }),
+    ];
+    const { window } = generateContributions(events, NOW);
+    expect(window.eventCount).toBe(2);
+  });
+
+  it('counts branch creation but not tag or repo creation', () => {
+    const events = [
+      makeEvent({ type: 'CreateEvent', created_at: daysAgo(1), payload: { ref_type: 'branch' } }),
+      makeEvent({ type: 'CreateEvent', created_at: daysAgo(1), payload: { ref_type: 'tag' } }),
+      makeEvent({ type: 'CreateEvent', created_at: daysAgo(1), payload: { ref_type: 'repository' } }),
+    ];
+    expect(generateContributions(events, NOW).window.eventCount).toBe(1);
+  });
+
+  it('reports a window whose totals match the days it emits', () => {
+    const events = [
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(2) }),
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(2) }),
+      makeEvent({ type: 'PushEvent', created_at: daysAgo(5) }),
+    ];
+    const { days, window } = generateContributions(events, NOW);
+    expect(window.eventCount).toBe(days.reduce((s, d) => s + d.count, 0));
+    expect(window.activeDays).toBe(days.filter(d => d.count > 0).length);
+    expect(window.activeDays).toBe(2);
   });
 });
 

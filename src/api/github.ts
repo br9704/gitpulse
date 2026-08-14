@@ -166,7 +166,7 @@ export function buildProfile(
 ): UserProfile {
   const languages = calculateLanguages(repos);
   const commitPattern = analyzeCommitPattern(events);
-  const contributions = generateContributions(events, now);
+  const { days: contributions, window: contributionWindow } = generateContributions(events, now);
   const streak = detectStreak(contributions);
   const score = calculateScore(repos, events, languages, streak, now);
 
@@ -180,6 +180,7 @@ export function buildProfile(
     languages,
     commitPattern,
     contributions,
+    contributionWindow,
     streak,
     score,
     totalStars,

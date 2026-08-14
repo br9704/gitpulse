@@ -1,9 +1,11 @@
 import chalk from 'chalk';
-import type { ContributionDay, CommitPattern } from '../types/index.js';
+import type { ContributionDay, ContributionWindow, CommitPattern } from '../types/index.js';
 import { sparkline } from '../utils/formatting.js';
 import { renderSectionTitle, renderDivider } from './header.js';
 
-const HEAT_CHARS = [' ', '░', '▒', '▓', '█'];
+// Level 0 used to be a space, which made every quiet day invisible and left the
+// grid as a handful of glyphs floating in whitespace. A dim dot keeps the shape.
+const HEAT_CHARS = ['·', '░', '▒', '▓', '█'];
 const HEAT_COLORS = [
   chalk.dim,
   chalk.hex('#0e4429'),
@@ -14,12 +16,19 @@ const HEAT_COLORS = [
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export function renderHeatmap(contributions: ContributionDay[]): string {
+export function renderHeatmap(contributions: ContributionDay[], window: ContributionWindow): string {
   const lines: string[] = [];
 
-  lines.push(renderSectionTitle('Contribution Heatmap'));
+  lines.push(renderSectionTitle('Code Activity'));
   lines.push(renderDivider());
-  lines.push(chalk.dim('  Last 90 days:'));
+
+  if (window.spanDays === 0) {
+    lines.push(`  ${chalk.dim('No public events available for this account.')}`);
+    lines.push(`  ${chalk.dim('> the public Events API returned nothing — this is not the same as no activity')}`);
+    return lines.join('\n');
+  }
+
+  lines.push(chalk.dim(`  Last ${window.spanDays} days of public code events (${window.from} → ${window.to}):`));
   lines.push('');
 
   // Group by weeks (columns) and days (rows)
@@ -27,8 +36,10 @@ export function renderHeatmap(contributions: ContributionDay[]): string {
   const weeks: ContributionDay[][] = [];
   let currentWeek: ContributionDay[] = [];
 
+  // Dates are UTC midnight, so the day-of-week must be read in UTC too —
+  // getDay() would shift the whole grid by one column west of Greenwich.
   for (let i = 0; i < contributions.length; i++) {
-    const day = new Date(contributions[i].date).getDay();
+    const day = new Date(contributions[i].date).getUTCDay();
     if (day === 0 && currentWeek.length > 0) {
       weeks.push(currentWeek);
       currentWeek = [];
@@ -43,7 +54,7 @@ export function renderHeatmap(contributions: ContributionDay[]): string {
     let row = `  ${chalk.dim(label)} `;
 
     for (const week of weeks) {
-      const day = week.find(d => new Date(d.date).getDay() === dayOfWeek);
+      const day = week.find(d => new Date(d.date).getUTCDay() === dayOfWeek);
       if (day) {
         const colorFn = HEAT_COLORS[day.level];
         row += colorFn(HEAT_CHARS[day.level] || '░') + ' ';
@@ -64,10 +75,20 @@ export function renderHeatmap(contributions: ContributionDay[]): string {
   legend += chalk.dim('More');
   lines.push(legend);
 
-  // Total contributions
-  const totalContribs = contributions.reduce((s, d) => s + d.count, 0);
-  const activeDays = contributions.filter(d => d.count > 0).length;
-  lines.push(`  ${chalk.dim(`${totalContribs} contributions in ${activeDays} active days`)}`);
+  // Totals, stated in the same terms as the header above them.
+  lines.push(
+    `  ${chalk.dim(`${window.eventCount} code events across ${window.activeDays} active days`)}`
+  );
+  lines.push(
+    `  ${chalk.dim('> source: public Events API — push, pull-request and branch-creation events only')}`
+  );
+  lines.push(
+    `  ${chalk.dim(
+      window.eventsTruncated
+        ? '> the feed is capped at 300 events, so activity before this window is invisible, not absent'
+        : '> the feed reaches no further back than this window; earlier activity is invisible, not absent'
+    )}`
+  );
 
   return lines.join('\n');
 }

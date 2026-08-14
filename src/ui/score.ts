@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import type { HireabilityScore, CodingStreak } from '../types/index.js';
+import type { HireabilityScore, CodingStreak, ContributionWindow } from '../types/index.js';
 import { progressBar } from '../utils/formatting.js';
 import { renderSectionTitle, renderDivider } from './header.js';
 
@@ -80,19 +80,26 @@ export function renderScore(score: HireabilityScore): string {
   return lines.join('\n');
 }
 
-export function renderStreak(streak: CodingStreak): string {
+export function renderStreak(streak: CodingStreak, window: ContributionWindow): string {
   const lines: string[] = [];
 
   lines.push(renderSectionTitle('Coding Streak'));
   lines.push(renderDivider());
 
   const fire = streak.current > 0 ? '🔥' : '❄️';
-  lines.push(`  ${fire} Current Streak: ${chalk.bold.yellow(streak.current.toString())} days`);
-  lines.push(`  🏆 Longest Streak:  ${chalk.bold.cyan(streak.longest.toString())} days`);
-  
+  const days = (n: number) => (n === 1 ? 'day' : 'days');
+  lines.push(`  ${fire} Current Streak: ${chalk.bold.yellow(streak.current.toString())} ${days(streak.current)}`);
+  lines.push(`  🏆 Longest Streak:  ${chalk.bold.cyan(streak.longest.toString())} ${days(streak.longest)}`);
+
   if (streak.lastActive) {
     lines.push(`  📅 Last Active:     ${chalk.dim(streak.lastActive)}`);
   }
+
+  // A streak is only as long as the window it was measured in. Without this the
+  // number reads as a lifetime record when it is bounded by the event feed.
+  lines.push(
+    `  ${chalk.dim(`> measured within the ${window.spanDays}-day event window above, not all-time`)}`
+  );
 
   return lines.join('\n');
 }

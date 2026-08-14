@@ -59,9 +59,11 @@ export function renderStats(profile: UserProfile): string {
     let line = `  ${left.color('■')} ${chalk.dim(left.label + ':')} ${chalk.bold(left.value)}`;
     if (left.detail) line += ` ${chalk.dim(left.detail)}`;
     
-    // Pad to column
+    // Pad to column. Always leave at least two spaces: a wide left value
+    // (e.g. "1.1K (200 original)") would otherwise butt straight up against
+    // the right column's marker with no gap at all.
     const stripped = line.replace(/\x1b\[[0-9;]*m/g, '');
-    const pad = Math.max(0, 36 - stripped.length);
+    const pad = Math.max(2, 36 - stripped.length);
     line += ' '.repeat(pad);
 
     if (right) {

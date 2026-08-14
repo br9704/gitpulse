@@ -23,18 +23,21 @@ export function renderLanguages(languages: LanguageBreakdown): string {
   const total = entries.reduce((s, [, v]) => s + v, 0);
   const max = entries[0][1];
 
+  // These are repo counts by primary language, not bytes of code. Saying so
+  // up front stops "88.9%" from reading as a share of everything written.
+  lines.push(chalk.dim('  By share of repositories (primary language, forks excluded):'));
+
   // Show top 10
   const shown = entries.slice(0, 10);
 
   for (const [lang, count] of shown) {
-    const pct = (count / total) * 100;
     const barLen = Math.max(1, Math.round((count / max) * BAR_WIDTH));
     const color = getLanguageColor(lang);
 
     const bar = chalk.hex(color)('█'.repeat(barLen)) + chalk.dim('░'.repeat(BAR_WIDTH - barLen));
     const label = padRight(`  ${lang}`, 18);
     const pctStr = chalk.dim(percent(count, total).padStart(6));
-    const countStr = chalk.dim(`(${count} repos)`);
+    const countStr = chalk.dim(`(${count} ${count === 1 ? 'repo' : 'repos'})`);
 
     lines.push(`${label} ${bar} ${pctStr} ${countStr}`);
   }
