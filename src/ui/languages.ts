@@ -1,22 +1,19 @@
-import chalk from 'chalk';
 import type { LanguageBreakdown } from '../types/index.js';
-import { getLanguageColor } from '../utils/colors.js';
 import { percent, padRight } from '../utils/formatting.js';
-import { renderSectionTitle, renderDivider } from './header.js';
+import { renderSectionTitle } from './header.js';
+import { amber, dim, note, seriesAt, GLYPH } from './theme.js';
 
 const BAR_WIDTH = 30;
 
 export function renderLanguages(languages: LanguageBreakdown): string {
   const lines: string[] = [];
-  
-  lines.push(renderSectionTitle('Languages'));
-  lines.push(renderDivider());
 
-  const entries = Object.entries(languages)
-    .sort((a, b) => b[1] - a[1]);
+  lines.push(renderSectionTitle('Languages'));
+
+  const entries = Object.entries(languages).sort((a, b) => b[1] - a[1]);
 
   if (entries.length === 0) {
-    lines.push(`  ${chalk.dim('No language data available')}`);
+    lines.push(`  ${dim('No language data available')}`);
     return lines.join('\n');
   }
 
@@ -25,42 +22,45 @@ export function renderLanguages(languages: LanguageBreakdown): string {
 
   // These are repo counts by primary language, not bytes of code. Saying so
   // up front stops "88.9%" from reading as a share of everything written.
-  lines.push(chalk.dim('  By share of repositories (primary language, forks excluded):'));
+  lines.push(note(`  ${GLYPH.prompt} share of repositories by primary language, forks excluded`));
+  lines.push('');
 
-  // Show top 10
   const shown = entries.slice(0, 10);
 
   for (const [lang, count] of shown) {
     const barLen = Math.max(1, Math.round((count / max) * BAR_WIDTH));
-    const color = getLanguageColor(lang);
 
-    const bar = chalk.hex(color)('█'.repeat(barLen)) + chalk.dim('░'.repeat(BAR_WIDTH - barLen));
+    // GitHub's linguist colours were decoration here — the language name is
+    // already on the line. One accent, with a dim tail for the remainder.
+    const bar = amber('█'.repeat(barLen)) + dim('░'.repeat(BAR_WIDTH - barLen));
     const label = padRight(`  ${lang}`, 18);
-    const pctStr = chalk.dim(percent(count, total).padStart(6));
-    const countStr = chalk.dim(`(${count} ${count === 1 ? 'repo' : 'repos'})`);
+    const pctStr = dim(percent(count, total).padStart(6));
+    const countStr = dim(`(${count} ${count === 1 ? 'repo' : 'repos'})`);
 
     lines.push(`${label} ${bar} ${pctStr} ${countStr}`);
   }
 
   if (entries.length > 10) {
-    const otherCount = entries.slice(10).reduce((s, [, v]) => s + v, 0);
-    lines.push(`  ${chalk.dim(`... and ${entries.length - 10} more (${percent(otherCount, total)})`)}`);
+    lines.push(`  ${dim(`... and ${entries.length - 10} more (${percent(
+      entries.slice(10).reduce((s, [, v]) => s + v, 0),
+      total
+    )})`)}`);
   }
 
-  // Compact language summary bar
+  // Summary strip. Rank is encoded as amber luminance rather than as hue, so
+  // the segments stay distinguishable without introducing new colours.
   lines.push('');
+  const strip = shown.slice(0, 6);
   let summaryBar = '  ';
-  for (const [lang, count] of shown.slice(0, 6)) {
-    const width = Math.max(1, Math.round((count / total) * 50));
-    summaryBar += chalk.hex(getLanguageColor(lang))('█'.repeat(width));
-  }
+  strip.forEach(([, count], i) => {
+    summaryBar += seriesAt(i)('█'.repeat(Math.max(1, Math.round((count / total) * 50))));
+  });
   lines.push(summaryBar);
 
-  // Legend
   let legend = '  ';
-  for (const [lang] of shown.slice(0, 6)) {
-    legend += chalk.hex(getLanguageColor(lang))('●') + chalk.dim(` ${lang} `);
-  }
+  strip.forEach(([lang], i) => {
+    legend += seriesAt(i)(GLYPH.marker) + dim(` ${lang}  `);
+  });
   lines.push(legend);
 
   return lines.join('\n');

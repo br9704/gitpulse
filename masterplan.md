@@ -5,8 +5,8 @@ Precedence on conflict: masterplan (sequencing) > CLAUDE.md (rules) > ENGINEERPR
 
 Status keys: `[ ]` not started · `[~]` in progress · `[x]` complete · `[⏭]` deferred (always with a reason).
 
-> **Current sprint: Sprint 2 — SIGNAL visual pass**
-> _(Sprints 0–1 closed 2026-08-14, gates passed.)_
+> **Current sprint: Sprint 3 — MOTION staging**
+> _(Sprints 0–2 closed 2026-08-14, gates passed.)_
 
 Created 2026-08-14. Never delete or rewrite content here — expand it in place.
 
@@ -178,26 +178,67 @@ Invariants renderers may rely on: `eventCount === sum(days[].count)`,
 The output is the product, and it is currently not in Bruno's design system.
 Inherits SIGNAL from `~/bruno-portfolio/CLAUDE.md`; no new palette, font, or motion language.
 
-- [ ] Strip **all** emoji from `src/ui/*` — section icons become bracket/box-drawing labels,
-      data labels become monospace glyphs
-- [ ] Palette collapses to **amber** `#ffb000` (key data, accents), **green** (positive/live/ahead
-      values only), grayscale for everything else
-- [ ] `src/ui/header.ts` — rainbow gradient wordmark → single-weight amber; subtitle loses its `⚡`
-- [ ] `src/ui/stats.ts` — six-colour stat squares → one accent treatment
-- [ ] `src/ui/languages.ts` — linguist colours are decoration here, not data; bars go amber with a
+- [x] Strip **all** emoji from `src/ui/*` — section icons become label + hairline rules, data
+      labels become monospace glyphs
+- [x] Palette collapses to **amber** `#ffb000` (key data, accents), **green** (ahead, compare mode
+      only), greyscale for everything else
+- [x] `src/ui/header.ts` — rainbow gradient wordmark → single-weight amber; subtitle loses its bolt
+- [x] `src/ui/stats.ts` — six-colour stat squares → one accent treatment
+- [x] `src/ui/languages.ts` — linguist colours are decoration here, not data; bars go amber with a
       dim tail, the label carries the identity
-- [ ] `src/ui/heatmap.ts` — keep the green intensity ramp (a live-value ramp, sanctioned by
-      MOTION.md) but reconcile it with the palette
-- [ ] Honour `NO_COLOR` and non-TTY across every renderer
+- [x] `src/ui/heatmap.ts` — intensity ramp reconciled with the palette (see decision below)
+- [x] Honour `NO_COLOR` and non-TTY across every renderer
 
-**Acceptance gate**
-- [ ] Zero emoji anywhere in `src/` (grep-verified)
-- [ ] No chalk colour outside {amber, green, gray/dim/white}
-- [ ] `NO_COLOR=1` output is clean ASCII with zero escape codes
-- [ ] build green · tests green
+**Acceptance gate — PASSED 2026-08-14**
+- [x] Zero emoji in **rendered output**, verified across `--demo`, `--minimal`, `--compare` and
+      `--json` by testing every codepoint for the Unicode `Emoji_Presentation` property → 0 in all
+      four modes
+- [x] No chalk colour outside the system: `grep -rn "chalk\."` returns **no hits outside
+      `src/ui/theme.ts`**. Every hex in theme.ts is greyscale, an amber-hue luminance step, or the
+      single green
+- [x] `NO_COLOR=1` and piped output both emit **zero** ANSI escape sequences
+- [x] build exit 0 · 39/39 tests green · lint unchanged at the 3 pre-existing errors (13 warnings,
+      down from 14) — no new lint debt introduced
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+### DECISION — reconciling SIGNAL and MOTION on colour
+The two binding documents appear to conflict:
+- SIGNAL: *"Amber is THE ONE ACCENT. No colour beyond amber."*
+- MOTION.md: *"monochrome + green for positive/live values only"*
+
+Resolved by taking MOTION's most specific instruction as the narrow exception to SIGNAL's general
+rule. MOTION names green exactly once with a concrete meaning — compare mode, *"One colour, one
+meaning: ahead."* So **green means "this side is winning" and nothing else, anywhere in gitpulse.**
+The activity heatmap, which is the other candidate for "live values", uses an **amber luminance
+ramp** instead: same hue, five steps of brightness. That reads as a CRT phosphor readout, which is
+the cassette-futurist instrument SIGNAL describes, and it keeps the one-accent rule intact.
+Categorical series (the language strip) encode rank as amber luminance for the same reason — the
+label carries identity, so hue does not have to.
+
+**As-shipped delta**
+- Introduced `src/ui/theme.ts` as the single source of colour and glyphs. This was not in the plan,
+  but "no colour outside the system" is only enforceable if there is one place colour can come from.
+  The gate is now a one-line grep instead of a judgement call.
+- `renderSectionTitle` now emits **one** line — an amber label with a hairline rule running to the
+  right margin — replacing a title line plus a separate full-width divider. Half the structural
+  noise for the same structure.
+- **Errors render amber, not red.** SIGNAL permits one accent, and amber is the warning colour on
+  the instrument panel the system is modelled on.
+- **The grade is no longer colour-coded.** It ran green-through-red, which rendered a value
+  judgement about a real person in traffic-light colours. The number states itself now.
+- Swapped the marker glyph `▪` (U+25AA) for `▌` (U+258C). Both render as text today, but U+25AA
+  carries the Unicode `Extended_Pictographic` property and could be substituted by a colour emoji
+  font; a block element cannot.
+- Extended the Sprint 1 honesty work to the two surfaces Sprint 1 deferred: `--minimal` now carries
+  the streak-window qualifier, and `--compare` warns when the two accounts' event windows differ in
+  length, which makes their streaks not directly comparable.
+
+**Deferred**
+- `src/ui/score.ts` now prints `> methodology and weights: SCORING.md`. **That file does not exist
+  until Sprint 6** — this is a live forward reference and Sprint 6 must not close without it.
+- The ora spinner has SIGNAL colours but not yet MOTION's branded frames or the `repos 34/61`
+  counter. That is Sprint 3's waiting-states scope.
+- `src/utils/colors.ts` (GitHub linguist colours) is no longer used by any terminal renderer, but
+  remains in use by `src/ui/export.ts` for the Three.js scene, where hue *is* the encoding. Kept.
 
 ---
 

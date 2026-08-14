@@ -1,54 +1,42 @@
-import chalk from 'chalk';
+import { amber, dim, hairline, note, GLYPH, WIDTH } from './theme.js';
 
 const LOGO = `
  ██████╗ ██╗████████╗██████╗ ██╗   ██╗██╗     ███████╗███████╗
 ██╔════╝ ██║╚══██╔══╝██╔══██╗██║   ██║██║     ██╔════╝██╔════╝
-██║  ███╗██║   ██║   ██████╔╝██║   ██║██║     ███████╗█████╗  
-██║   ██║██║   ██║   ██╔═══╝ ██║   ██║██║     ╚════██║██╔══╝  
+██║  ███╗██║   ██║   ██████╔╝██║   ██║██║     ███████╗█████╗
+██║   ██║██║   ██║   ██╔═══╝ ██║   ██║██║     ╚════██║██╔══╝
 ╚██████╔╝██║   ██║   ██║     ╚██████╔╝███████╗███████║███████╗
  ╚═════╝ ╚═╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝╚══════╝╚══════╝`;
 
 export function renderHeader(): string {
-  const gradient = [
-    chalk.hex('#FF6B6B'),
-    chalk.hex('#FF8E53'),
-    chalk.hex('#FED330'),
-    chalk.hex('#45B7D1'),
-    chalk.hex('#4ECDC4'),
-    chalk.hex('#96E6A1'),
-  ];
+  // The wordmark prints in one weight. It used to cycle six hues down its six
+  // rows, which is the single loudest thing on screen in a system whose whole
+  // premise is restraint.
+  const wordmark = amber(LOGO.trim());
+  const subtitle = note(`  ${GLYPH.prompt} developer profile report card`);
 
-  const lines = LOGO.trim().split('\n');
-  const colored = lines.map((line, i) => {
-    const colorFn = gradient[i % gradient.length];
-    return colorFn(line);
-  }).join('\n');
-
-  const subtitle = chalk.dim('  ⚡ Developer Profile Report Card ⚡');
-
-  return `\n${colored}\n${subtitle}\n\n`;
+  return `\n${wordmark}\n${subtitle}\n`;
 }
 
-export function renderDivider(width: number = 64): string {
-  return chalk.dim('─'.repeat(width));
+export function renderDivider(width: number = WIDTH): string {
+  return hairline(GLYPH.rule.repeat(width));
 }
 
+/**
+ * A section header, in the instrument voice: an amber label with a hairline rule
+ * running to the right margin.
+ *
+ * This replaces a title line plus a separate full-width divider, and the emoji
+ * icon that used to prefix it. One line now does the work of two and carries no
+ * decoration.
+ */
 export function renderSectionTitle(title: string): string {
-  const icon = getSectionIcon(title);
-  return '\n' + chalk.bold.cyan(`${icon} ${title}`);
+  const text = title.toUpperCase();
+  const ruleLength = Math.max(0, WIDTH - text.length - 3);
+  return '\n' + amber.bold(text) + ' ' + hairline(GLYPH.rule.repeat(ruleLength));
 }
 
-function getSectionIcon(title: string): string {
-  const icons: Record<string, string> = {
-    'Profile': '👤',
-    'Statistics': '📊',
-    'Languages': '💻',
-    'Top Repositories': '⭐',
-    'Contribution Heatmap': '🔥',
-    'Commit Patterns': '⏰',
-    'Coding Streak': '🔥',
-    'Hire-ability Score': '🎯',
-    'Comparison': '⚖️',
-  };
-  return icons[title] || '▸';
+/** A provenance or caveat line, always prefixed so it reads as machine speech. */
+export function renderNote(text: string): string {
+  return dim(`  ${GLYPH.prompt} ${text}`);
 }
