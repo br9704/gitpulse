@@ -460,19 +460,87 @@ reference a node id that does not exist**. This is the interface `github-3d-visu
 Deferred here per Bruno's instruction. The agent prepares exact commands and a checklist and
 **runs none of it**. Nothing in Sprints 0–6 touches npm, the git remote, or the portfolio repo.
 
-- [ ] Enrol FIDO/passkey 2FA on the npm account
-- [ ] Re-verify `gitpulse` is still free
-- [ ] Bootstrap-publish with a granular access token — **required**, because trusted publishing
-      cannot be configured for a package that does not yet exist on the registry
-- [ ] Configure the trusted publisher on npmjs.com
-- [ ] Confirm the OIDC release workflow on a follow-up tag; check the provenance badge appears
-- [ ] `git push` the branch / open the PR
-- [ ] Confirm the heatmap column paint shows no flicker in Terminal.app at 52 columns (MOTION.md
-      asks for a human visual check; an agent cannot see flicker)
-- [ ] Update `~/bruno-portfolio` copy, which currently presents gitpulse as shipped
+**State at handover:** all work in Sprints 0–6 is committed on the branch `feat/publish-readiness`,
+7 commits ahead of `ad94b70`. Nothing has been pushed. Nothing has touched npm. `gitpulse` was
+re-checked on the registry at handover and still returns **404 — free**.
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+### 7.1 Review and push
+
+- [ ] Read the diff. `git log --oneline ad94b70..HEAD` and `git diff ad94b70..HEAD`
+- [ ] **Look at the output**, since that is the product: `npm run build && node dist/index.js --demo`
+- [ ] Confirm the heatmap column paint shows no flicker in Terminal.app at default size. MOTION.md
+      asks for a human visual check and an agent cannot see flicker. Use a wide window:
+      `node dist/index.js sindresorhus --no-cache`
+- [ ] Decide whether the bundled demo fixture should stay `torvalds` or become `br9704`.
+      `torvalds` is public data and the README's existing example, but it is another person's
+      profile shipping inside your package. To switch: recapture and run `npm run demo:record`
+- [ ] `git push -u origin feat/publish-readiness`, then open a PR or merge to `main`
+- [ ] Watch CI go green on Node 20/22/24 before publishing anything
+
+### 7.2 npm account (do this before the first publish)
+
+- [ ] Enrol a **FIDO/passkey** authenticator on the npm account. TOTP is being phased out, and
+      publishing now effectively requires either OIDC or 2FA-enforced local publish
+- [ ] Re-verify the name has not been taken in the meantime:
+      `curl -s -o /dev/null -w "%{http_code}\n" https://registry.npmjs.org/gitpulse` → expect `404`
+
+### 7.3 Bootstrap publish — the one manual publish
+
+**Why this cannot be automated:** npm will not let you configure a Trusted Publisher for a package
+that does not exist yet. The OIDC workflow in `.github/workflows/release.yml` is correct and ready,
+but it cannot succeed until `gitpulse@1.0.0` is on the registry. This is a genuine chicken-and-egg
+in npm's design, not a gap in the setup.
+
+- [ ] Create a **granular access token** on npmjs.com with write access limited to this package.
+      Note: new write-enabled granular tokens default to a 7-day expiry, 90 days maximum
+- [ ] From a clean checkout of the merged branch:
+
+```bash
+npm ci
+npm run lint && npm run typecheck && npm run build && npm test
+npm pack --dry-run          # confirm dist/ ships and dist/__tests__ does not
+npm publish --access public --provenance
+```
+
+- [ ] Verify: `npm view gitpulse` and `npx gitpulse@latest --demo` from a machine that has never
+      run it
+
+### 7.4 Switch to trusted publishing for every release after the first
+
+- [ ] On npmjs.com → the `gitpulse` package → Settings → **Trusted Publisher**. Select GitHub
+      Actions and enter: organisation `br9704`, repository `gitpulse`, workflow file
+      `release.yml`. Allow the `npm publish` action
+- [ ] **Revoke the granular token** — it exists only to solve the bootstrap problem and should not
+      outlive it
+- [ ] Prove the automated path works end to end:
+
+```bash
+npm version patch          # 1.0.0 -> 1.0.1, creates the tag
+git push --follow-tags     # release.yml fires on the v* tag
+```
+
+- [ ] Confirm the **provenance badge** appears on npmjs.com. It generates automatically under
+      trusted publishing for public repos — no `--provenance` flag needed in the workflow
+
+### 7.5 After it is public
+
+- [ ] Restore the npm badges to the README. They were removed deliberately in Sprint 6 because a
+      badge pointing at a nonexistent package renders broken and claims something untrue:
+
+```markdown
+[![npm](https://img.shields.io/npm/v/gitpulse?style=flat-square)](https://www.npmjs.com/package/gitpulse)
+[![license](https://img.shields.io/npm/l/gitpulse?style=flat-square)](LICENSE)
+```
+
+- [ ] Update `~/bruno-portfolio` copy. It currently presents gitpulse as a shipped CLI; once this
+      lands that becomes true, and the case study can link to a package strangers can actually run.
+      See `~/bruno-portfolio/COPY-AUDIT-ENGINEERPROMPT.md`
+- [ ] Consider whether the aethereum room should be created for this project after all — the
+      session skipped it at your direction and the artifacts it would have carried are recorded in
+      this file instead (see Recorded deviation)
+
+**As-shipped delta:** _(fill at close — Bruno)_
+**Deferred:** _(fill at close — Bruno)_
 
 ---
 

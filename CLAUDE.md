@@ -96,7 +96,30 @@ The masterplan is the **single source of truth for sequencing**. This file is th
 
 > Update at every sprint close.
 
-**Current state:** Code complete and untouched since 2026-03-13. Not published. No masterplan yet — create one in Phase 3 of `ENGINEERPROMPT.md`. First-run token UX is the blocking fix.
+**Current state (2026-08-14):** Sprints 0–6 of `masterplan.md` complete, all gates passed, on the
+branch `feat/publish-readiness` (7 commits, **unpushed**). Still not published — Sprint 7 is
+owner-gated and waiting on Bruno.
+
+Build exit 0 · **121 tests** (was 33) · lint **0 errors, 0 warnings** (was 3/14) · **3 runtime
+dependencies** (was 5; `boxen` and `node-fetch` were declared and never imported) · `gitpulse`
+re-verified free on npm.
+
+Shipped this session: `--demo` renders offline with zero network calls and `GITHUB_TOKEN`/`GH_TOKEN`
+are honoured, so the documented first run works; every rendered number now agrees with its label
+(the activity window is derived from real event coverage instead of a hardcoded 90 days); the output
+was rebuilt in SIGNAL — zero emoji, amber-on-warm-black, all colour through `src/ui/theme.ts`; the
+MOTION render sequence is implemented with `--no-anim` byte-identical to the staged path; the
+renderers and network layer are tested; CI runs on Node 20/22/24 and an OIDC release workflow is
+ready; `SCORING.md` documents every weight; and `assets/demo.svg` is a real recorded capture at the
+top of the README.
+
+Known and recorded, not fixed: the `> repos 34/61` fetch counter from MOTION.md is not implemented
+(reasoning in the Sprint 3 Deferred notes), and aethereum sync was skipped at Bruno's direction —
+see the Recorded deviation section of `masterplan.md`.
+
+**Next:** Sprint 7 in `masterplan.md` — push, npm 2FA, one manual bootstrap publish (trusted
+publishing cannot be configured for a package that does not yet exist), then trusted publishing for
+every release after that.
 
 ## MOTION.md (binding)
 
