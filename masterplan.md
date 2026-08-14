@@ -474,8 +474,25 @@ re-checked on the registry at handover and still returns **404 — free**.
 - [ ] Decide whether the bundled demo fixture should stay `torvalds` or become `br9704`.
       `torvalds` is public data and the README's existing example, but it is another person's
       profile shipping inside your package. To switch: recapture and run `npm run demo:record`
-- [ ] `git push -u origin feat/publish-readiness`, then open a PR or merge to `main`
-- [ ] Watch CI go green on Node 20/22/24 before publishing anything
+- [x] `git push -u origin feat/publish-readiness` — **done 2026-08-14, on Bruno's authorisation.**
+      Branch is on the remote; no PR opened, nothing merged, nothing published
+- [ ] Open a PR or merge to `main` — still yours
+- [x] **CI verified green on Node 20, 22 and 24** (run `31799957044`), covering lint, typecheck,
+      build, tests, the demo render, the zero-network assertion, and the no-emoji/no-ANSI assertion
+
+#### What the first CI run caught
+The first run (`31799746005`) **failed on all three Node versions**, and the failure was real rather
+than a CI misconfiguration:
+
+`Math.sin` / `Math.cos` / `Math.sqrt` / `Math.log2` are not required to be bit-identical across
+platforms, and are not. The Three.js scene export produced `x = 4.044661788320042` on macOS and
+`...043` on Linux. The snapshot therefore passed locally and failed on every runner.
+
+This was a defect in the export, not the test: a scene that differs between machines cannot be
+diffed or cached, which defeats the purpose of a contract `github-3d-visualizer` consumes. Every
+derived float in the scene — positions, node sizes, edge weights — is now quantised to 6 decimal
+places, with a regression test asserting it across the whole scene. **This is precisely the class of
+bug that only a matrix CI finds**, and it was found within minutes of the workflow first running.
 
 ### 7.2 npm account (do this before the first publish)
 
