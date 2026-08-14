@@ -2,8 +2,29 @@ import type { UserProfile, ThreeJSExport, ThreeJSNode, ThreeJSConnection } from 
 import { getLanguageColor } from '../utils/colors.js';
 
 /**
- * Generate Three.js-compatible scene data from a user profile
+ * Round a scene value to a fixed precision.
+ *
+ * `Math.sin`/`Math.cos`/`Math.sqrt` are not required to be bit-identical across
+ * platforms or engine versions, and they are not: the same profile exported on
+ * macOS and on Linux differed in the last significant digit
+ * (4.044661788320042 vs ...043). That makes the scene undiffable and the export
+ * unreproducible across machines, which defeats the point of a stable contract.
+ *
+ * Applies to every derived float in the scene — positions, sizes and edge
+ * weights all run through Math.sin/cos/sqrt/log2. Six decimals is far finer
+ * than any renderer can resolve at this scale.
  */
+function coord(n: number): number {
+  return Math.round(n * 1e6) / 1e6;
+}
+
+/**
+ * Generate Three.js-compatible scene data from a user profile.
+ *
+ * The shape emitted here is a published contract consumed by
+ * github-3d-visualizer; it is pinned by snapshot in the test suite.
+ */
+
 export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
   const nodes: ThreeJSNode[] = [];
   const connections: ThreeJSConnection[] = [];
@@ -14,7 +35,7 @@ export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
     type: 'user',
     position: { x: 0, y: 0, z: 0 },
     color: '#ffffff',
-    size: Math.max(1, Math.log2(profile.user.followers + 1) * 0.5),
+    size: coord(Math.max(1, Math.log2(profile.user.followers + 1) * 0.5)),
     label: profile.user.login,
     metadata: {
       name: profile.user.name,
@@ -38,12 +59,12 @@ export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
       id: nodeId,
       type: 'language',
       position: {
-        x: Math.cos(angle) * langRadius,
-        y: Math.sin(angle) * langRadius,
+        x: coord(Math.cos(angle) * langRadius),
+        y: coord(Math.sin(angle) * langRadius),
         z: 0,
       },
       color: getLanguageColor(lang),
-      size: Math.max(0.3, Math.log2(count + 1) * 0.4),
+      size: coord(Math.max(0.3, Math.log2(count + 1) * 0.4)),
       label: lang,
       metadata: { repoCount: count },
     });
@@ -51,7 +72,7 @@ export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
     connections.push({
       source: `user-${profile.user.login}`,
       target: nodeId,
-      weight: count / Math.max(1, langEntries[0][1]),
+      weight: coord(count / Math.max(1, langEntries[0][1])),
     });
   });
 
@@ -71,12 +92,12 @@ export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
       id: nodeId,
       type: 'repo',
       position: {
-        x: repoRadius * Math.cos(theta) * Math.sin(phi),
-        y: repoRadius * Math.sin(theta) * Math.sin(phi),
-        z: repoRadius * Math.cos(phi),
+        x: coord(repoRadius * Math.cos(theta) * Math.sin(phi)),
+        y: coord(repoRadius * Math.sin(theta) * Math.sin(phi)),
+        z: coord(repoRadius * Math.cos(phi)),
       },
       color: repo.language ? getLanguageColor(repo.language) : '#888888',
-      size: Math.max(0.2, Math.log2(repo.stargazers_count + 1) * 0.3),
+      size: coord(Math.max(0.2, Math.log2(repo.stargazers_count + 1) * 0.3)),
       label: repo.name,
       metadata: {
         description: repo.description,
@@ -91,7 +112,7 @@ export function generateThreeJSExport(profile: UserProfile): ThreeJSExport {
     connections.push({
       source: `user-${profile.user.login}`,
       target: nodeId,
-      weight: Math.log2(repo.stargazers_count + 1) * 0.1,
+      weight: coord(Math.log2(repo.stargazers_count + 1) * 0.1),
     });
 
     // Connect repo to its language

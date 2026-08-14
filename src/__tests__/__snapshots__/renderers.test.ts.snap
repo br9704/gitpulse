@@ -248,7 +248,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-linux",
-        "weight": 1.788941483792526,
+        "weight": 1.788941,
       },
       {
         "source": "lang-C",
@@ -258,7 +258,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-AudioNoise",
-        "weight": 1.2122827994807668,
+        "weight": 1.212283,
       },
       {
         "source": "lang-C",
@@ -268,7 +268,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-uemacs",
-        "weight": 1.1036860446673047,
+        "weight": 1.103686,
       },
       {
         "source": "lang-C",
@@ -278,7 +278,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-GuitarPedal",
-        "weight": 1.1127994320976393,
+        "weight": 1.112799,
       },
       {
         "source": "lang-C",
@@ -288,7 +288,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-test_tlb",
-        "weight": 1.0025139562278509,
+        "weight": 1.002514,
       },
       {
         "source": "lang-C",
@@ -298,7 +298,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-pesconvert",
-        "weight": 0.9147204924942228,
+        "weight": 0.91472,
       },
       {
         "source": "lang-C",
@@ -308,7 +308,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-1590A",
-        "weight": 0.9159871336778389,
+        "weight": 0.915987,
       },
       {
         "source": "lang-OpenSCAD",
@@ -318,7 +318,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-HunspellColorize",
-        "weight": 0.8499845887083206,
+        "weight": 0.849985,
       },
       {
         "source": "lang-C",
@@ -328,7 +328,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
       {
         "source": "user-torvalds",
         "target": "repo-ScrollWheel",
-        "weight": 0.8511752653767379,
+        "weight": 0.851175,
       },
       {
         "source": "lang-C",
@@ -352,7 +352,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "y": 0,
           "z": 0,
         },
-        "size": 9.135567353696494,
+        "size": 9.135567,
         "type": "user",
       },
       {
@@ -367,7 +367,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "y": 0,
           "z": 0,
         },
-        "size": 1.267970000576925,
+        "size": 1.26797,
         "type": "language",
       },
       {
@@ -379,7 +379,7 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
         },
         "position": {
           "x": -5,
-          "y": 6.123233995736766e-16,
+          "y": 0,
           "z": 0,
         },
         "size": 0.4,
@@ -397,11 +397,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/linux",
         },
         "position": {
-          "x": -6.6474670791112e-16,
-          "y": -1.028528850826843e-15,
+          "x": -0,
+          "y": -0,
           "z": -10,
         },
-        "size": 5.366824451377577,
+        "size": 5.366824,
         "type": "repo",
       },
       {
@@ -416,11 +416,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/AudioNoise",
         },
         "position": {
-          "x": 5.440344029420785,
-          "y": 3.1478293602182097,
-          "z": -7.777777777777779,
+          "x": 5.440344,
+          "y": 3.147829,
+          "z": -7.777778,
         },
-        "size": 3.6368483984422997,
+        "size": 3.636848,
         "type": "repo",
       },
       {
@@ -435,11 +435,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/uemacs",
         },
         "position": {
-          "x": 3.905880263855563,
-          "y": -7.340293034583798,
-          "z": -5.555555555555554,
+          "x": 3.90588,
+          "y": -7.340293,
+          "z": -5.555556,
         },
-        "size": 3.3110581340019136,
+        "size": 3.311058,
         "type": "repo",
       },
       {
@@ -454,11 +454,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/GuitarPedal",
         },
         "position": {
-          "x": -6.995629360625486,
-          "y": -6.32060588374592,
-          "z": -3.333333333333334,
+          "x": -6.995629,
+          "y": -6.320606,
+          "z": -3.333333,
         },
-        "size": 3.338398296292918,
+        "size": 3.338398,
         "type": "repo",
       },
       {
@@ -473,11 +473,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/test-tlb",
         },
         "position": {
-          "x": -8.81389933149296,
-          "y": 4.591362616160192,
-          "z": -1.1111111111111125,
+          "x": -8.813899,
+          "y": 4.591363,
+          "z": -1.111111,
         },
-        "size": 3.007541868683552,
+        "size": 3.007542,
         "type": "repo",
       },
       {
@@ -492,11 +492,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/pesconvert",
         },
         "position": {
-          "x": 0.9281546727862791,
-          "y": 9.894643045716728,
-          "z": 1.1111111111111116,
+          "x": 0.928155,
+          "y": 9.894643,
+          "z": 1.111111,
         },
-        "size": 2.744161477482668,
+        "size": 2.744161,
         "type": "repo",
       },
       {
@@ -511,11 +511,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/1590A",
         },
         "position": {
-          "x": 9.105684268431247,
-          "y": 2.444463722891508,
-          "z": 3.3333333333333326,
+          "x": 9.105684,
+          "y": 2.444464,
+          "z": 3.333333,
         },
-        "size": 2.7479614010335167,
+        "size": 2.747961,
         "type": "repo",
       },
       {
@@ -530,11 +530,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/HunspellColorize",
         },
         "position": {
-          "x": 4.044661788320042,
-          "y": -7.264744557604177,
-          "z": 5.555555555555555,
+          "x": 4.044662,
+          "y": -7.264745,
+          "z": 5.555556,
         },
-        "size": 2.5499537661249616,
+        "size": 2.549954,
         "type": "repo",
       },
       {
@@ -549,11 +549,11 @@ exports[`three.js export — scene contract > pins the scene shape 1`] = `
           "url": "https://github.com/torvalds/ScrollWheel",
         },
         "position": {
-          "x": -5.596784397507662,
-          "y": -2.8604505322275697,
-          "z": 7.777777777777777,
+          "x": -5.596784,
+          "y": -2.860451,
+          "z": 7.777778,
         },
-        "size": 2.553525796130214,
+        "size": 2.553526,
         "type": "repo",
       },
     ],

@@ -224,6 +224,24 @@ describe('three.js export — scene contract', () => {
     }
   });
 
+  // Math.sin/cos/sqrt/log2 are not bit-identical across platforms. CI caught
+  // this: the same profile exported 4.044661788320042 on macOS and ...043 on
+  // Linux. Quantising keeps the scene diffable and reproducible anywhere.
+  it('quantises every derived float so the scene is platform-independent', () => {
+    const scene = generateThreeJSExport(demoProfile);
+    const isQuantised = (n: number) => Math.abs(n * 1e6 - Math.round(n * 1e6)) < 1e-9;
+
+    for (const node of scene.scene.nodes) {
+      for (const axis of ['x', 'y', 'z'] as const) {
+        expect(isQuantised(node.position[axis]), `${node.id}.${axis} = ${node.position[axis]}`).toBe(true);
+      }
+      expect(isQuantised(node.size), `${node.id}.size = ${node.size}`).toBe(true);
+    }
+    for (const c of scene.scene.connections) {
+      expect(isQuantised(c.weight), `${c.source}->${c.target} weight = ${c.weight}`).toBe(true);
+    }
+  });
+
   it('never emits a connection to a node that does not exist', () => {
     const scene = generateThreeJSExport(demoProfile);
     const ids = new Set(scene.scene.nodes.map(n => n.id));
