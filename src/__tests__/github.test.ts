@@ -131,9 +131,14 @@ describe('error branches', () => {
       headers: { 'x-ratelimit-remaining': '0', 'x-ratelimit-reset': String(reset) },
     });
 
-    const err = await fetchUserProfile('x', { token: 'ghp_real' }).catch(e => e as Error);
-    expect(err.message).toMatch(/5,000 requests\/hour \(authenticated\)/);
-    expect(err.message).not.toMatch(/settings\/tokens\/new/);
+    let message = '';
+    try {
+      await fetchUserProfile('x', { token: 'ghp_real' });
+    } catch (e) {
+      message = (e as Error).message;
+    }
+    expect(message).toMatch(/5,000 requests\/hour \(authenticated\)/);
+    expect(message).not.toMatch(/settings\/tokens\/new/);
   });
 
   it('separates a secondary rate limit from an exhausted quota', async () => {
@@ -220,8 +225,12 @@ describe('buildProfile', () => {
   });
 
   it('is deterministic for the same inputs and clock', () => {
-    const args = [makeUser(), [makeRepo()], [makeEvent()], NOW] as const;
-    expect(JSON.stringify(buildProfile(...args))).toBe(JSON.stringify(buildProfile(...args)));
+    const user = makeUser();
+    const repos = [makeRepo()];
+    const events = [makeEvent()];
+    expect(JSON.stringify(buildProfile(user, repos, events, NOW))).toBe(
+      JSON.stringify(buildProfile(user, repos, events, NOW))
+    );
   });
 
   it('keeps the contribution window self-consistent', () => {

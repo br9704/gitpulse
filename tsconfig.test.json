@@ -1,0 +1,12 @@
+{
+  // Type-checks everything, including the test suite, without emitting.
+  // The build config deliberately excludes src/__tests__ so test helpers never
+  // reach dist/; this config exists so they are still checked.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["vitest/globals", "node"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

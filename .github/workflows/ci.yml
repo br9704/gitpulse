@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # package.json declares engines.node >=20, so every supported line is tested.
+        node: ['20', '22', '24']
+
+    name: node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      # Checks the test suite too. The build config excludes src/__tests__ so
+      # helpers never reach dist/, which means tsc alone would not see them.
+      - run: npm run typecheck
+
+      - run: npm run build
+
+      - run: npm test
+
+      - name: Built package must not contain tests
+        run: |
+          if [ -d dist/__tests__ ]; then
+            echo "test helpers leaked into dist/"
+            exit 1
+          fi
+
+      # The output is the product, so CI proves it actually renders. --demo needs
+      # no token and makes no network calls, which keeps this hermetic.
+      - name: Render the demo report
+        run: node dist/index.js --demo
+
+      - name: Demo makes no network calls
+        run: |
+          node --input-type=module -e '
+            globalThis.fetch = () => { throw new Error("--demo attempted a network call"); };
+            process.argv = [process.argv[0], "gitpulse", "--demo"];
+            await import("./dist/index.js");
+          ' > /dev/null
+
+      - name: Output carries no emoji and no ANSI when piped
+        run: |
+          node dist/index.js --demo | node -e '
+            let s = "";
+            process.stdin.on("data", d => s += d).on("end", () => {
+              const emoji = [...s].filter(c => /\p{Emoji_Presentation}/u.test(c));
+              if (emoji.length) { console.error("emoji in output:", emoji.join(" ")); process.exit(1); }
+              if (s.includes("\x1b")) { console.error("ANSI escapes in piped output"); process.exit(1); }
+            });
+          '
+
+      - name: Package contents are sane
+        run: npm pack --dry-run

@@ -5,8 +5,8 @@ Precedence on conflict: masterplan (sequencing) > CLAUDE.md (rules) > ENGINEERPR
 
 Status keys: `[ ]` not started · `[~]` in progress · `[x]` complete · `[⏭]` deferred (always with a reason).
 
-> **Current sprint: Sprint 5 — Repo hygiene + CI**
-> _(Sprints 0–4 closed 2026-08-14, gates passed.)_
+> **Current sprint: Sprint 6 — Docs, scoring transparency, demo asset**
+> _(Sprints 0–5 closed 2026-08-14, gates passed.)_
 
 Created 2026-08-14. Never delete or rewrite content here — expand it in place.
 
@@ -354,21 +354,50 @@ reference a node id that does not exist**. This is the interface `github-3d-visu
 
 ## Sprint 5 — Repo hygiene + CI
 
-- [ ] `package.json` — add `repository`, `homepage`, `bugs`; `engines.node` → `>=20`; verify
-      `files`/`bin`/`prepublishOnly`; confirm **no postinstall**
-- [ ] `.eslintrc.json` — disable `no-control-regex` (the 3 errors are correct ANSI-stripping code;
-      do not mangle the regexes); clear the 14 unused-import warnings
-- [ ] `.github/workflows/ci.yml` — install → lint → build → test on Node 20/22/24
-- [ ] `.github/workflows/release.yml` — OIDC trusted publishing on tag, `permissions: id-token: write`,
+- [x] `package.json` — added `repository`, `homepage`, `bugs`; `engines.node` → `>=20.0.0`; verified
+      `files`/`bin`/`prepublishOnly`; confirmed **no postinstall/preinstall/install/prepare**
+- [x] `.eslintrc.json` — disabled `no-control-regex` (the 3 errors were correct ANSI-stripping code;
+      regexes untouched); cleared every warning
+- [x] `.github/workflows/ci.yml` — install → lint → typecheck → build → test on Node 20/22/24
+- [x] `.github/workflows/release.yml` — OIDC trusted publishing on tag, `id-token: write`,
       provenance automatic. **Authored but not runnable until Sprint 7**
 
-**Acceptance gate**
-- [ ] `npm run lint` → 0 errors, 0 warnings
-- [ ] `tsc --noEmit` green
-- [ ] Workflow YAML validates
+**Acceptance gate — PASSED 2026-08-14**
+- [x] `npm run lint` → **0 errors, 0 warnings** (was 3 errors, 14 warnings)
+- [x] `tsc` build clean and `npm run typecheck` clean across src *and* tests
+- [x] 121 tests green
+- [x] Workflow YAML parses; both files structurally checked
+- [x] **The packed tarball installs and runs.** `npm pack` → install into a clean directory →
+      `./node_modules/.bin/gitpulse --demo` renders the full report, and `--version` reports 1.0.0
+      from the installed `package.json`. This is the real proof that `npx gitpulse` will work
 
-**As-shipped delta:** _(fill at close)_
-**Deferred:** _(fill at close)_
+**As-shipped delta**
+- **Test helpers were shipping inside the published package.** `tsconfig` excluded `**/*.test.ts`,
+  but Sprint 4 added `src/__tests__/fixtures.ts` and `setup.ts`, which are not `.test.ts` — so they
+  compiled into `dist/__tests__/` and appeared in the tarball. The build now excludes the whole
+  test directory, and CI fails if `dist/__tests__` ever reappears.
+- That exclusion would have silently stopped type-checking the tests, so added `tsconfig.test.json`
+  and an `npm run typecheck` script that checks everything with `noEmit`. **It immediately found
+  4 real type errors in the Sprint 4 tests** that vitest's transpile-only execution never sees.
+  Both CI and the release workflow now run it.
+- Deleted `centerText` from `src/utils/formatting.ts`: zero call sites anywhere in the product.
+  Dead code, removed rather than tested, per the zero-bloat rule.
+- Added 5 tests for `accountAge`, which was used on every profile block and had no coverage — it
+  was one of the unused imports the lint warnings were pointing at. 121 tests now.
+- CI does more than build-and-test, because the output is the product: it renders `--demo`, asserts
+  the demo makes **zero network calls** (fetch stubbed to throw), and asserts the piped output
+  contains no emoji and no ANSI. Those three Sprint 0–2 gates are now enforced on every push
+  rather than being one-off checks.
+- Release workflow pins the runner to Node 22.14.0 and upgrades to `npm@latest`, because trusted
+  publishing needs npm ≥ 11.5.1 — newer than the npm bundled with any current Node. It also fails
+  the build if the git tag does not match `package.json`'s version.
+
+**Deferred**
+- Source maps and `.d.ts.map` files ship in the tarball (54.4 kB packed / 248.3 kB unpacked, 79
+  files). Harmless and useful for debugging, but strippable later if size ever matters.
+- The release workflow is **unrunnable until the package exists on npm**. Not a defect — npm does
+  not allow configuring a Trusted Publisher for a package that has never been published. Sprint 7
+  carries the bootstrap.
 
 ---
 

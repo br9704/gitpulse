@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatNumber, timeAgo, sparkline, progressBar, truncate, percent, centerText, accountAge } from '../utils/formatting.js';
+import { formatNumber, timeAgo, sparkline, progressBar, truncate, percent, accountAge } from '../utils/formatting.js';
 
 describe('formatNumber', () => {
   it('formats small numbers as-is', () => {
@@ -85,5 +85,34 @@ describe('timeAgo', () => {
   it('returns days ago', () => {
     const d = new Date(Date.now() - 3 * 86400000).toISOString();
     expect(timeAgo(d)).toBe('3 days ago');
+  });
+});
+
+describe('accountAge', () => {
+  // Used on every profile block, and until now untested.
+  const from = (iso: string) => accountAge(iso);
+
+  it('reports whole years for accounts older than one year', () => {
+    const threeYearsAgo = new Date(Date.now() - 3.5 * 365.25 * 86_400_000).toISOString();
+    expect(from(threeYearsAgo)).toBe('3 years');
+  });
+
+  it('singularises exactly one year', () => {
+    const oneYearAgo = new Date(Date.now() - 1.2 * 365.25 * 86_400_000).toISOString();
+    expect(from(oneYearAgo)).toBe('1 year');
+  });
+
+  it('falls back to months under a year', () => {
+    const fiveMonthsAgo = new Date(Date.now() - 5 * 30.4 * 86_400_000).toISOString();
+    expect(from(fiveMonthsAgo)).toMatch(/^[45] months$/);
+  });
+
+  it('singularises one month', () => {
+    const oneMonthAgo = new Date(Date.now() - 32 * 86_400_000).toISOString();
+    expect(from(oneMonthAgo)).toBe('1 month');
+  });
+
+  it('reports a brand-new account as 0 months rather than crashing', () => {
+    expect(from(new Date().toISOString())).toBe('0 months');
   });
 });

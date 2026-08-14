@@ -16,5 +16,9 @@
     "sourceMap": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  // The whole test directory is excluded from the build, not just *.test.ts —
+  // otherwise helper modules like __tests__/fixtures.ts compile into dist/ and
+  // ship inside the published tarball. Tests are still type-checked, via
+  // tsconfig.test.json / `npm run typecheck`.
+  "exclude": ["node_modules", "dist", "src/__tests__"]
 }

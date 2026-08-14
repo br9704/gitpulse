@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculateScore, scoreToGrade, calculateLanguages, analyzeCommitPattern, generateContributions, detectStreak } from '../utils/scoring.js';
-import type { GitHubRepo, GitHubEvent, LanguageBreakdown, CodingStreak } from '../types/index.js';
+import type { GitHubRepo, GitHubEvent, CodingStreak } from '../types/index.js';
 
 // Mock data factories
 function makeRepo(overrides: Partial<GitHubRepo> = {}): GitHubRepo {

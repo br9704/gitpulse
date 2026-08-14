@@ -85,15 +85,6 @@ export function percent(value: number, total: number): string {
 }
 
 /**
- * Center text within a given width
- */
-export function centerText(text: string, width: number): string {
-  const stripped = text.replace(/\x1b\[[0-9;]*m/g, '');
-  const pad = Math.max(0, Math.floor((width - stripped.length) / 2));
-  return ' '.repeat(pad) + text;
-}
-
-/**
  * Calculate account age in years
  */
 export function accountAge(createdAt: string): string {
