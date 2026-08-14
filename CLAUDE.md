@@ -96,13 +96,17 @@ The masterplan is the **single source of truth for sequencing**. This file is th
 
 > Update at every sprint close.
 
-**Current state (2026-08-14):** Sprints 0–6 of `masterplan.md` complete, all gates passed, on the
-branch `feat/publish-readiness` (7 commits, **unpushed**). Still not published — Sprint 7 is
-owner-gated and waiting on Bruno.
+**Current state (2026-08-14):** Sprints 0–6 of `masterplan.md` complete, all gates passed. Branch
+`feat/publish-readiness` is **pushed** (10 commits) and **CI is green on Node 20/22/24**. Not
+merged, not published — the rest of Sprint 7 is owner-gated and waiting on Bruno.
 
-Build exit 0 · **121 tests** (was 33) · lint **0 errors, 0 warnings** (was 3/14) · **3 runtime
+Build exit 0 · **122 tests** (was 33) · lint **0 errors, 0 warnings** (was 3/14) · **3 runtime
 dependencies** (was 5; `boxen` and `node-fetch` were declared and never imported) · `gitpulse`
 re-verified free on npm.
+
+The first CI run failed on all three Node versions and the failure was real: `Math.sin`/`cos`/
+`sqrt`/`log2` are not bit-identical across platforms, so the Three.js scene export differed between
+macOS and Linux in the last digit. Scene floats are now quantised to 6dp with a regression test.
 
 Shipped this session: `--demo` renders offline with zero network calls and `GITHUB_TOKEN`/`GH_TOKEN`
 are honoured, so the documented first run works; every rendered number now agrees with its label
