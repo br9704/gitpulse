@@ -11,7 +11,7 @@ Read this at the start of every session. `masterplan.md` (which you create in Ph
 |---|---|
 | Name | Bruno Jaamaa · jaamaabruno@gmail.com · GitHub `br9704` |
 | Repo | github.com/br9704/gitpulse |
-| npm | **`@aethereumdev/gitpulse`** — scoped. Unpublished as of 2026-08-15 |
+| npm | **[`@aethereumdev/gitpulse@1.0.0`](https://www.npmjs.com/package/@aethereumdev/gitpulse)** — published 2026-08-15 |
 
 > **`gitpulse` unscoped is not claimable.** It returns 404 but npm's typosquatting filter rejects it
 > at publish time as "too similar to existing package `git-pulse`". A 404 from the registry proves
@@ -149,11 +149,13 @@ GitHub no longer emits, `github-stats` prints a pie chart rather than text and w
 each tool did when run. Full record in the Second verification pass section of `masterplan.md`.
 **The lesson worth keeping: the agent that writes the docs cannot be the only one that checks them.**
 
-**Standing honesty debt:** `PROJECT.json` says `status: "published"` and the README carries an npm
-badge and an `npx gitpulse` command **at Bruno's explicit direction, written before the package
-exists.** The registry returned 404 on 2026-08-15. Until Sprint 7.3 runs, that badge renders broken
-and that command fails. Re-check with
-`curl -s -o /dev/null -w "%{http_code}\n" https://registry.npmjs.org/gitpulse`.
+**~~Standing honesty debt~~ — CLEARED 2026-08-15 08:35 UTC.** `PROJECT.json`'s `status: "published"`,
+the npm badge and the `npx` command were all written before the package existed, at Bruno's explicit
+direction. **`@aethereumdev/gitpulse@1.0.0` is now live**, so every one of those claims is true and
+no edit was needed to make it so. Verified: badge resolves and reads `v1.0.0`; `npx --yes
+@aethereumdev/gitpulse@latest --demo` renders from a clean cache; the live path fetched `torvalds`
+and correctly reported a **31-day** window against the fixture's 30, because it derived it from data
+pulled that day.
 
 **Sprint E — Monochrome (closed 2026-08-15).** The output is **greyscale on near-black, no accent
 hue**. Amber is retired, and so is compare mode's green — "ahead" is carried by weight and the `▌`
@@ -174,10 +176,14 @@ replaced by decisions, per "prefer the decision".
 and is now stale on the green. Read Sprint E in `masterplan.md` before trusting either document on
 colour.
 
-**Next:** Sprint 7.2–7.5 in `masterplan.md` — npm 2FA, one manual bootstrap publish (trusted
-publishing cannot be configured for a package that does not yet exist), then trusted publishing for
-every release after that. Then apply the tightened repo description recorded in
-`PROJECT.json` → `github.description` with `gh repo edit`.
+**Next:** Sprint 7.4–7.5 in `masterplan.md`. The bootstrap publish is done, so trusted publishing can
+now be configured — it could not be before, because npm will not accept a Trusted Publisher for a
+package that does not exist. Configure it against **`@aethereumdev/gitpulse`**, then revoke the
+bootstrap token, then prove the automated path with `npm version patch` + `git push --follow-tags`.
+**The published tarball carries a signature but no provenance attestation** (`dist.attestations` is
+absent) because `--provenance` cannot work from a local machine; 1.0.1 published through CI will
+carry one. Then apply the tightened repo description recorded in `PROJECT.json` → `github.description`
+with `gh repo edit`.
 
 ## MOTION.md (binding)
 

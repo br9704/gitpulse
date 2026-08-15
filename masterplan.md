@@ -559,8 +559,35 @@ git push --follow-tags     # release.yml fires on the v* tag
       session skipped it at your direction and the artifacts it would have carried are recorded in
       this file instead (see Recorded deviation)
 
-**As-shipped delta:** _(fill at close — Bruno)_
-**Deferred:** _(fill at close — Bruno)_
+**As-shipped delta (7.1–7.3 closed 2026-08-15):**
+- **7.3 is done. `@aethereumdev/gitpulse@1.0.0` published 2026-08-15 08:35:28 UTC.** 80 files,
+  263.3 kB unpacked, MIT, `bin` → `gitpulse`, deps chalk/commander/ora, `engines.node >=20.0.0`.
+- **The name changed at the publish attempt.** Unscoped `gitpulse` is not claimable — see the
+  DECISION block below. Every document that named it has been updated.
+- **`--provenance` was dropped from the documented command.** It cannot work from a local machine;
+  provenance requires a CI OIDC context. The published tarball has `dist.signatures` present and
+  `dist.attestations` absent. 1.0.1 through the release workflow will carry the attestation, which
+  is what 7.4 is for.
+- **A 39-second replication lag made the package look unpublished.** `npm view` and a direct
+  registry GET both returned 404 immediately after a successful publish, while
+  `npm access list packages` already showed the package. `npm search` was the check that resolved
+  it. Worth knowing before concluding a publish failed.
+
+**Verified after publish, from a clean npx cache in a temp directory:**
+- `npx --yes @aethereumdev/gitpulse@latest --demo --no-anim` renders the full report. This is the
+  real proof the published artifact works, not the local build.
+- The live path fetched `torvalds` and reported `last 31 days of public code events 2026-07-16 →
+  2026-08-15` — one day wider than the bundled fixture's 30, because it derived the window from data
+  pulled that day. The honest-window feature works in production.
+- The npm badge resolves and reads `v1.0.0`. `raw.githubusercontent.com/.../master/assets/demo.svg`
+  returns 200, so the npm page hero renders.
+
+**Deferred:**
+- 7.4 trusted publishing and 7.5 remain. Configure the Trusted Publisher against
+  **`@aethereumdev/gitpulse`**, not the bare name, then revoke the bootstrap token.
+- The npm badges were never removed from the README, so 7.5's "restore them" step is a no-op.
+- Terminal.app flicker confirmation at 52 columns is still an owner action — an agent cannot see
+  flicker.
 
 ---
 
