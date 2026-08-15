@@ -3,3 +3,7 @@ dist/
 *.tsbuildinfo
 .DS_Store
 coverage/
+
+# Kickoff prompts — process scaffolding, kept locally, not published with the tool
+ENGINEERPROMPT.md
+*-ENGINEERPROMPT.md

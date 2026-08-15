@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "slug": "gitpulse",
+  "name": "GITPULSE",
+  "oneLiner": "A GitHub profile rendered as a terminal report card, with every number's window stated.",
+  "status": "published",
+  "role": "SOLO BUILD",
+  "year": "2026",
+  "updated": "2026-08-15",
+  "links": {
+    "github": "https://github.com/br9704/gitpulse",
+    "live": null,
+    "npm": "https://www.npmjs.com/package/gitpulse",
+    "huggingface": null,
+    "appstore": null
+  },
+  "stack": ["typescript", "node", "esm", "commander", "chalk", "vitest", "github-actions"],
+  "metrics": [
+    {
+      "value": "3",
+      "label": "runtime dependencies",
+      "source": "package.json"
+    },
+    {
+      "value": "122",
+      "label": "tests, on Node 20/22/24",
+      "source": ".github/workflows/ci.yml"
+    },
+    {
+      "value": "3",
+      "label": "GitHub REST endpoints, everything else computed locally",
+      "source": "src/api/github.ts"
+    },
+    {
+      "value": "0",
+      "label": "install-time lifecycle scripts, so npx works under npm v12 defaults",
+      "source": "package.json"
+    },
+    {
+      "value": "1.87s",
+      "label": "staged render against a 2.5s budget",
+      "source": "masterplan.md"
+    }
+  ],
+  "headline": {
+    "claim": "Its own acceptance gate caught a bug in its own plan: the honest-window rewrite still rendered 60 days of fabricated inactivity for a feed that only reached back 30.",
+    "source": "masterplan.md"
+  },
+  "honest": "Everything time-based comes from GitHub's public Events API, which caps at 300 events and often reaches back far less than 90 days, so the heatmap, commit patterns and streaks describe a narrow measured window rather than a year. The hire-ability score reads public metadata only — it never opens a line of code, cannot see private work, and stops discriminating above 40 stars on one of its sub-items.",
+  "media": {
+    "hero": "assets/demo.svg",
+    "demo": "assets/demo.svg",
+    "diagram": null
+  },
+  "built": {
+    "audit": "A measured audit found the tool worked and looked finished, but its own documented first command — `gitpulse torvalds` with no token — failed on GitHub's 60 requests/hour unauthenticated cap, so first-time users concluded it was broken.",
+    "repaired": [
+      "First run: GITHUB_TOKEN/GH_TOKEN are read from the environment, the 403 branch distinguishes primary rate limit from secondary from bad credentials, and `--demo` renders offline with zero network calls.",
+      "Every label was made to agree with the number under it: activity was counted from all public event types under a hardcoded 'Last 90 days' header while reporting an active-day count from a third window.",
+      "The window rewrite's own first implementation fabricated 60 days of inactivity for a 30-day feed; the sprint's acceptance gate caught it before it shipped.",
+      "cache.test.ts asserted an inline expression and imported no product code — two of the then-33 passing tests verified nothing. Replaced with 11 tests against the real module.",
+      "Test helpers were compiling into dist/ and shipping inside the published tarball; CI now fails if dist/__tests__ reappears.",
+      "boxen and node-fetch were declared as runtime dependencies and imported nowhere — 24 packages removed from the install tree, leaving three.",
+      "Three renderers stamped wall-clock time into their output, so the same profile produced different bytes on every run."
+    ],
+    "measured": [
+      "Matrix CI on Node 20/22/24 caught Math.sin/cos/sqrt/log2 differing in the last digit between macOS and Linux; the Three.js scene export now quantises every derived float to 6 decimal places.",
+      "Checking SCORING.md's draft weights against the code found the star sub-item caps at 40 stars, not the ~215 first claimed — above 40 it stops discriminating entirely.",
+      "The staged render was measured at 1.87s (2.27s worst case) against MOTION.md's 2.5s budget, and a cache hit at 1.08s against 1.2s.",
+      "`--no-anim` output was verified byte-identical to the animated path by replaying the stream through a minimal ANSI interpreter."
+    ],
+    "decisions": [
+      {
+        "what": "REST only, no GraphQL path for contribution data",
+        "why": "GraphQL would give a true contribution calendar but requires a token for every single call. Staying on REST keeps the unauthenticated and --demo paths working, at the cost of a narrower window — which is then labelled honestly rather than papered over."
+      },
+      {
+        "what": "buildProfile() split out of fetchUserProfile()",
+        "why": "The bundled demo fixture runs the exact same derivation as the network path, so the demo is incapable of drifting from the product. It also made the whole pipeline testable without a network."
+      },
+      {
+        "what": "Every animated renderer takes progress: number = 1, where progress === 1 returns the static string",
+        "why": "MOTION.md requires --no-anim to be byte-identical to the staged render. Structuring it this way makes divergence impossible rather than merely tested — the last frame is the real output."
+      },
+      {
+        "what": "Publish the scoring methodology instead of softening the score",
+        "why": "An undocumented 0–100 number about a real person is an assertion nobody can check. SCORING.md documents every input and weight, and states what the score does not measure before it states any formula."
+      },
+      {
+        "what": "Trusted publishing (OIDC) with provenance, no stored npm token",
+        "why": "Classic npm tokens were permanently revoked in December 2025 after the Shai-Hulud worm. OIDC exchanges a short-lived GitHub identity for publish rights and attaches a Sigstore provenance attestation automatically."
+      }
+    ]
+  },
+  "ownerGated": [
+    "switch npm releases to trusted publishing and revoke the bootstrap token",
+    "confirm the heatmap column paint does not flicker in Terminal.app at 52 columns — an agent cannot see flicker",
+    "decide whether the bundled demo fixture stays torvalds or becomes br9704",
+    "update the portfolio copy now that the package is real"
+  ],
+  "github": {
+    "description": "A GitHub profile rendered as a terminal report card — heatmap, language share, commit patterns and a documented 0-100 score, with every number labelled by the window it was measured over.",
+    "topics": [
+      "cli",
+      "developer-tools",
+      "github",
+      "nodejs",
+      "terminal",
+      "typescript",
+      "github-api",
+      "developer-experience"
+    ]
+  },
+  "masterplan": "masterplan.md"
+}

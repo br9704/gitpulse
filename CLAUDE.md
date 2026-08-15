@@ -121,9 +121,38 @@ Known and recorded, not fixed: the `> repos 34/61` fetch counter from MOTION.md 
 (reasoning in the Sprint 3 Deferred notes), and aethereum sync was skipped at Bruno's direction —
 see the Recorded deviation section of `masterplan.md`.
 
-**Next:** Sprint 7 in `masterplan.md` — push, npm 2FA, one manual bootstrap publish (trusted
+**Sprint D — Documentation (closed 2026-08-15).** `README.md` rewritten to the docs-prompt structure
+(hook → badges → what it does → Mermaid architecture → how it was built → verification → usage →
+limitations → alternatives → status), and `PROJECT.json` added at the repo root as the single source
+of truth for what the portfolio may say about this project. Every number re-traced to a command:
+that found the README's **121 tests** (now **122**), its "three requests to the REST API" (three
+*endpoints*, 3–6 requests once pagination is counted), and its "0 lifecycle scripts" (`prepublishOnly`
+exists — the true claim is 0 *install-time* hooks). README doc links are absolute `blob/master` URLs
+so the npm page resolves them. One `src/` line changed, the `--json` help text. Lint, typecheck,
+build and **122 tests** all green after every edit.
+
+**Sprint D was then re-audited independently, and the re-audit found seven more defects — two of
+them inside gate items already marked passed.** The README's "captured output" block was not
+verbatim (a section truncated, two sections dropped with no elision marker); the Mermaid diagram said
+the repos fetch excludes forks when it excludes *organisation* repos; Limitations quoted a `% of
+repos` label the product never prints; `--minimal` was documented as four lines and emits five. And
+**three of the four rows in the Alternatives table were wrong**, which only installing and running
+the tools revealed — `ghcal` renders an empty calendar for every user because it scrapes attributes
+GitHub no longer emits, `github-stats` prints a pie chart rather than text and was last published in
+2020, and `github-readme-stats` was deprecated in June 2026. All fixed; the table now reports what
+each tool did when run. Full record in the Second verification pass section of `masterplan.md`.
+**The lesson worth keeping: the agent that writes the docs cannot be the only one that checks them.**
+
+**Standing honesty debt:** `PROJECT.json` says `status: "published"` and the README carries an npm
+badge and an `npx gitpulse` command **at Bruno's explicit direction, written before the package
+exists.** The registry returned 404 on 2026-08-15. Until Sprint 7.3 runs, that badge renders broken
+and that command fails. Re-check with
+`curl -s -o /dev/null -w "%{http_code}\n" https://registry.npmjs.org/gitpulse`.
+
+**Next:** Sprint 7.2–7.5 in `masterplan.md` — npm 2FA, one manual bootstrap publish (trusted
 publishing cannot be configured for a package that does not yet exist), then trusted publishing for
-every release after that.
+every release after that. Then apply the tightened repo description recorded in
+`PROJECT.json` → `github.description` with `gh repo edit`.
 
 ## MOTION.md (binding)
 

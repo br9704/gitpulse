@@ -43,7 +43,7 @@ program
   .version(VERSION)
   .argument('[username]', 'GitHub username to analyze')
   .option('-t, --token <token>', 'GitHub personal access token for higher rate limits')
-  .option('-j, --json', 'Output raw JSON data')
+  .option('-j, --json', 'Output curated JSON, not a raw API dump')
   .option('-m, --minimal', 'Compact minimal output')
   .option('-e, --export', 'Export Three.js-compatible scene data as JSON')
   .option('-c, --compare <username>', 'Compare with another user')

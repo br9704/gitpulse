@@ -55,6 +55,7 @@
   "files": [
     "dist/",
     "README.md",
+    "SCORING.md",
     "LICENSE"
   ],
   "type": "module"

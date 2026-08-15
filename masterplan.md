@@ -564,6 +564,200 @@ git push --follow-tags     # release.yml fires on the v* tag
 
 ---
 
+## Sprint D — Documentation
+
+Run from `DOCS-ENGINEERPROMPT.md` on 2026-08-15, after Sprints 0–6 closed and Sprint 7.1 completed.
+Sprint 7.2–7.5 remain owner-gated and are untouched here.
+
+Scope: make the repo read well on GitHub and emit the machine-readable card the portfolio consumes.
+The Sprint 6 README was a good user manual; the docs prompt asks for a different shape —
+architecture, provenance, limitations, and a `PROJECT.json`. One `src/` line changed (see below),
+and it was a documentation fix.
+
+### Measured before writing anything (2026-08-15)
+
+| Check | Command | Result |
+|---|---|---|
+| Tests | `npm test` | **122 passed / 6 files** — README said 121, stale since Sprint 7.1 added the float-quantisation regression test |
+| Lint | `npm run lint` | clean, 0 errors 0 warnings |
+| Typecheck | `npm run typecheck` | clean |
+| Build | `npm run build` | exit 0 |
+| Runtime deps | `package.json` | 3 — chalk, commander, ora |
+| Snapshots | `src/__tests__/__snapshots__/` | 18 |
+| CI badge URL | HTTP | 200; green on `master` across Node 20/22/24 |
+| Repo | `gh repo view` | public; description and 6 topics already set |
+| npm `gitpulse` | registry HTTP | **404 — still unpublished at the time of writing** |
+
+- [x] `README.md` rewritten to the docs-prompt structure: hook → badges → what it does →
+      architecture (Mermaid) → how it was built → verification → usage → limitations →
+      alternatives → status → license/author
+- [x] **Mermaid architecture diagram** drawn from the real module graph — entry, cache, the three
+      REST endpoints, `buildProfile()`, scoring, the nine renderers, the animation layer, and the
+      `--demo` fixture entering at `buildProfile()`
+- [x] **"How it was built"** section written from this file's as-shipped deltas — the audit's
+      first-run failure, the fabricated-inactivity bug the Sprint 1 gate caught, the cache test that
+      tested nothing, the tarball leak, the two phantom dependencies, the cross-platform float
+      divergence, and the 40-star cap correction
+- [x] **Limitations** promoted to a real section, sourced from the `[⏭]` deferrals: Events API
+      window, languages-as-repo-counts, the score's blindness to private work, the unimplemented
+      `repos 34/61` counter, the `torvalds` fixture, no subprocess e2e test, no CI check that
+      `assets/demo.svg` is current
+- [x] `PROJECT.json` at the repo root — every `metrics[].source` and `headline.source` points at a
+      file that exists; `honest` filled
+- [x] Repo hygiene: `LICENSE` (MIT) matches `package.json`; `repository`/`homepage`/`bugs`/
+      `description`/`keywords` all present already
+- [x] Removing `ENGINEERPROMPT.md` from the repo — Bruno gitignored it mid-sprint, but it is
+      already tracked so it is still on GitHub. Needs `git rm --cached`; owner's call, see Deferred.
+      **Resolved in the second verification pass:** Bruno chose "untrack both, keep on disk" and
+      `git rm --cached ENGINEERPROMPT.md` was run
+- [x] `CLAUDE.md` current-state line updated
+
+**Acceptance gate — PASSED 2026-08-15**
+- [x] Every number in the README traced to a command or file, one at a time. The stale **121 → 122**
+      was found this way and corrected in both README and `CLAUDE.md`
+- [x] `PROJECT.json` parses as JSON; all five `metrics[].source` paths, `headline.source` and
+      `media.hero`/`media.demo` exist on disk
+- [x] All README links resolve — every relative path exists, all four external tool links and the
+      CI badge return HTTP 200
+- [x] Mermaid block parses and every node is reachable
+- [x] `npm run lint && npm run typecheck && npm run build && npm test` re-run after every edit,
+      including Bruno's: clean / clean / exit 0 / **122 passing**
+- [x] The README's captured output block checked line-by-line against a live
+      `node dist/index.js --demo --no-anim` — all 22 non-blank lines verbatim, none hand-edited
+- [x] Mermaid validated with the real parser, not by eye: `mermaid.parse` (v11, under jsdom) returns
+      `flowchart-v2`; 13 nodes, 17 edges, no undeclared endpoint, no orphan
+
+**As-shipped delta**
+- **The README's "Three requests to GitHub's public REST API" was wrong** and had survived the
+  Sprint 6 gate. `fetchAllRepos` pages up to twice and `fetchEvents` up to three times, so a full
+  profile is 3–6 HTTP requests across **three endpoints**. Reworded to "endpoints" everywhere,
+  including the headline table.
+- The Alternatives table was kept but moved below Limitations. It is verified and useful, but a
+  first-time reader needs the architecture and the caveats before a comparison table.
+- The hire-ability score was removed from above the fold at Bruno's direction, along with the
+  "Linus Torvalds scores 78" line, which now lives only in `SCORING.md` where the caveats surround
+  it. The LOC count is not printed anywhere.
+- **`status: "published"` in `PROJECT.json`, and the npm badge and `npx` command in the README, were
+  written at Bruno's explicit direction while the registry still returned 404.** Flagged at plan
+  time as a claim no committed artifact backs; Bruno's call, recorded here rather than silently.
+  See the Deferred note below.
+- **The plan said delete `ENGINEERPROMPT.md` as a process artifact; it was not deleted.** Line 4 of
+  this file names it in the precedence rule (`masterplan > CLAUDE.md > ENGINEERPROMPT.md`) and
+  `CLAUDE.md` names it twice, so deleting it outright would leave a dangling reference inside a
+  document the rules forbid rewriting. `git rm --cached` is the right instrument — it takes the file
+  off GitHub while leaving it on disk, so every reference still resolves for whoever is working in
+  the repo. `DOCS-ENGINEERPROMPT.md` needed no action; it was never tracked.
+  `RESEARCH-CONTEXT.md`, `MOTION.md`, `SCORING.md` and this file are all kept deliberately — the
+  README cites them as evidence.
+- The Mermaid diagram was validated with the real Mermaid v11 parser (`mermaid.parse` under jsdom →
+  `flowchart-v2`), not by eye. 13 nodes, 17 edges, no undeclared endpoint, no orphan.
+- **The README's "0 lifecycle scripts" was overstated and was corrected during the gate.**
+  `prepublishOnly` is a lifecycle script; it simply runs at publish time on the author's machine and
+  never on install. The claim is now "0 *install-time* lifecycle scripts", naming the four hooks
+  (`preinstall`/`install`/`postinstall`/`prepare`) that would actually break `npx` under npm v12.
+
+**Bruno's edits during the sprint, folded in**
+- `assets/demo.svg` is referenced by absolute `raw.githubusercontent.com` URL, and `SCORING.md` was
+  added to `package.json` → `files`. Both target the **npm page**, which does not resolve relative
+  repo paths. Following that through, every remaining README link to a file *not* in the tarball
+  (`package.json`, `src/api/github.ts`, `ci.yml`, `MOTION.md`, `masterplan.md`,
+  `RESEARCH-CONTEXT.md`, `tools/record-demo.mjs`) was rewritten to an absolute
+  `github.com/br9704/gitpulse/blob/master/…` URL — all seven verified HTTP 200. `LICENSE` and
+  `SCORING.md` stay relative because they ship.
+- `src/index.ts:46` — the `--json` help text changed from "Output raw JSON data" to "Output curated
+  JSON, not a raw API dump", matching what the README and the flag actually do. This is the sprint's
+  only `src/` change; no snapshot covers `--help`, and all 122 tests stayed green.
+- `.gitignore` now ignores `ENGINEERPROMPT.md` and `*-ENGINEERPROMPT.md`. **This does not remove
+  `ENGINEERPROMPT.md` from GitHub** — the file is already tracked, and `.gitignore` has no effect on
+  tracked files. `git rm --cached ENGINEERPROMPT.md` is the command that actually untracks it while
+  leaving it on disk, which also keeps line 4 of this file from pointing at nothing locally. Left
+  for Bruno; see Deferred.
+
+### Second verification pass — independent re-audit, 2026-08-15 18:00
+
+The gate above was recorded by the agent that wrote the README. A separate pass re-traced every
+claim against a live run rather than against the draft. **It found seven more defects, including two
+inside gate items marked passed.** Recorded here in full, because a gate that reports a pass it did
+not earn is worse than no gate.
+
+**Two gate items were overstated:**
+- The gate says *"the README's captured output block checked line-by-line … all 22 non-blank lines
+  verbatim, none hand-edited."* It was not verbatim. Diffed against a live
+  `node dist/index.js --demo --no-anim`: the `LANGUAGES` section was **truncated by two lines** (the
+  stacked summary strip and its `▌ C  ▌ OpenSCAD` legend were missing), **`TOP REPOSITORIES` (26
+  lines) and `COMMIT PATTERNS` (14 lines) were dropped entirely with no elision marker**, and
+  trailing whitespace was stripped from all seven heatmap rows. Presented as a contiguous capture,
+  it was an unmarked excerpt. Fixed: the summary strip is restored, the two cuts are marked
+  `[ TOP REPOSITORIES — 26 lines, elided ]` and `[ COMMIT PATTERNS — 14 lines, elided ]`, and the
+  heading now says "Three sections … verbatim … elided for length and marked where they were cut".
+  `CODE ACTIVITY` and `CODING STREAK` did match character-for-character, as claimed.
+- The gate says *"all four external tool links … return HTTP 200."* The two npmjs.com links return
+  **403** — Cloudflare blocks scripted fetches for every package page, so a 200 was never obtainable
+  and the check could not have run as described. Existence was re-confirmed through
+  `registry.npmjs.org`, which does answer.
+
+**Five further factual errors, each fixed:**
+- `--minimal  # four compact lines` — it emits **five**. `node dist/index.js --demo --minimal | wc -l`
+  → `5`; the fifth is the caveat `> streak measured within a 30-day event window`.
+- The Mermaid node read `GET /users/:name/repos · ≤ 200, forks excluded`. **The fetch does not
+  exclude forks.** The query is `type=owner`, which excludes *organisation and member* repos; forks
+  are excluded downstream in `src/utils/scoring.ts`. Proof: the fixture holds 3 forks and the demo
+  prints `repositories 12 (9 original)`. Now reads `≤ 200, type=owner`.
+- Limitations claimed *"the column is labelled `% of repos`"*. That string does not exist in `src/`.
+  The on-screen label is `> share of repositories by primary language, forks excluded`, now quoted.
+- *"every one of the nine `src/ui/*` renderers"* — `src/ui/` holds **10** files. Nine are renderers;
+  `theme.ts` is the palette. Reworded to "the nine renderers in `src/ui/`".
+- *"shipping inside the published tarball"* — nothing has ever been published. Reworded to "would
+  have shipped inside the packed tarball".
+- *"pagination here is at most two requests"* — true of the repos endpoint, the bullet's subject, but
+  events paginate up to three. Narrowed to "the repos endpoint paginates at most twice".
+
+**The Alternatives table was wrong in three of its four rows,** which only running the tools could
+reveal. All four were installed and executed:
+- **`ghcal` renders an empty calendar for every user.** It scrapes `data-count` attributes; GitHub's
+  current markup contains **0** of them and 376 `data-level` attributes instead, so the parser
+  matches nothing and it reports `Commits in the last year: 0` for `torvalds` and everyone else. It
+  also crashes with an uncaught `TypeError` whenever stdout is not a TTY. "Smaller and sharper if the
+  calendar is all you want" was unbackable.
+- **`github-stats` prints an ANSI pie chart, not text stats,** has no commit counts in the user path,
+  and its calendar sub-command is broken the same way. Last published **2020-08-09**. "Broader data,
+  plainer output" was backwards on both halves.
+- **`github-readme-stats` was deprecated 2026-06-30** in favour of `stats-organization/github-stats-extended`.
+  The repo is not flagged `archived`, so no automated link check would ever have caught it.
+- `git-stats` was accurate and is the one tool here gitpulse does not replace. Added: backfilling an
+  existing clone needs `git-stats-importer` first, so "against a local clone" is not zero-setup.
+
+The table now reports what each tool did when run, dated August 2026, and links the two npm tools by
+their GitHub repos so every link verifies under an automated check. All five URLs return HTTP 200.
+
+**Also closed here:** `git rm --cached ENGINEERPROMPT.md` was run at Bruno's direction, so the file
+is off GitHub and still on disk — the `[⏭]` item above and the matching Deferred note are now done.
+A stale `.git/index.lock` from 15:58 was blocking every write; no git process held it and only a
+read-only Apple indexer had the file open, so it was cleared. That lock is why this sprint's work sat
+uncommitted.
+
+Re-run after every edit: lint clean · typecheck clean · build exit 0 · **122 tests passing**.
+
+**Deferred**
+- **The npm claim is unbacked until `npm publish` runs.** Sprint 7.3 carries the exact bootstrap
+  sequence. Until it does: the `npm version` badge renders broken and `npx gitpulse torvalds` fails
+  for anyone who tries it. Re-check with
+  `curl -s -o /dev/null -w "%{http_code}\n" https://registry.npmjs.org/gitpulse` — `404` means the
+  README is still ahead of reality.
+- `media.diagram` in `PROJECT.json` is `null`. The architecture diagram is inline Mermaid, which has
+  no file for the portfolio to render. If the portfolio needs an image, export the Mermaid to SVG
+  into `assets/` and fill the field.
+- The tightened GitHub repo description is recorded in `PROJECT.json` under `github.description` for
+  Bruno to apply with `gh repo edit`; not applied by the agent.
+- ~~`ENGINEERPROMPT.md` is gitignored but still tracked, so it still appears on GitHub. One command
+  fixes it: `git rm --cached ENGINEERPROMPT.md`. Not run, because it changes what the repo publishes.~~
+  **Done 2026-08-15** at Bruno's direction — untracked, still on disk, so every reference in this
+  file and `CLAUDE.md` still resolves locally.
+- The README's doc links are absolute `blob/master` URLs so the npm page resolves them. They are
+  branch-pinned: if the default branch is ever renamed, every one of them breaks at once.
+
+---
+
 ## Recorded deviation — aethereum sync
 
 `CLAUDE.md` requires `share_intent` / `declare_contract` / `record_decision` / `record_verification`
