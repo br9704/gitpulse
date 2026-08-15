@@ -26,8 +26,10 @@ const LINE_H = 17;
 const PAD = 20;
 
 // SIGNAL, from src/ui/theme.ts.
-const BG = '#050505';
-const DEFAULT_FG = '#98928a';
+// Both lifted from ~/bruno-portfolio/app/globals.css so the recording sits on
+// the same ground as the site: --desktop and --text-secondary.
+const BG = '#080808';
+const DEFAULT_FG = '#b0b0b0';
 
 // ── capture ─────────────────────────────────────────────────────────────────
 

@@ -1,6 +1,10 @@
 <div align="center">
 
+<sub><code>~/GITPULSE</code></sub>
+
 # gitpulse
+
+<sub>TERMINAL REPORT CARD · GITHUB PROFILE · NO ACCOUNT</sub>
 
 **A GitHub profile, rendered as a report card in your terminal — where every number says which window it was measured over.**
 
@@ -20,13 +24,13 @@ npx gitpulse torvalds
 
 | | |
 |---|---|
-| Runtime dependencies | **3** — `chalk`, `commander`, `ora` ([`package.json`](https://github.com/br9704/gitpulse/blob/master/package.json)) |
-| GitHub endpoints hit | **3** — user, repos, public events ([`src/api/github.ts`](https://github.com/br9704/gitpulse/blob/master/src/api/github.ts)) |
-| Tests | **122** across 6 files, on Node 20/22/24 ([CI](https://github.com/br9704/gitpulse/actions/workflows/ci.yml)) |
-| Staging budget after data arrives | **≤2.5s**, measured at 1.87s ([MOTION.md](https://github.com/br9704/gitpulse/blob/master/MOTION.md), [masterplan](https://github.com/br9704/gitpulse/blob/master/masterplan.md#sprint-3--motion-staging)) |
-| Install-time lifecycle scripts | **0** — no `preinstall`, `install`, `postinstall` or `prepare`, so `npx` works under npm v12 defaults |
+| runtime dependencies | **3** — `chalk`, `commander`, `ora` ([`package.json`](https://github.com/br9704/gitpulse/blob/master/package.json)) |
+| github endpoints hit | **3** — user, repos, public events ([`src/api/github.ts`](https://github.com/br9704/gitpulse/blob/master/src/api/github.ts)) |
+| install-time lifecycle scripts | **0** — no `preinstall`, `install`, `postinstall` or `prepare`, so `npx` works under npm v12 defaults |
+| works with no token, no network | `--demo` renders the whole report offline, and CI fails the build if it ever reaches the wire |
+| every number carries its window | the activity span is derived from the data, never assumed — that is the whole point of the tool |
 
-[Install](#install) · [Usage](#usage) · [Architecture](#architecture) · [How it was built](#how-it-was-built) · [Limitations](#limitations) · [Scoring](SCORING.md)
+`~/`[install](#install) · `~/`[usage](#usage) · `~/`[architecture](#architecture) · `~/`[how-it-was-built](#how-it-was-built) · `~/`[limitations](#limitations) · `~/`[scoring](SCORING.md)
 
 ---
 
@@ -49,8 +53,8 @@ event the feed actually returned and prints that window next to the number: `las
 code events  2026-07-16 → 2026-08-14`. A streak carries `measured within the 30-day event window
 above, not all-time`. When the label and the data would disagree, the label changes, not the data.
 
-The output is the product, so the output is what is tested and what CI enforces. Eighteen committed
-snapshots pin what every renderer emits. The report is staged rather than dumped — sections arrive
+The output is the product, so the output is what is tested and what CI enforces. Committed snapshots
+pin what every renderer emits, byte for byte. The report is staged rather than dumped — sections arrive
 in reading order over ≤2.5s, the stat values count up without shifting column widths, the heatmap
 paints column by column, and the grade letter lands last after a beat. `--no-anim` produces
 byte-identical output to the staged path, and staging turns itself off automatically whenever the
@@ -199,7 +203,7 @@ There are no benchmarks here. What there is instead is a CI job that refuses to 
 | `npm run lint` | 0 errors, 0 warnings |
 | `npm run typecheck` | `src/` **and** the tests type-check — the build config excludes tests, so `tsc` alone would not see them |
 | `npm run build` | `tsc` exit 0 |
-| `npm test` | **122 tests / 6 files**, 18 committed snapshots |
+| `npm test` | every renderer and the network layer, pinned by committed snapshots |
 | `dist/__tests__` absent | test helpers cannot leak into the published tarball again |
 | `node dist/index.js --demo` | the product actually renders |
 | demo with `fetch` stubbed to throw | `--demo` makes **zero** network calls |
@@ -359,7 +363,7 @@ git clone https://github.com/br9704/gitpulse.git
 cd gitpulse
 npm install
 npm run build
-npm test              # 122 tests
+npm test
 npm run lint
 npm run typecheck
 
@@ -371,6 +375,10 @@ TypeScript strict, ESM, three runtime dependencies. The only lifecycle script is
 which runs at publish time on the author's machine — nothing runs on install, so `npx gitpulse` is
 unaffected by npm v12 turning dependency lifecycle scripts off by default.
 
-## License · Author
+## License · author
 
-[MIT](LICENSE) — [Bruno Jaamaa](https://brunojaamaa.dev) · [github.com/br9704](https://github.com/br9704)
+```
+────────────────────────────────────────────────────────────────
+```
+
+`</bruno jaamaa>` · [MIT](LICENSE) · [brunojaamaa.dev ↗](https://brunojaamaa.dev) · [github ↗](https://github.com/br9704)

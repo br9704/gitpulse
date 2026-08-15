@@ -1,69 +1,83 @@
 import chalk from 'chalk';
 
 /**
- * SIGNAL — the inherited design system.
+ * SIGNAL — the inherited design system, monochrome.
  *
- * Source of truth: ~/bruno-portfolio/CLAUDE.md, "Redesign Design Decisions
- * (2026-07 · SIGNAL)". A warm-black precision instrument: Ryoji Ikeda
- * data-minimalism crossed with cassette-futurist hardware.
+ * Source of truth: ~/bruno-portfolio/app/globals.css. Every value below is
+ * lifted from that file's custom properties rather than invented here, so the
+ * CLI and the site stay one system.
  *
- * Two rules govern colour here, and they come from two documents that have to be
- * read together:
+ *   --desktop        #080808   the ground everything sits on
+ *   --text-primary   #f5f5f5
+ *   --text-secondary #b0b0b0
+ *   --text-dim       #8a8a8a
+ *   --steel          #2c2c2c
+ *   --hairline       #1a1a1a
  *
- *   SIGNAL     "Amber is THE ONE ACCENT. No colour beyond amber."
- *   MOTION.md  "monochrome + green for positive/live values only"
+ * There is no accent hue. The portfolio is black and white — near-black ground,
+ * white type, greys for hierarchy — and this renders the same way. Emphasis is
+ * carried by weight and by the `▌` marker, never by colour, which is how the
+ * site does it too.
  *
- * Reconciled: amber carries every accent — section labels, key values, the
- * score, the activity ramp. Green is reserved for exactly one meaning, the one
- * MOTION.md names explicitly for compare mode: "One colour, one meaning: ahead."
- * A green glyph anywhere in gitpulse means "this side is winning" and nothing
- * else. Everything not amber and not green is greyscale.
+ * This supersedes the earlier amber palette. SIGNAL as written said "Amber is
+ * THE ONE ACCENT"; the site it describes no longer uses amber anywhere, so the
+ * rule was documentation that had outlived the design. MOTION.md's "green for
+ * positive/live values" goes with it — see AHEAD below.
  *
- * Ramps are luminance steps within the amber hue, not new colours — that is how
- * intensity gets encoded without breaking the one-accent rule.
+ * One inherited constraint worth keeping: `--text-dim` is #8a8a8a and not #666
+ * because the portfolio's accessibility audit bumped it to clear AA 4.5:1 on
+ * #080808. The old CLI dim (#55504a) did not clear that bar on black. Do not
+ * darken these greys without re-checking contrast.
  */
 
 // ── Core palette ────────────────────────────────────────────────────────────
-export const AMBER = '#ffb000';   // phosphor — the one accent
-export const PRIMARY = '#f0ece4'; // warm white
-export const SECONDARY = '#98928a';
-export const DIM = '#55504a';
-export const HAIRLINE = '#2c2925'; // steel, for structural rules
-export const AHEAD = '#39d353';    // green — "ahead", compare mode only
+export const PRIMARY = '#f5f5f5';   // --text-primary
+export const SECONDARY = '#b0b0b0'; // --text-secondary
+export const DIM = '#8a8a8a';       // --text-dim, AA 4.5:1 on #080808
+export const HAIRLINE = '#2c2c2c';  // --steel, for structural rules
+export const AHEAD = PRIMARY;       // "ahead" in compare mode — weight, not hue
 
 // ── Semantic helpers ────────────────────────────────────────────────────────
-export const amber = chalk.hex(AMBER);
 export const primary = chalk.hex(PRIMARY);
 export const secondary = chalk.hex(SECONDARY);
 export const dim = chalk.hex(DIM);
 export const hairline = chalk.hex(HAIRLINE);
-export const ahead = chalk.hex(AHEAD);
+export const ahead = chalk.hex(AHEAD).bold;
 
-/** A key figure the eye should land on. */
-export const value = (s: string) => amber.bold(s);
+/**
+ * Retained so the nine renderers that import it keep compiling. It is plain
+ * white now; the name is kept because every call site means "the accent", and
+ * renaming 36 of them would be churn for no rendered difference.
+ */
+export const amber = chalk.hex(PRIMARY);
+
+/** A key figure the eye should land on. Weight does the work, not colour. */
+export const value = (s: string) => primary.bold(s);
 /** The name of a thing, not the thing itself. */
 export const label = (s: string) => secondary(s);
 /** Supporting detail, caveats, provenance. */
 export const note = (s: string) => dim(s);
 
 /**
- * Amber luminance ramp, darkest first.
+ * Greyscale luminance ramp, darkest first.
  *
  * Used for the activity heatmap and the language summary strip — anywhere a
- * magnitude needs encoding. Same hue throughout, so it reads as one instrument
- * rather than as a set of unrelated colours.
+ * magnitude needs encoding. It runs from just above the ground to full white,
+ * which is the same dithered light-to-dark language the portfolio's halftone
+ * treatment uses, and the same one the `░▒▓█` glyphs already spoke.
  */
-export const RAMP = ['#3a3733', '#6b4d00', '#997000', '#cc9100', AMBER];
+export const RAMP = ['#2c2c2c', '#4a4a4a', '#767676', '#b0b0b0', PRIMARY];
 
 export const rampAt = (i: number) => chalk.hex(RAMP[Math.max(0, Math.min(RAMP.length - 1, i))]);
 
 /**
- * Distinguishable amber steps for categorical series (the language strip).
+ * Greyscale steps for categorical series (the language strip).
  *
- * Categorical data normally wants distinct hues; SIGNAL does not allow them, so
- * rank is encoded as luminance instead and the label carries the identity.
+ * Categorical data normally wants distinct hues. There are none here, so rank
+ * is encoded as luminance and the label carries the identity — unchanged in
+ * principle from the amber version, only the hue is gone.
  */
-export const SERIES = ['#ffb000', '#d99400', '#b37a00', '#8c6000', '#664600', '#4a3400'];
+export const SERIES = ['#f5f5f5', '#c8c8c8', '#9b9b9b', '#6e6e6e', '#4a4a4a', '#2c2c2c'];
 
 export const seriesAt = (i: number) => chalk.hex(SERIES[i % SERIES.length]);
 

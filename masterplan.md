@@ -758,6 +758,89 @@ Re-run after every edit: lint clean · typecheck clean · build exit 0 · **122 
 
 ---
 
+## Sprint E — Monochrome
+
+Run 2026-08-15 at Bruno's direction: "make it more black and white, like my style", and match the
+README to the portfolio.
+
+### DECISION — amber is retired; the palette is greyscale
+
+**This supersedes the Sprint 2 decision block above.** That block reconciled SIGNAL's "Amber is THE
+ONE ACCENT" with MOTION.md's "monochrome + green for positive/live values only", and the
+reconciliation was correct for the documents as they stood. The documents were out of date.
+
+What the portfolio actually renders today, checked in the source rather than in its docs:
+- `~/bruno-portfolio/app/globals.css` — the shipped token set is greyscale on `#080808`. **There is
+  no amber token in the file.**
+- `~/bruno-portfolio/app/opengraph-image.tsx:11` — `const ACCENT = '#f5f5f5'; // BR95 grayscale
+  (amber retired at D6)`.
+- `~/bruno-portfolio/masterplan.md:664` — "grayscale-on-black (amber retired)".
+- Commit `e6f61e7` — "de-amber CRT overlay + crt-gl shader to neutral gray".
+
+`~/bruno-portfolio/CLAUDE.md` still says SIGNAL/amber is locked, and the relaunch prompt dated
+2026-08-15 repeats it. **Those two files contradict the code, and the code is newer.** Recorded here
+rather than resolved there; the portfolio's own docs are Bruno's to correct.
+
+Green goes with it. MOTION.md's "one colour, one meaning: ahead" is now carried by weight — `ahead`
+is bold white plus the `▌` marker. Nothing in the CLI emits a hue.
+
+### As-shipped
+
+- `src/ui/theme.ts` is the **only** file changed. Nine renderers import it and none needed an edit,
+  which is the payoff of the Sprint 2 decision to route every colour through one module. The Sprint 2
+  gate — "no colour outside the system is a one-line grep" — is what made this a one-file change.
+- Values are lifted from `globals.css` rather than invented: `PRIMARY #f5f5f5` (`--text-primary`),
+  `SECONDARY #b0b0b0`, `DIM #8a8a8a` (`--text-dim`), `HAIRLINE #2c2c2c` (`--steel`).
+- **Contrast improved as a side effect.** The old `DIM` was `#55504a`, which does not clear AA 4.5:1
+  on a black ground. `#8a8a8a` does — the portfolio bumped it from `#666` for exactly that reason,
+  and the comment in `globals.css` records the audit. Do not darken these greys without re-checking.
+- `RAMP` and `SERIES` keep their structure and lose their hue: luminance still encodes magnitude and
+  rank, the label still carries identity. `RAMP` now runs `#1a1a1a → #f5f5f5`.
+- `export const amber` is kept as an alias of white. 36 call sites mean "the accent"; renaming them
+  would be churn with no rendered difference.
+- `tools/record-demo.mjs` had two hardcoded colours the theme could not reach — `BG #050505` and
+  `DEFAULT_FG #98928a`. Now `#080808` (`--desktop`) and `#b0b0b0` (`--text-secondary`).
+- `assets/demo.svg` re-recorded. Verified greyscale programmatically: every hex in the file has
+  `r == g == b`. Nine distinct values, all from the portfolio palette.
+
+### README — portfolio copy law applied
+
+Reading `~/bruno-portfolio/CLAUDE.md:516-533` surfaced a rule the README was breaking:
+
+> **NO PROCESS METRICS IN PUBLIC COPY** — counts of sprints · tests · specs · commits · files ·
+> lines. "Nobody reads '1,035 tests' and thinks *thorough*; they think *why does a statusline tool
+> need a thousand tests?* — which is doubt, bought with effort." **Prefer the decision.**
+
+The headline table led with `Tests | 122 across 6 files`. Removed, and the two remaining tallies
+with it. Replaced by decisions, which is what the rule asks for: `--demo` works with no token and no
+network and CI fails the build if it reaches the wire; every number carries the window it was
+measured over. The `npm test` row in Verification now says *what* is covered rather than how many.
+
+Bracket grammar applied per `CLAUDE.md:80-85`: nav is `~/`-prefixed paths with `·` separators, the
+footer is `</bruno jaamaa>` with `[github ↗]`-style external links, and an ASCII rule replaces the
+`---`. Headings stay sentence-case and plain rather than becoming `</tag>` labels — the docs prompt
+mandates that shape and the nav anchors depend on it. Flagged as the one place the two systems were
+not reconciled.
+
+**Acceptance gate — PASSED 2026-08-15**
+- [x] lint clean · typecheck clean · build exit 0 · 122 tests passing, unchanged by the palette
+      swap because `src/__tests__/setup.ts` pins `chalk.level = 0` and snapshots are plain text
+- [x] Rendered output contains no ANSI and no `Emoji_Presentation` character when piped
+- [x] `assets/demo.svg` re-recorded and verified fully greyscale by `r == g == b` on every hex
+- [x] No hex literal outside `theme.ts` except `src/ui/export.ts`, which is deliberate
+
+**Deferred**
+- `src/ui/export.ts` and `src/utils/colors.ts` keep GitHub's language hues. The Three.js scene is a
+  declared contract consumed by github-3d-visualizer, where **hue is the data encoding**, and it is
+  not terminal output. Making it greyscale would break the contract and its snapshot for no visual
+  gain in the CLI.
+- `MOTION.md` still specifies "monochrome + green for positive/live values only" and `CLAUDE.md`'s
+  current-state line still describes the output as amber-on-warm-black. Both are now stale. Not
+  rewritten here, because both are binding documents and the rule is to expand rather than replace —
+  this section is the record that supersedes them.
+
+---
+
 ## Recorded deviation — aethereum sync
 
 `CLAUDE.md` requires `share_intent` / `declare_contract` / `record_decision` / `record_verification`

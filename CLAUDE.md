@@ -149,6 +149,25 @@ exists.** The registry returned 404 on 2026-08-15. Until Sprint 7.3 runs, that b
 and that command fails. Re-check with
 `curl -s -o /dev/null -w "%{http_code}\n" https://registry.npmjs.org/gitpulse`.
 
+**Sprint E — Monochrome (closed 2026-08-15).** The output is **greyscale on near-black, no accent
+hue**. Amber is retired, and so is compare mode's green — "ahead" is carried by weight and the `▌`
+marker. This supersedes the Sprint 2 colour decision and the "amber-on-warm-black" line above.
+Reason: `~/bruno-portfolio/app/globals.css` has no amber token, `opengraph-image.tsx` says
+`ACCENT = '#f5f5f5' // BR95 grayscale (amber retired at D6)`, and the portfolio masterplan records
+"grayscale-on-black (amber retired)". The portfolio's own `CLAUDE.md` still calls SIGNAL/amber
+locked — **it contradicts its own code, and the code is newer.** Values are lifted from
+`globals.css`, not invented. Contrast improved on the way: the old `DIM #55504a` failed AA 4.5:1 on
+black; `#8a8a8a` clears it.
+
+`src/ui/theme.ts` was the only source file changed — nine renderers import it, none needed an edit.
+`tools/record-demo.mjs` needed two hardcoded values it owned. The README also had the portfolio's
+**"no process metrics in public copy"** rule applied: the `122 tests / 6 files` headline row is gone,
+replaced by decisions, per "prefer the decision".
+
+**Note for future sessions:** `MOTION.md` still says "monochrome + green for positive/live values"
+and is now stale on the green. Read Sprint E in `masterplan.md` before trusting either document on
+colour.
+
 **Next:** Sprint 7.2–7.5 in `masterplan.md` — npm 2FA, one manual bootstrap publish (trusted
 publishing cannot be configured for a package that does not yet exist), then trusted publishing for
 every release after that. Then apply the tightened repo description recorded in
