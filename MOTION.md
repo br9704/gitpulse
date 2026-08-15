@@ -1,6 +1,18 @@
 # MOTION.md — GITPULSE
 # Animation spec for a terminal. Read with `CLAUDE.md`; binding.
 
+> **Amendment 2026-08-15 — green is retired. This document is stale wherever it mentions colour.**
+> Two lines below still specify green for positive/live values: the "Inherited language" line and
+> the compare-mode rule "the *winning* side's value prints in green. One colour, one meaning:
+> ahead." **The CLI now emits no hue at all.** "Ahead" is carried by weight and the `▌` marker
+> instead, which preserves the "one meaning" intent while removing the colour. The reason is in
+> Sprint E of `masterplan.md`: the portfolio this design inherits from retired its accent, so
+> `~/bruno-portfolio/app/globals.css` is greyscale on `#080808` with no amber token, and
+> `opengraph-image.tsx` records `ACCENT = '#f5f5f5' // BR95 grayscale (amber retired at D6)`.
+> Everything else in this file — the sequence, the timings, the budgets, the waiting states, the
+> acceptance gates — is unaffected and still binding. Left in place rather than rewritten, per the
+> rule that binding documents get expanded, not replaced.
+
 > A CLI animates with **timing, order, and restraint** — no easing curves, just when each line appears and what moves while you wait. gitpulse currently prints everything at once. Staged output is what turns a wall of text into a report *being generated*, and it's also what makes the asciinema demo watchable.
 
 ---

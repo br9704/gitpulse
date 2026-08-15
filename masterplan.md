@@ -774,8 +774,11 @@ Re-run after every edit: lint clean · typecheck clean · build exit 0 · **122 
 - `media.diagram` in `PROJECT.json` is `null`. The architecture diagram is inline Mermaid, which has
   no file for the portfolio to render. If the portfolio needs an image, export the Mermaid to SVG
   into `assets/` and fill the field.
-- The tightened GitHub repo description is recorded in `PROJECT.json` under `github.description` for
-  Bruno to apply with `gh repo edit`; not applied by the agent.
+- ~~The tightened GitHub repo description is recorded in `PROJECT.json` under `github.description` for
+  Bruno to apply with `gh repo edit`; not applied by the agent.~~ **Applied 2026-08-15** at Bruno's
+  direction: description set, the two missing topics (`github-api`, `developer-experience`) added so
+  all eight match `PROJECT.json`, and `homepage` repointed from the README anchor to the npm page now
+  that one exists.
 - ~~`ENGINEERPROMPT.md` is gitignored but still tracked, so it still appears on GitHub. One command
   fixes it: `git rm --cached ENGINEERPROMPT.md`. Not run, because it changes what the repo publishes.~~
   **Done 2026-08-15** at Bruno's direction — untracked, still on disk, so every reference in this
