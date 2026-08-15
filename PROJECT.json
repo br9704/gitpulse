@@ -10,7 +10,7 @@
   "links": {
     "github": "https://github.com/br9704/gitpulse",
     "live": null,
-    "npm": "https://www.npmjs.com/package/gitpulse",
+    "npm": "https://www.npmjs.com/package/@aethereumdev/gitpulse",
     "huggingface": null,
     "appstore": null
   },

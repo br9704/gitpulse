@@ -841,6 +841,53 @@ not reconciled.
 
 ---
 
+## DECISION — the package is `@aethereumdev/gitpulse`, not `gitpulse`
+
+Taken 2026-08-15, at the first publish attempt. **This supersedes the owner table's "the name
+`gitpulse` was free" line and the unscoped choice made earlier the same day.**
+
+`npm publish --access public` failed:
+
+```
+npm error code E403
+npm error 403 Forbidden - PUT https://registry.npmjs.org/gitpulse -
+  Package name too similar to existing package git-pulse
+```
+
+**The 404 check every document in this repo relies on was never sufficient.** `GET
+registry.npmjs.org/gitpulse` returned 404 right up to the attempt, and it kept returning 404
+afterwards, because the name is unregistered — it is simply not *claimable*. npm's typosquatting
+filter runs at publish time and nowhere else, so no pre-flight check available to us could have
+caught this. Sprint 7.2's "re-verify the name with curl" step is therefore necessary but not
+sufficient, and should not be trusted again on its own.
+
+The blocker is [`git-pulse`](https://www.npmjs.com/package/git-pulse): 8 versions, created
+2020-12-20, last published 2022-05-03. Abandoned, but it owns the namespace. `gitpulse-cli` is also
+taken. `ghpulse`, `pulsegit` and `gitpulse-report` are all unregistered but carry the same unknown
+risk, since the only way to test the filter is to trigger it.
+
+**Scoped names bypass the similarity check** — npm's own error message says so. That makes a scope
+the only option with a guaranteed outcome, and `@aethereumdev` is the scope that already carries
+`@aethereumdev/mcp-audit@0.1.0`, so both packages sit under one identity. Bruno chose it over the
+`@aethereum-dev` username scope npm suggested, which would have split the two.
+
+**The command is unaffected.** `bin` maps to `gitpulse` regardless of package name, so
+`npm i -g @aethereumdev/gitpulse` still puts plain `gitpulse` on the PATH. Only the install string
+is longer.
+
+Changed: `package.json` `name`; the README's install block, `npx` lines, and npm badge — the badge
+URL needs `%40aethereumdev%2Fgitpulse`, percent-encoded, or shields.io will not resolve it;
+`PROJECT.json` `links.npm`. The README now also states why the scope exists, so a reader does not
+read it as an affectation. Verified after the rename: lint clean, typecheck clean, build exit 0,
+122 tests passing, and `npm pack --dry-run` reports `@aethereumdev/gitpulse@1.0.0`,
+`aethereumdev-gitpulse-1.0.0.tgz`, 80 files, `SCORING.md` present, no `dist/__tests__`.
+
+Note for Sprint 7.4: the Trusted Publisher is configured against the **package**, so it is
+`@aethereumdev/gitpulse` that gets the publisher, and scoped packages need `--access public` on the
+bootstrap publish or npm defaults them to restricted.
+
+---
+
 ## Recorded deviation — aethereum sync
 
 `CLAUDE.md` requires `share_intent` / `declare_contract` / `record_decision` / `record_verification`

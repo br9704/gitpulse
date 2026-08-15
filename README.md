@@ -9,7 +9,7 @@
 **A GitHub profile, rendered as a report card in your terminal — where every number says which window it was measured over.**
 
 [![CI](https://github.com/br9704/gitpulse/actions/workflows/ci.yml/badge.svg)](https://github.com/br9704/gitpulse/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/gitpulse?style=flat)](https://www.npmjs.com/package/gitpulse)
+[![npm](https://img.shields.io/npm/v/%40aethereumdev%2Fgitpulse?style=flat)](https://www.npmjs.com/package/@aethereumdev/gitpulse)
 [![license](https://img.shields.io/github/license/br9704/gitpulse?style=flat)](LICENSE)
 
 <img src="https://raw.githubusercontent.com/br9704/gitpulse/master/assets/demo.svg" alt="gitpulse rendering a developer report card in the terminal: wordmark, profile, statistics, language bars, ranked repositories, a code-activity heatmap, commit patterns, streak, and a hire-ability score" width="800">
@@ -19,7 +19,7 @@
 </div>
 
 ```bash
-npx gitpulse torvalds
+npx @aethereumdev/gitpulse torvalds
 ```
 
 | | |
@@ -68,10 +68,16 @@ the score does not measure.
 ## Install
 
 ```bash
-npm install -g gitpulse
+npm install -g @aethereumdev/gitpulse
+gitpulse torvalds
+
 # or run it without installing
-npx gitpulse torvalds
+npx @aethereumdev/gitpulse torvalds
 ```
+
+The package is scoped; the command is not. Once it is installed the binary is plain `gitpulse`.
+The scope exists because npm's similarity filter reserves `gitpulse` against the existing
+[`git-pulse`](https://www.npmjs.com/package/git-pulse), which has not shipped since 2022.
 
 Requires **Node 20 or newer**. `npx` asks for confirmation the first time it downloads a package —
 that prompt is npm, not a hang.
@@ -372,7 +378,7 @@ npm run demo:record   # regenerate assets/demo.svg from a real run
 ```
 
 TypeScript strict, ESM, three runtime dependencies. The only lifecycle script is `prepublishOnly`,
-which runs at publish time on the author's machine — nothing runs on install, so `npx gitpulse` is
+which runs at publish time on the author's machine — nothing runs on install, so `npx` is
 unaffected by npm v12 turning dependency lifecycle scripts off by default.
 
 ## License · author

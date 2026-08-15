@@ -1,5 +1,5 @@
 {
-  "name": "gitpulse",
+  "name": "@aethereumdev/gitpulse",
   "version": "1.0.0",
   "description": "Generate beautiful developer profile report cards in the terminal from GitHub profiles",
   "main": "dist/index.js",

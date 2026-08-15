@@ -11,7 +11,13 @@ Read this at the start of every session. `masterplan.md` (which you create in Ph
 |---|---|
 | Name | Bruno Jaamaa · jaamaabruno@gmail.com · GitHub `br9704` |
 | Repo | github.com/br9704/gitpulse |
-| npm | **Unpublished.** The name `gitpulse` was free as of Aug 2026 — re-verify before publishing |
+| npm | **`@aethereumdev/gitpulse`** — scoped. Unpublished as of 2026-08-15 |
+
+> **`gitpulse` unscoped is not claimable.** It returns 404 but npm's typosquatting filter rejects it
+> at publish time as "too similar to existing package `git-pulse`". A 404 from the registry proves
+> the name is *unregistered*, not that it is *available* — the filter runs only on `npm publish`, so
+> no pre-flight check catches this. Scoped names bypass the filter. See the DECISION block in
+> `masterplan.md`. The binary is still plain `gitpulse`; only the install string carries the scope.
 
 ## What this is
 
