@@ -22,6 +22,8 @@
 npx @aethereumdev/gitpulse torvalds
 ```
 
+Case study: [brunojaamaa.dev/projects/gitpulse ↗](https://brunojaamaa.dev/projects/gitpulse)
+
 | | |
 |---|---|
 | runtime dependencies | **3** — `chalk`, `commander`, `ora` ([`package.json`](https://github.com/br9704/gitpulse/blob/master/package.json)) |
